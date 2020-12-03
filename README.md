@@ -15,9 +15,11 @@ Edit the scripts Line 246 if your alchemy is not installed in "C:\Program Files 
 
 ## launch application
 Launch the script and hide console
-.\powershell.exe -WindowStyle Hidden -ep bypass -file "C:\Program Files (x86)\Creative\ALchemy\Alchemy.ps1"
+.\powershell.exe -WindowStyle Hidden -ep bypass -file "C:\Program Files (x86)\Creative\ALchemy\Alchemy_XXX.ps1"
 
 The scripts will create and use a new NewAlchemy.ini in the alchemy folder to store games and options.
+
+You can also use the EXE version that has been compiled with PS2EXE.
 
 When launched, NewALchemy application will search the system for supported DirectSound3D enabled games. All the games found will be listed in the left pane (titled "Installed Games"). The right pane (titled "NewALchemy-enabled Games”) will show any games which have already been converted to use ALchemy. To enable ALchemy support for a particular game, select it from the left panel, and press the “>>” button. To undo ALchemy support, select the game from the right panel and press the “<<” button. You can select multiple games at once and then use the directional arrow buttons to update them all.
 
