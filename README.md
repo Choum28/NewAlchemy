@@ -11,7 +11,6 @@ Recreate in powershell the creative alchemy application with more settings and o
     
 ## Install
 Copy the script in your Creative alchemy folder.
-Edit the scripts Line 246 if your alchemy is not installed in "C:\Program Files (x86)\Creative\ALchemy"
 
 ## launch application
 Launch the script and hide console
