@@ -271,7 +271,7 @@ $inputXML =@"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:alchemy"
         mc:Ignorable="d"
-        Title="New Alchemy" Height="417.814" Width="810.127">
+        Title="New Alchemy" Height="417.814" Width="810.127" ResizeMode="NoResize">
     <Grid>
         <ListView x:Name="MenuGauche" HorizontalAlignment="Left" Height="280" Margin="20,75,0,0" VerticalAlignment="Top" Width="310">
             <ListView.View>
@@ -294,7 +294,6 @@ $inputXML =@"
         <TextBlock x:Name="Text_main" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="20,10,0,0" Width="762" Height="34"><Run Text="NewAlchemy restitue un son accéléré par composant matériel de sorte que vous puissez profiter des effets EAX"/><Run Text=" et du son Audio 3D lorsque vous utilisez des jeux DirectSound3D dans windows version Vista et supérieures."/></TextBlock>
         <TextBlock x:Name="Text_jeuinstall" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Jeux installés" VerticalAlignment="Top" Margin="20,54,0,0" Width="238"/>
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Jeux activés par NewAlchemy" VerticalAlignment="Top" Margin="472,54,0,0" Width="173"/>
-        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Margin="735,360,0,40" Width="47" Height="17" FontSize="8" Text="Version 1.0"/>
         <TextBlock x:Name="T_URL" HorizontalAlignment="Left" TextWrapping="Wrap" Text="https://github.com/Choum28/NewAlchemy" VerticalAlignment="Top" Margin="20,361,0,0" FontSize="8"/>
         <TextBlock x:Name="T_version" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Version 1.0" VerticalAlignment="Top" Margin="733,359,0,0" FontSize="8"/>
     </Grid>
@@ -419,7 +418,7 @@ $BoutonEdition.add_Click({
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Edit"
         mc:Ignorable="d"
-        Title="Parametres du jeu" Height="560.102" Width="552.512" VerticalAlignment="Bottom">
+        Title="Parametres du jeu" Height="560.102" Width="552.512" VerticalAlignment="Bottom" ResizeMode="NoResize">
     <Grid>
         <TextBox x:Name="T_titrejeu" HorizontalAlignment="Left" Height="22" Margin="28,44,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="485"/>
         <RadioButton x:Name="C_registre" Content="Utiliser le chemin d'accès au registre" HorizontalAlignment="Left" Margin="67,85,0,0" VerticalAlignment="Top" Width="252"/>
@@ -751,7 +750,7 @@ $BoutonAjouter.add_Click({
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Edit"
         mc:Ignorable="d"
-        Title="Parametres du jeu" Height="560.102" Width="552.512" VerticalAlignment="Bottom">
+        Title="Parametres du jeu" Height="560.102" Width="552.512" VerticalAlignment="Bottom" ResizeMode="NoResize">
     <Grid>
         <TextBox x:Name="T_titrejeu" HorizontalAlignment="Left" Height="22" Margin="28,44,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="485"/>
         <RadioButton x:Name="C_registre" Content="Utiliser le chemin d'accès au registre" HorizontalAlignment="Left" Margin="67,85,0,0" VerticalAlignment="Top" Width="252"/>
