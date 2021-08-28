@@ -242,6 +242,10 @@ function Sortlistview{
     return $listview
 }
 
+[void][System.Reflection.Assembly]::LoadWithPartialName('PresentationFramework')
+[void][System.Reflection.Assembly]::LoadWithPartialName("System.windows.forms")
+[System.Windows.Forms.Application]::EnableVisualStyles()
+
 # add automatic detection ? check if newalchemy.ini is present or generate one
 if (!(Test-Path -path ".\ALchemy.exe")) {
     [System.Windows.Forms.MessageBox]::Show("NewAlchemy doit être placé dans le dossier de Creative alchemy.")
@@ -259,9 +263,6 @@ checktransmut $global:jeutrouve | Out-Null
 $jeutransmut = $global:jeutrouve | where-object Transmut -eq $true
 $jeunontransmut = $global:jeutrouve | where-object {$_.Found -eq $true -and $_.Transmut -eq $False}
 
-[void][System.Reflection.Assembly]::LoadWithPartialName('PresentationFramework')
-[void][System.Reflection.Assembly]::LoadWithPartialName("System.windows.forms")
-[System.Windows.Forms.Application]::EnableVisualStyles()
 # Main windows
 $inputXML =@"
 <Window x:Class="alchemy.MainWindow"
