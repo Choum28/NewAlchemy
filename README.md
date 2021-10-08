@@ -7,7 +7,7 @@ Recreate in powershell the creative alchemy application with more settings and o
        *  Add support for DisableNativeAL Option to Disable ALchemy to ouput to OpenAl drivers (CT_oal.dll only)
             Post X-fi card will need to rename sens_oal.dll to Ct_oal.dll to make use of it.
             X-fi card should set this settings to False by default and yes in case of problem with specific game.
-            Post X-fi card must do the opposite, the scripts is set this option to true by default (edit line 48 and 68 to change that)
+            Post X-fi card must do the opposite, the scripts ask for the default value on first launch during Game list generation.
     
 ## Install
 Copy the script in your Creative alchemy folder.
