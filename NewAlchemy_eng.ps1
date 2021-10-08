@@ -6,10 +6,10 @@
 .DESCRIPTION
     What different from creative alchemy :
         Registry path are check in both X86 and X86-64 path.
-        Add support for DisableNativeAL Option to Disable ALchemy to ouput to OpenAl drivers (CT_oal.dll only)
+        Add support for DisableNativeAL Option to Disable ALchemy to ouput sounds to OpenAl drivers (CT_oal.dll only)
             Post X-fi card will need to rename sens_oal.dll to Ct_oal.dll to make use of it.
             X-fi card should set this settings to False by default and yes in case of problem with specific game.
-            Post X-fi card must do the opposite, the scripts is set this option to true by default
+            Post X-fi card must do the opposite, the scripts ask for the default value on first launch during Game list generation.
 
 .EXAMPLE
 	.\NewALchemy.ps1
@@ -24,12 +24,12 @@
 	This script will generate an ini file NewAlchemy.ini to store gamelist audio options and change.
     
 .NOTES
-    NOM:       NewALchemy.ps1
-    AUTEUR:    Choum
+    NAME:       NewALchemy.ps1
+    AUTHOR:    Choum
 	
-    HISTORIQUE VERSION:          
-    1.0     15.11.2020
-            First version
+    HISTORIQUE VERSION: 
+	1.1		06.10.2021	Fix edit new add game bug, add Nativeal value question on first launch
+    1.0     15.11.2020	First version
 .LINK
  #>
 
@@ -53,7 +53,7 @@ function add-Game { # Convert value into hash table.
 }
 
 function read-file{ #read alchemy ini file and convert game to hash table with add-game function, default value are define here if not present in alchemy.ini.
-    param([string]$file)
+    param([string]$file, [string]$Hoal)
     $list = Get-content $file
     $liste = @()
     $test = 0
@@ -63,7 +63,7 @@ function read-file{ #read alchemy ini file and convert game to hash table with a
     $DisableDirectMusic="False"
     $MaxVoiceCount=128
     $RootDirInstallOption="False"
-    $DisableNativeAL="True"
+    $DisableNativeAL=$Hoal
     $Found=$false
     $Transmut=$false
 
@@ -82,7 +82,7 @@ function read-file{ #read alchemy ini file and convert game to hash table with a
                     $MaxVoiceCount=128
                     $SubDir=""
                     $RootDirInstallOption="False"
-                    $DisableNativeAL="True"
+                    $DisableNativeAL=$Hoal
                     $Found=$false
                     $Transmut=$false
                 }
@@ -113,6 +113,9 @@ function read-file{ #read alchemy ini file and convert game to hash table with a
             if($line -like "RootDirInstallOption=*") {
                 $RootDirInstallOption = $line.replace("RootDirInstallOption=","")
             }
+            if($line -like "DisableNativeAL=*") {
+                $DisableNativeAL = $line.replace("DisableNativeAL=","")
+            }
         }
     }
     if ($Number -ne $test){
@@ -120,8 +123,9 @@ function read-file{ #read alchemy ini file and convert game to hash table with a
     }
     return $liste
 }
+
 function GenerateNewAlchemy{ #Create New NewALchemy.ini file with new options, that will be used by the script
-    param([string]$file)
+    param([string]$file, [string]$Hoal)
     
     @"
 ;Creative ALchemy titles
@@ -135,10 +139,10 @@ function GenerateNewAlchemy{ #Create New NewALchemy.ini file with new options, t
 ;  MaxVoiceCount <--  is used to set the maximum number of hardware voices that will be used by ALchemy (default is 128), values : 32 to 128
 ;  SubDir <-- subdirectory offset off of path pointed to by RegPath for library support (default is empty string)
 ;  RootDirInstallOption <-- option to install translator support in both RegPath and SubDir directories (default is False)
-;  DisableNativeAL <-- Bypass Native OpenAL drivers (Ct_oal.dll only) to use Alchemy internal libray (default is True, set to False for old X-fi Card)
+;  DisableNativeAL <-- Bypass Native OpenAL drivers (Ct_oal.dll only) to use Alchemy internal library (Bezst practice is False for old X-fi/Audigy Card and true for Card that rely on Host openAl drivers)
 
 "@ | Out-File -Append NewAlchemy.ini -encoding ascii
-    $liste = read-file $file
+    $liste = read-file $file $Hoal
     foreach ($line in $liste){
         $a = $line.Name
         $b = $line.RegPath
@@ -196,6 +200,7 @@ function checkpresent{ # Check if game is present (registry in priority then gam
     }
     return $a
 }
+
 function checkinstall{ # Check if game list is installed with check present function.
     param($liste)
     $test = 0
@@ -232,6 +237,7 @@ function checkTransmut{ # Check if game is transmuted (dsound.dll present)
     }
     return $liste
 }
+
 function Sortlistview{
     param($listview)
     $items = $listview.items | Sort-Object
@@ -252,12 +258,19 @@ if (!(Test-Path -path ".\ALchemy.exe")) {
     exit
 }
 if (!(Test-Path -path ".\newalchemy.ini")) {
-    GenerateNewAlchemy ".\Alchemy.ini"
+	$Hoal = [System.Windows.Forms.MessageBox]::Show('Do you have a Sound Blaster X-FI, X-FI Titanium Card or Audigy Sound Card ?' , "Info" , 4)
+    if ($Hoal -eq 'Yes') {
+        $Hoal = "False"
+    }
+    else {
+        $Hoal = "True"
+	}
+	GenerateNewAlchemy ".\Alchemy.ini" $Hoal
 }
 
-$liste = read-file ".\NewAlchemy.ini"
-checkinstall $liste | Out-Null
-$global:jeutrouve = $liste | where-object Found -eq $true
+$global:listejeux = read-file ".\NewAlchemy.ini"
+checkinstall $global:listejeux | Out-Null
+$global:jeutrouve = $global:listejeux | where-object Found -eq $true
 #$jeutrouve | Out-GridView
 checktransmut $global:jeutrouve | Out-Null
 $jeutransmut = $global:jeutrouve | where-object Transmut -eq $true
@@ -296,7 +309,7 @@ $inputXML =@"
         <TextBlock x:Name="Text_jeuinstall" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Installed Games" VerticalAlignment="Top" Margin="20,54,0,0" Width="238"/>
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="NewAlchemy-enabled Games" VerticalAlignment="Top" Margin="472,54,0,0" Width="173"/>
         <TextBlock x:Name="T_URL" HorizontalAlignment="Left" TextWrapping="Wrap" Text="https://github.com/Choum28/NewAlchemy" VerticalAlignment="Top" Margin="20,361,0,0" FontSize="8"/>
-        <TextBlock x:Name="T_version" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Version 1.0" VerticalAlignment="Top" Margin="733,359,0,0" FontSize="8"/>
+        <TextBlock x:Name="T_version" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Version 1.01" VerticalAlignment="Top" Margin="733,359,0,0" FontSize="8"/>
     </Grid>
 </Window>
 
@@ -647,7 +660,7 @@ $BoutonEdition.add_Click({
                         $fail = $true
                     }
                     $regprio = $true
-                    $Registre = $T_Registre.Text
+                    $RegPath = $T_Registre.Text
                 }
             } else {
                 $Gamepath = $T_Gamepath.text
@@ -682,10 +695,10 @@ $BoutonEdition.add_Click({
             if ($fail -eq $False){
 
                 # Prepare Game value to write
-                $name = $T_titrejeu.text
-                $buffers = $T_buffers.text
-                $voice = $T_voice.text
-                $duration = $T_Duration.text
+                $Name = $T_titrejeu.text
+                $Buffers = $T_buffers.text
+                $Voice = $T_voice.text
+                $Duration = $T_Duration.text
                 if ($C_DisableDirectMusic.IsChecked) {
                     $DisableDirectMusic="True"
                 } else {
@@ -706,12 +719,12 @@ $BoutonEdition.add_Click({
                     $RootDirInstallOption="False"
                 }
                 # Update list game to reflect change    
-                $global:jeutrouve[$count].RegPath=$Registre
+                $global:jeutrouve[$count].RegPath=$RegPath
                 $global:jeutrouve[$count].Gamepath=$Gamepath
-                $global:jeutrouve[$count].Buffers=$buffers
-                $global:jeutrouve[$count].Duration=$duration
+                $global:jeutrouve[$count].Buffers=$Buffers
+                $global:jeutrouve[$count].Duration=$Duration
                 $global:jeutrouve[$count].DisableDirectMusic=$DisableDirectMusic
-                $global:jeutrouve[$count].MaxVoiceCount=$voice
+                $global:jeutrouve[$count].MaxVoiceCount=$Voice
                 $global:jeutrouve[$count].SubDir=$Subdir
                 $global:jeutrouve[$count].RootDirInstallOption=$RootDirInstallOption
                 $global:jeutrouve[$count].DisableNativeAL=$DisableNativeAL
@@ -719,16 +732,16 @@ $BoutonEdition.add_Click({
                 $file = Get-content ".\Newalchemy.ini"
                 $LineNumber = Select-String -pattern ([regex]::Escape("[$Name]")) NewAlchemy.ini| Select-Object -ExpandProperty LineNumber
                 if ($regprio -eq $true) {
-                    $file[$LineNumber] = "RegPath=$Registre"
+                    $file[$LineNumber] = "RegPath=$RegPath"
                     $file[$LineNumber +1]="GamePath="
                 }else{
                     $file[$LineNumber] = "RegPath="
                     $file[$LineNumber +1]="GamePath=$Gamepath" 
                 }
-                $file[$LineNumber +2] = "Buffers=$buffers" 
-                $file[$LineNumber +3] = "Duration=$duration" 
+                $file[$LineNumber +2] = "Buffers=$Buffers" 
+                $file[$LineNumber +3] = "Duration=$Duration" 
                 $file[$LineNumber +4] = "DisableDirectMusic=$DisableDirectMusic" 
-                $file[$LineNumber +5] = "MaxVoiceCount=$voice" 
+                $file[$LineNumber +5] = "MaxVoiceCount=$Voice" 
                 $file[$LineNumber +6] = "SubDir=$Subdir" 
                 $file[$LineNumber +7] = "RootDirInstallOption=$RootDirInstallOption"
                 $file[$LineNumber +8] = "DisableNativeAL=$DisableNativeAL" 
@@ -917,7 +930,7 @@ $BoutonAjouter.add_Click({
         $b = $T_Registre.Text
         $x = $T_titrejeu.Text
 
-        foreach ($game in $liste){
+        foreach ($game in $global:listejeux){
             if ($x -eq $game.name){
                 $fail = $true
                 [System.Windows.Forms.MessageBox]::Show("Game Title already exist")
@@ -995,10 +1008,10 @@ $BoutonAjouter.add_Click({
         if ($fail -eq $False){
 
             # Value to write
-            $name = $T_titrejeu.text
-            $buffers = $T_buffers.text
-            $voice = $T_voice.text
-            $duration = $T_Duration.text
+            $Name = $T_titrejeu.text
+            $Buffers = $T_buffers.text
+            $Voice = $T_voice.text
+            $Duration = $T_Duration.text
             if ($C_DisableDirectMusic.IsChecked) {
                 $DisableDirectMusic=1
             } else {
@@ -1020,28 +1033,40 @@ $BoutonAjouter.add_Click({
             }
 
             # Write change in file, Registry first, Gamepath second choice
-            "[$name]" | Out-File -Append NewAlchemy.ini -encoding ascii
+            "[$Name]" | Out-File -Append NewAlchemy.ini -encoding ascii
             if ($regprio -eq $true) {
-                $Registre = $T_Registre.Text
-                "RegPath=$Registre" | Out-File -Append NewAlchemy.ini -encoding ascii
+                $RegPath = $T_Registre.Text
+                "RegPath=$RegPath" | Out-File -Append NewAlchemy.ini -encoding ascii
                 "GamePath="| Out-File -Append NewAlchemy.ini -encoding ascii
             }else{
                 $Gamepath=$T_Gamepath.text
                 "RegPath=" | Out-File -Append NewAlchemy.ini -encoding ascii
                 "GamePath=$Gamepath"| Out-File -Append NewAlchemy.ini -encoding ascii
             }
-            "Buffers=$buffers" | Out-File -Append NewAlchemy.ini -encoding ascii
-            "Duration=$duration"| Out-File -Append NewAlchemy.ini -encoding ascii
+            "Buffers=$Buffers" | Out-File -Append NewAlchemy.ini -encoding ascii
+            "Duration=$Duration"| Out-File -Append NewAlchemy.ini -encoding ascii
             "DisableDirectMusic=$DisableDirectMusic"| Out-File -Append NewAlchemy.ini -encoding ascii
-            "MaxVoiceCount=$voice"| Out-File -Append NewAlchemy.ini -encoding ascii
+            "MaxVoiceCount=$Voice"| Out-File -Append NewAlchemy.ini -encoding ascii
             "SubDir=$SubDir"| Out-File -Append NewAlchemy.ini -encoding ascii
             "RootDirInstallOption=$RootDirInstallOption"| Out-File -Append NewAlchemy.ini -encoding ascii
             "DisableNativeAL=$DisableNativeAL`r`n"| Out-File -Append NewAlchemy.ini -encoding ascii
 
             # Update list game to reflect change, Order listview by name
-            $MenuGauche.Items.Add($name)
-            Sortlistview $Menugauche
-            $global:jeutrouve += add-Game -Name $name -RegPath $Registre -Gamepath $Gamepath -Buffers $buffers -Duration $duration -DisableDirectMusic $DisableDirectMusic -MaxVoiceCount $Voice -SubDir $SubDir -RootDirInstallOption $RootDirInstallOption -DisableNativeAL $DisableNativeAL -Found $True -Transmut $False      
+            $global:listejeux += add-Game -Name $Name -RegPath $RegPath -Gamepath $Gamepath -Buffers $buffers -Duration $duration -DisableDirectMusic $DisableDirectMusic -MaxVoiceCount $Voice -SubDir $SubDir -RootDirInstallOption $RootDirInstallOption -DisableNativeAL $DisableNativeAL -Found $True -Transmut $False      
+			$global:jeutrouve = $global:listejeux | where-object Found -eq $True
+			checktransmut $global:jeutrouve | Out-Null
+			$jeutransmut = $global:jeutrouve | where-object Transmut -eq $true
+			$jeunontransmut = $global:jeutrouve | where-object {$_.Found -eq $true -and $_.Transmut -eq $False}
+			$MenuGauche.Items.Clear()
+			foreach ($jeu in $jeunontransmut){
+				$MenuGauche.Items.Add($jeu.name)
+			}
+			$MenuDroite.Items.Clear()
+			foreach ($jeu in $jeutransmut){
+				$MenuDroite.Items.Add($jeu.name)
+			}			
+			Sortlistview $MenuGauche
+			Sortlistview $MenuDroite
             $Window_add.Close()
         }
     })
