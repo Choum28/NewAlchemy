@@ -1,5 +1,6 @@
 # NewAlchemy
 Recreate in powershell the creative alchemy application with more settings and options.
+French and English version avalaible.
 
    What is different from creative alchemy ?
    
