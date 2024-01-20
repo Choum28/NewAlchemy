@@ -1,7 +1,6 @@
 <# 
 .SYNOPSIS
     This script is a test to recreate the Creative Alchemy application in powershell with some new options and possibilities.
-    edit line 245 if alchemy is not installed in a default folder "C:\Program Files (x86)\Creative\ALchemy"
 
 .DESCRIPTION
     What different from creative alchemy :
