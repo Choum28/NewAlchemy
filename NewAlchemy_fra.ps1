@@ -189,6 +189,14 @@ function GenerateNewAlchemy{ #Create New NewALchemy.ini file with new options, t
 ;  SubDir <-- subdirectory offset off of path pointed to by RegPath for library support (default is empty string)
 ;  RootDirInstallOption <-- option to install translator support in both RegPath and SubDir directories (default is False)
 ;  DisableNativeAL <-- Bypass Native OpenAL drivers (Ct_oal.dll only) to use Alchemy internal library, only for old X-fi/Audigy Card)
+;  LogDirectSound <-- log DirectSound (default is False) into dsound.txt
+;  LogDirectSound2D <-- log DirectSound 2D into dsound.txt (default is False).
+;  LogDirectSound2DStreaming <-- log DirectSound 2D streaming into dsound.txt (default is False).
+;  LogDirectSound3D <-- log DirectSound 3D into dsound.txt (default is False).
+;  LogDirectSoundListener <-- Log DirectSound Listener into dsound.txt(default is False).
+;  LogDirectSoundEAX <-- log EAX into dsound.txt (default is False).
+;  LogDirectSoundTimingInfo <-- Log DirectSound timing into dsound.txt(default is False).
+;  LogStarvation <-- Log starvation into dsound.txt (default is False).
 
 "@ | Out-File -Append NewAlchemy.ini -encoding ascii
     $liste = read-file $file
@@ -499,15 +507,15 @@ $BoutonEdition.add_Click({
         <TextBox Name="T_Gamepath" ToolTip="Chemin vers le dossier de  l'application (si le chemin d'accès au registre ne peut être utilisé)" HorizontalAlignment="Left" Height="22" Margin="67,156,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="410" />
         <TextBox Name="T_buffers" ToolTip="permet de définir le nombre de tampons audio utilisés en interne. La valeur par défaut de 4 devrait convenir à la plupart des applications. (Valeurs 2 à 10)." HorizontalAlignment="Left" Height="22" Margin="188,331,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="293"/>
         <TextBox Name="T_Duration" ToolTip="Utilisé pour définir la longueur en millisecondes de chacun des tampons audio. La valeur par défaut est de 25ms. (valeurs : 5 à 50)" HorizontalAlignment="Left" Height="22" Margin="188,359,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="293"/>
-        <TextBox Name="T_voice" ToolTip="Est utilisé pour définir le nombre maximum de voix matérielles qui seront utilisées par Alchemy (par défaut 128), valeurs : 32 à 128" HorizontalAlignment="Left" Height="22" Margin="188,387,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="293" AutomationProperties.HelpText="de 0 à 128"/>
+        <TextBox Name="T_voice" ToolTip="Est utilisé pour définir le nombre maximum de voix matérielles qui seront utilisées par Alchemy (par défaut 128), valeurs : 32 à 128" HorizontalAlignment="Left" Height="22" Margin="188,387,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="293"/>
         <CheckBox Name="C_SubDir" Content="Installer dans un sous-dossier" HorizontalAlignment="Left" Height="18" Margin="67,188,0,0" VerticalAlignment="Top" Width="192"/>
         <TextBox Name="T_Subdir" ToolTip="Permet de définir un sous-dossier par rapport au chemin remonté par le chemin d'accès" HorizontalAlignment="Left" Height="22" Margin="67,211,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="410"/>
         <CheckBox Name="C_DisableDirectMusic" Content="Désactiver la musique directe" ToolTip="permet de désactiver la prise en charge de DirectMusic.(0 ou 1 dans dsound.ini)." HorizontalAlignment="Left" Margin="188,424,0,0" VerticalAlignment="Top"/>
         <CheckBox Name="C_Rootdir" Content="Installer dans le dossier racine et un sous-dossier" HorizontalAlignment="Left" Margin="67,243,0,0" VerticalAlignment="Top"/>
         <Label Content="Titre du jeu" HorizontalAlignment="Left" Margin="67,13,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.526,0"/>
         <Label Content="Tampons" HorizontalAlignment="Left" Margin="45,327,0,0" VerticalAlignment="Top" Width="79" Height="26"/>
-        <Label Content="Durée" ToolTip="utilisé pour définir la longueur en millisecondes de chacun des tampons audio. La valeur par défaut est de 25ms. (valeurs : 5 à 50)" HorizontalAlignment="Left" Margin="45,358,0,0" VerticalAlignment="Top" Height="23" Width="79"/>
-        <Label Content="Nombre maximal de voix" ToolTip="Est utilisé pour définir le nombre maximum de voix matérielles qui seront utilisées par Alchemy (par défaut 128), valeurs : 32 à 128" HorizontalAlignment="Left" Height="25" Margin="45,384,0,0" VerticalAlignment="Top" Width="143"/>
+        <Label Content="Durée" HorizontalAlignment="Left" Margin="45,358,0,0" VerticalAlignment="Top" Height="23" Width="79"/>
+        <Label Content="Nombre maximal de voix" HorizontalAlignment="Left" Height="25" Margin="45,384,0,0" VerticalAlignment="Top" Width="143"/>
         <Label Content="Paramètres" HorizontalAlignment="Left" Margin="28,297,0,0" VerticalAlignment="Top" Width="143"/>
         <Button Name="B_Cancel" Content="Annuler" HorizontalAlignment="Left" Height="25" Margin="439,634,0,0" VerticalAlignment="Top" Width="90"/>
         <Button Name="B_ok" Content="Ok" HorizontalAlignment="Left" Height="25" Margin="331,634,0,0" VerticalAlignment="Top" Width="90"/>
@@ -516,14 +524,14 @@ $BoutonEdition.add_Click({
 		<Label Content="---------------------------------------------------DEBUG---------------------------------------------------" HorizontalAlignment="Left" Margin="0,464,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.484,0"/>
 		<Label Content="L'activation des paramètres de log peut grandement impacter les performances." HorizontalAlignment="Left" Margin="20,484,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.526,0"/>
 		<CheckBox Name="C_LogDirectSound" Content="Log Directsound" HorizontalAlignment="Left" Margin="67,524,0,0" VerticalAlignment="Top"/>
-		<CheckBox Name="C_LogDirectSound2D" Content="Log Directsound2D" HorizontalAlignment="Left" Margin="300,524,0,0" VerticalAlignment="Top"/>
-		<CheckBox Name="C_LogDirectSound2DStreaming" Content="Log Directsound2D streaming" HorizontalAlignment="Left" Margin="67,544,0,0" VerticalAlignment="Top"/>
+		<CheckBox Name="C_LogDirectSound2D" Content="Log Directsound 2D" HorizontalAlignment="Left" Margin="300,524,0,0" VerticalAlignment="Top"/>
+		<CheckBox Name="C_LogDirectSound2DStreaming" Content="Log Directsound 2D streaming" HorizontalAlignment="Left" Margin="67,544,0,0" VerticalAlignment="Top"/>
 		<CheckBox Name="C_LogDirectSound3D" Content="Log Directsound 3D" HorizontalAlignment="Left" Margin="300,544,0,0" VerticalAlignment="Top"/>
 		<CheckBox Name="C_LogDirectSoundListener" Content="Log DirectSound Listener" HorizontalAlignment="Left" Margin="67,564,0,0" VerticalAlignment="Top"/>
 		<CheckBox Name="C_LogDirectSoundEAX" Content="Log EAX" HorizontalAlignment="Left" Margin="300,564,0,0" VerticalAlignment="Top"/>
 		<CheckBox Name="C_LogDirectSoundTimingInfo" Content="Log Directsound timing info" HorizontalAlignment="Left" Margin="67,584,0,0" VerticalAlignment="Top"/>
 		<CheckBox Name="C_LogStarvation" Content="Log starvation" HorizontalAlignment="Left" Margin="300,584,0,0" VerticalAlignment="Top"/>
-		<CheckBox Name="C_DisableNativeAl" Content="Désactiver le pilote OpenAL natif" ToolTip="Pour carte son X-FI et Audigy uniquement, désactive l'utilisation pilote OpenAl matériel Ct_oal par Alchemy, la conversion étant alors effectuée par la Creative Software 3D Library d'Alchemy" HorizontalAlignment="Left" Margin="67,604,0,0" VerticalAlignment="Top"/>
+		<CheckBox Name="C_DisableNativeAl" Content="Désactiver le pilote OpenAL natif" ToolTip="Pour carte son X-FI et Audigy uniquement, désactive l'utilisation pilote OpenAl matériel (Ct_oal.dll) par Alchemy, Creative Software 3D Library est alors utilisé à la place." HorizontalAlignment="Left" Margin="67,604,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>
 "@
@@ -993,14 +1001,14 @@ $BoutonAjouter.add_Click({
 		<Label Content="---------------------------------------------------DEBUG---------------------------------------------------" HorizontalAlignment="Left" Margin="0,464,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.484,0"/>
 		<Label Content="L'activation des paramètres de log peut grandement impacter les performances." HorizontalAlignment="Left" Margin="20,484,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.526,0"/>
 		<CheckBox Name="C_LogDirectSound" Content="Log Directsound" HorizontalAlignment="Left" Margin="67,524,0,0" VerticalAlignment="Top"/>
-		<CheckBox Name="C_LogDirectSound2D" Content="Log Directsound2D" HorizontalAlignment="Left" Margin="300,524,0,0" VerticalAlignment="Top"/>
-		<CheckBox Name="C_LogDirectSound2DStreaming" Content="Log Directsound2D streaming" HorizontalAlignment="Left" Margin="67,544,0,0" VerticalAlignment="Top"/>
+		<CheckBox Name="C_LogDirectSound2D" Content="Log Directsound 2D" HorizontalAlignment="Left" Margin="300,524,0,0" VerticalAlignment="Top"/>
+		<CheckBox Name="C_LogDirectSound2DStreaming" Content="Log Directsound 2D streaming" HorizontalAlignment="Left" Margin="67,544,0,0" VerticalAlignment="Top"/>
 		<CheckBox Name="C_LogDirectSound3D" Content="Log Directsound 3D" HorizontalAlignment="Left" Margin="300,544,0,0" VerticalAlignment="Top"/>
 		<CheckBox Name="C_LogDirectSoundListener" Content="Log DirectSound Listener" HorizontalAlignment="Left" Margin="67,564,0,0" VerticalAlignment="Top"/>
 		<CheckBox Name="C_LogDirectSoundEAX" Content="Log EAX" HorizontalAlignment="Left" Margin="300,564,0,0" VerticalAlignment="Top"/>
 		<CheckBox Name="C_LogDirectSoundTimingInfo" Content="Log Direcstound timing info" HorizontalAlignment="Left" Margin="67,584,0,0" VerticalAlignment="Top"/>
 		<CheckBox Name="C_LogStarvation" Content="Log starvation" HorizontalAlignment="Left" Margin="300,584,0,0" VerticalAlignment="Top"/>
-		<CheckBox Name="C_DisableNativeAl" ToolTip="Pour carte son X-FI et Audigy uniquement, désactive l'utilisation pilote OpenAl matériel Ct_oal par Alchemy, la conversion étant alors effectuée par la Creative Software 3D Library d'Alchemy" Content="Désactiver le pilote OpenAL natif" HorizontalAlignment="Left" Margin="67,604,0,0" VerticalAlignment="Top"/>
+		<CheckBox Name="C_DisableNativeAl" Content="Désactiver le pilote OpenAL natif" ToolTip="Pour carte son X-FI et Audigy uniquement, désactive l'utilisation pilote OpenAl matériel (Ct_oal.dll) par Alchemy, Creative Software 3D Library est alors utilisé à la place." HorizontalAlignment="Left" Margin="67,604,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>
 
