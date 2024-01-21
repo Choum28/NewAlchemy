@@ -5,10 +5,14 @@ French and English version avalaible.
    What is different from creative alchemy ?
    
        *  Registry path are checked in both X86 and X86-64 path.
-       *  Add support for DisableNativeAL Option to Disable ALchemy to ouput to OpenAl drivers (CT_oal.dll only)
-            Post X-fi card will need to rename sens_oal.dll to Ct_oal.dll to make use of it.
-            X-fi card should set this settings to False by default and yes in case of problem with specific game.
-            Post X-fi card must do the opposite, the scripts ask for the default value on first launch during Game list generation.
+       *  Add support for DisableNativeAL Option to Disable ALchemy to ouput to OpenAl drivers (CT_oal.dll only) and rely on Creative Software 3D Library.
+                   This permit X-fi / Audigy Card to use Creative Software 3D Library instead of native Open Al drivers in case of problem with specific game.
+                   Post X-fi card (Recon/AE/X) can rename their sens_oal.dll drivers to Ct_oal.dll to make use of it, 
+                   from my experience I do not recommend to rely on native openAl drivers (sens_oal.dll rename as Ct_oal.dll) for Post X-fi card as some game
+                   do not work fine with this trick like Call of Duty 1 (Missing eax effect).
+       *  Add support of Debug log option in the GUI.
+                   Post X-fi card will need to rename sens_oal.dll to Ct_oal.dll to make use of it, as log required native openAl drivers.
+            
     
 ## Install
 Copy the script in your Creative alchemy folder.
@@ -23,8 +27,9 @@ You can also use the EXE version that has been compiled with PS2EXE.
 
 When launched, NewALchemy application will search the system for supported DirectSound3D enabled games. All the games found will be listed in the left pane (titled "Installed Games"). The right pane (titled "NewALchemy-enabled Games”) will show any games which have already been converted to use ALchemy. To enable ALchemy support for a particular game, select it from the left panel, and press the “>>” button. To undo ALchemy support, select the game from the right panel and press the “<<” button. You can select multiple games at once and then use the directional arrow buttons to update them all.
 
-<img src="https://i.imgur.com/l92WUJl.png">
-<img src="https://i.imgur.com/qKifGXa.png">
+<img src="https://i.imgur.com/MIhlNTC.png">
+<img src="https://i.imgur.com/kvZsC3t.png">
+<img src="https://i.imgur.com/HeqoCVO.png">
 <img src="https://i.imgur.com/RBBpACk.png">
 
 ## Options
@@ -68,7 +73,21 @@ have been caused by combining ALchemy with games, such as TRON 2.0, that use
 DirectMusic. 
 
 * Disable native AL' is used to force Alchemy wrapper to ignore the OpenAl drivers (Ct_Oal.dll only)
-and force the wrapper to use his own libray.
-This is the default mode for all post-x-fi card.
-This allow all post x-fi card to rename their sens_oal.dll Host openAL drivers to Ct_oal.dll and be able
-to disable the option when needed.
+and force the wrapper to use his own libray (Creative Software 3D Library).
+This setting is by Default set to False for all X-FI / Audigy Card.
+Post X-fi card do not have the CT_oal.dll drivers, so by default this setting make no difference.
+
+All log option required the CT_oal.dll drivers to work, Log do not work with the Creative Software 3D Library.
+Post X-fi card can rename their Sens_oal.dll drivers to Ct_oal.dll to have logs.
+Enabling logs can have impact on sound performance.
+
+* LogDirectSound : log DirectSound (default is False) into dsound.txt
+* LogDirectSound2D : log DirectSound 2D into dsound.txt (default is False).
+* LogDirectSound2DStreaming : log DirectSound 2D streaming into dsound.txt (default is False).
+* LogDirectSound3D : log DirectSound 3D into dsound.txt (default is False).
+* LogDirectSoundListener : Log DirectSound Listener into dsound.txt(default is False).
+* LogDirectSoundEAX : log EAX into dsound.txt (default is False).
+* LogDirectSoundTimingInfo : Log DirectSound timing into dsound.txt(default is False).
+* LogStarvation : Log starvation into dsound.txt (default is False).
+
+
