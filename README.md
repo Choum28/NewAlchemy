@@ -30,7 +30,7 @@ When launched, NewALchemy application will search the system for supported Direc
 <img src="https://i.imgur.com/MIhlNTC.png">
 <img src="https://i.imgur.com/kvZsC3t.png">
 <img src="https://i.imgur.com/HeqoCVO.png">
-<img src="https://i.imgur.com/RBBpACk.png">
+<img src="https://i.imgur.com/5VL3oKI.png">
 
 ## Options
 
