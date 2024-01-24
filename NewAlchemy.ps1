@@ -325,72 +325,8 @@ function Sortlistview{
 Add-Type -AssemblyName PresentationFramework
 Add-Type -AssemblyName System.Windows.Forms
 
-#Default text if translation not found
-$txt = Data {
-	#culture="en-US"
-    ConvertFrom-StringData @'
-	#main form Text
-	MainTitle2=Game Settings
-	BoutonAjouterContent=Add
-	BoutonEditionContent=Edit
-	Text_main=NewALchemy restores hardware accelerated audio so that you can enjoy EAX effects and 3D Audio when playing Directsound 3D games in Microsoft Windows Vista and above.
-	Text_jeuInstall=Installed Games
-	Text_JeuTransmut=NewAlchemy-enabled Games
-	#Edit / add Form Text
-	C_registreContent=Use Registry Path
-	C_GamepathContent=Use Game Path
-	T_registreToolTip=registry path containing string to executable or executable's directory (use this when available, alternative is GamePath)
-	T_GamepathToolTip=Directory to look for app (if RegPath can't be used)
-	T_BuffersContent=Buffers
-	T_BuffersToolTip=is used to set the number of audio buffers used internally. The default value of 4 should be fine for most applications. (Values 2 to 10).
-	T_DurationContent = Duration
-	T_DurationToolTip=used to set the length in milliseconds of each of the audio buffers. default value is 25ms. (values : 5 to 50)
-	T_VoiceContent=Maximum Voice Count 
-	T_voiceToolTip=is used to set the maximum number of hardware voices that will be used by ALchemy (default is 128), values : 32 to 128
-	L_Settings=Settings
-	B_OkContent=Ok
-	B_CancelContent=Cancel
-	L_GameTitleContent=Game Title
-	T_SubdirToolTip=subdirectory offset off of path pointed to by RegPath or Gamepath for library support
-	C_DisableDirectMusicContent=Disable Direct Music 
-	C_DisableDirectMusicToolTip=is used to disable DirectMusic support. Default is false (0 or 1 in dsound.ini).
-	C_DisableNativeAlContent=Disable Native OpenAL drivers 
-	C_DisableNativeAlToolTip=For X-Fi and Audigy card only, disable the use of hardware openAL driver (CT_oal.dll) by ALchemy, the Creative Software 3D Library will be used instead.
-	C_SubDirContent=Install into Sub Folder
-	C_RootdirContent=Install into both Root and Sub Folders
-	L_Debug1Content=---------------------------------------------------DEBUG---------------------------------------------------
-	L_Debug2Content=Enabling log settings can have a major impact on performance.
-	C_LogDirectSoundContent=Log Directsound
-	C_LogDirectSound2DContent=Log Directsound 2D
-	C_LogDirectSound2DStreamingContent=Log Directsound 2D streaming
-	C_LogDirectSound3DContent=Log Directsound 3D
-	C_LogDirectSoundListenerContent=Log DirectSound Listener
-	C_LogDirectSoundEAXContent=Log EAX
-	C_LogDirectSoundTimingInfoContent=Log Directsound timing info
-	C_LogStarvationContent=Log starvation
-	C_logtextTooltip=Log will be save into the game dsound.log, required Native OpenAl drivers CT.oal.dll
-	FolderChoice=Select a Folder
-	SubFolderChoice=Select a Sub Folder
-	# Error message
-	Badlocation=NewAlchemy should be inside the Creative Alchemy folder.
-	RegKeyInc=Registry value incorrect
-	RegKeyValInc=Registry key value does not return a Path
-	RegKeyBad=Registry key invalid
-	RegKeyEmpty=Registry key empty
-	PathEmpty=Empty Path
-	BadPath=Invalid Path
-	BadPathOrSub=Path do not exist or is not a Sub Folder.
-	SubNotFound=Sub Folder not found
-	BuffersErr=Buffers value should be 2 to 10 !
-	DurationErr=Duration value should be 5 to 50 !
-	VoiceErr=Maximum voice count should be 32 to 128 !
-	TitleExist=Game Title already exist
-	TitleMiss=Game Title mandatory
-'@
-}
-
-#load translation if exist, remove error if not exist
-Import-LocalizedData -BindingVariable txt -ErrorAction:SilentlyContinue
+#load translation if exist, if not found will load en-US one.
+Import-LocalizedData -BindingVariable txt
 
 # check if inside alcheamy folder and if newalchemy.ini is present or generate a new one
 if (!(Test-Path -path ".\ALchemy.exe")) {
