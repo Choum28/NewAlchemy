@@ -15,9 +15,10 @@ French and English version avalaible.
             
     
 ## Install
-Copy the script and your language (culture) folder in your Creative alchemy folder (ex: C:\Program Files (x86)\Creative\ALchemy).
-   The script will use for text translation in priority the culture folder of your language, or will load the en-us one if it's not present (ex: de-DE).
-   if you do not copy at least the en-US culture folder, you will have no text.
+Copy the script and your language (culture) folder in your Creative alchemy folder (ex: C:\Program Files (x86)\Creative\ALchemy). 
+   
+The script will use for text translation in priority the culture folder of your language, or will load the en-us one if it's not present (ex: de-DE).   
+if you do not copy at least the en-US culture folder, you will have no text.   
 
 ## launch application
 Launch the script and hide console
