@@ -50,14 +50,14 @@ function add-Game { # Convert value into hash table.
         DisableNativeAL=$DisableNativeAL
         Found=$Found
         Transmut=$Transmut
-		LogDirectSound=$LogDirectSound
-		LogDirectSound2D=$LogDirectSound2D
-		LogDirectSound2DStreaming=$LogDirectSound2DStreaming
-		LogDirectSound3D=$LogDirectSound3D
-		LogDirectSoundListener=$LogDirectSoundListener
-		LogDirectSoundEAX=$LogDirectSoundEAX
-		LogDirectSoundTimingInfo=$LogDirectSoundTimingInfo
-		LogStarvation=$LogStarvation
+	LogDirectSound=$LogDirectSound
+	LogDirectSound2D=$LogDirectSound2D
+	LogDirectSound2DStreaming=$LogDirectSound2DStreaming
+	LogDirectSound3D=$LogDirectSound3D
+	LogDirectSoundListener=$LogDirectSoundListener
+	LogDirectSoundEAX=$LogDirectSoundEAX
+	LogDirectSoundTimingInfo=$LogDirectSoundTimingInfo
+	LogStarvation=$LogStarvation
     }
     return $d
 }
@@ -76,14 +76,14 @@ function read-file{ #read alchemy ini file and convert game to hash table with a
     $DisableNativeAL="False"
     $Found=$false
     $Transmut=$false
-	$LogDirectSound="False"
-	$LogDirectSound2D="False"
-	$LogDirectSound2DStreaming="False"
-	$LogDirectSound3D="False"
-	$LogDirectSoundListener="False"
-	$LogDirectSoundEAX="False"
-	$LogDirectSoundTimingInfo="False"
-	$LogStarvation="False"
+    $LogDirectSound="False"
+    $LogDirectSound2D="False"
+    $LogDirectSound2DStreaming="False"
+    $LogDirectSound3D="False"
+    $LogDirectSoundListener="False"
+    $LogDirectSoundEAX="False"
+    $LogDirectSoundTimingInfo="False"
+    $LogStarvation="False"
 
     foreach ($line in $list) {
         $Number = $Number + 1
@@ -103,14 +103,14 @@ function read-file{ #read alchemy ini file and convert game to hash table with a
                     $DisableNativeAL="False"
                     $Found=$false
                     $Transmut=$false
-					$LogDirectSound="False"
-					$LogDirectSound2D="False"
-					$LogDirectSound2DStreaming="False"
-					$LogDirectSound3D="False"
-					$LogDirectSoundListener="False"
-					$LogDirectSoundEAX="False"
-					$LogDirectSoundTimingInfo="False"
-					$LogStarvation="False"
+                    $LogDirectSound="False"
+                    $LogDirectSound2D="False"
+                    $LogDirectSound2DStreaming="False"
+                    $LogDirectSound3D="False"
+                    $LogDirectSoundListener="False"
+                    $LogDirectSoundEAX="False"
+                    $LogDirectSoundTimingInfo="False"
+                    $LogStarvation="False"
                 }
                 $test = $test+1
                 $Name = $line -replace '[][]'
@@ -212,14 +212,14 @@ function GenerateNewAlchemy{ #Create New NewALchemy.ini file with new options, t
         $h = $line.SubDir
         $i = $line.RootDirInstallOption
         $j = $line.DisableNativeAL
-		$k = $line.LogDirectSound
-		$l = $line.LogDirectSound2D
-		$m = $line.LogDirectSound2DStreaming
-		$n = $line.LogDirectSound3D
-		$o = $line.LogDirectSoundListener
-		$p = $line.LogDirectSoundEAX
-		$q = $line.LogDirectSoundTimingInfo
-		$r = $line.LogStarvation
+	$k = $line.LogDirectSound
+	$l = $line.LogDirectSound2D
+	$m = $line.LogDirectSound2DStreaming
+	$n = $line.LogDirectSound3D
+	$o = $line.LogDirectSoundListener
+	$p = $line.LogDirectSoundEAX
+	$q = $line.LogDirectSoundTimingInfo
+	$r = $line.LogStarvation
         "[$a]" | Out-File -Append NewAlchemy.ini -encoding ascii
         "RegPath=$b" | Out-File -Append NewAlchemy.ini -encoding ascii
         "GamePath=$c" | Out-File -Append NewAlchemy.ini -encoding ascii
@@ -230,14 +230,14 @@ function GenerateNewAlchemy{ #Create New NewALchemy.ini file with new options, t
         "SubDir=$h" | Out-File -Append NewAlchemy.ini -encoding ascii
         "RootDirInstallOption=$i" | Out-File -Append NewAlchemy.ini -encoding ascii
         "DisableNativeAL=$j" | Out-File -Append NewAlchemy.ini -encoding ascii
-		"LogDirectSound=$k" | Out-File -Append NewAlchemy.ini -encoding ascii
-		"LogDirectSound2D=$l" | Out-File -Append NewAlchemy.ini -encoding ascii
-		"LogDirectSound2DStreaming=$m" | Out-File -Append NewAlchemy.ini -encoding ascii
-		"LogDirectSound3D=$n" | Out-File -Append NewAlchemy.ini -encoding ascii
-		"LogDirectSoundListener=$o" | Out-File -Append NewAlchemy.ini -encoding ascii
-		"LogDirectSoundEAX=$p" | Out-File -Append NewAlchemy.ini -encoding ascii
-		"LogDirectSoundTimingInfo=$q" | Out-File -Append NewAlchemy.ini -encoding ascii
-		"LogStarvation=$r`r`n" | Out-File -Append NewAlchemy.ini -encoding ascii
+	"LogDirectSound=$k" | Out-File -Append NewAlchemy.ini -encoding ascii
+	"LogDirectSound2D=$l" | Out-File -Append NewAlchemy.ini -encoding ascii
+	"LogDirectSound2DStreaming=$m" | Out-File -Append NewAlchemy.ini -encoding ascii
+	"LogDirectSound3D=$n" | Out-File -Append NewAlchemy.ini -encoding ascii
+	"LogDirectSoundListener=$o" | Out-File -Append NewAlchemy.ini -encoding ascii
+	"LogDirectSoundEAX=$p" | Out-File -Append NewAlchemy.ini -encoding ascii
+	"LogDirectSoundTimingInfo=$q" | Out-File -Append NewAlchemy.ini -encoding ascii
+	"LogStarvation=$r`r`n" | Out-File -Append NewAlchemy.ini -encoding ascii
     }
 }
 
@@ -413,14 +413,14 @@ $BoutonTransmut.add_Click({
                 $RootDirInstallOption = $game.RootDirInstallOption
                 $DisableDirectMusic = $DisableDirectMusic -ireplace("False","0")
                 $DisableDirectMusic = $DisableDirectMusic -ireplace("True","1")
-				$LogDirectSound = $game.LogDirectSound
-				$LogDirectSound2D = $game.LogDirectSound2D
-				$LogDirectSound2DStreaming = $game.LogDirectSound2DStreaming
-				$LogDirectSound3D = $game.LogDirectSound3D
-				$LogDirectSoundListener = $game.LogDirectSoundListener
-				$LogDirectSoundEAX = $game.LogDirectSoundEAX
-				$LogDirectSoundTimingInfo = $game.LogDirectSoundTimingInfo
-				$LogStarvation = $game.LogStarvation
+		$LogDirectSound = $game.LogDirectSound
+		$LogDirectSound2D = $game.LogDirectSound2D
+		$LogDirectSound2DStreaming = $game.LogDirectSound2DStreaming
+		$LogDirectSound3D = $game.LogDirectSound3D
+		$LogDirectSoundListener = $game.LogDirectSoundListener
+		$LogDirectSoundEAX = $game.LogDirectSoundEAX
+		$LogDirectSoundTimingInfo = $game.LogDirectSoundTimingInfo
+		$LogStarvation = $game.LogStarvation
                 $text =   @"
 Buffers=$Buffers
 Duration=$Duration
@@ -533,14 +533,14 @@ $BoutonEdition.add_Click({
         <Button Name="B_SubDir" Content="..." HorizontalAlignment="Left" Height="22" Margin="491,211,0,0" VerticalAlignment="Top" Width="22"/>
         <Label Name="L_Debug1" HorizontalAlignment="Left" Margin="0,464,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.484,0"/>
         <Label Name="L_Debug2" HorizontalAlignment="Left" Margin="20,484,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.526,0"/>
-		<CheckBox Name="C_LogDirectSound" HorizontalAlignment="Left" Margin="67,524,0,0" VerticalAlignment="Top"/>
-		<CheckBox Name="C_LogDirectSound2D" HorizontalAlignment="Left" Margin="300,524,0,0" VerticalAlignment="Top"/>
-		<CheckBox Name="C_LogDirectSound2DStreaming" HorizontalAlignment="Left" Margin="67,544,0,0" VerticalAlignment="Top"/>
-		<CheckBox Name="C_LogDirectSound3D" HorizontalAlignment="Left" Margin="300,544,0,0" VerticalAlignment="Top"/>
-		<CheckBox Name="C_LogDirectSoundListener" HorizontalAlignment="Left" Margin="67,564,0,0" VerticalAlignment="Top"/>
-		<CheckBox Name="C_LogDirectSoundEAX" HorizontalAlignment="Left" Margin="300,564,0,0" VerticalAlignment="Top"/>
-		<CheckBox Name="C_LogDirectSoundTimingInfo" HorizontalAlignment="Left" Margin="67,584,0,0" VerticalAlignment="Top"/>
-		<CheckBox Name="C_LogStarvation" HorizontalAlignment="Left" Margin="300,584,0,0" VerticalAlignment="Top"/>
+	<CheckBox Name="C_LogDirectSound" HorizontalAlignment="Left" Margin="67,524,0,0" VerticalAlignment="Top"/>
+	<CheckBox Name="C_LogDirectSound2D" HorizontalAlignment="Left" Margin="300,524,0,0" VerticalAlignment="Top"/>
+	<CheckBox Name="C_LogDirectSound2DStreaming" HorizontalAlignment="Left" Margin="67,544,0,0" VerticalAlignment="Top"/>
+	<CheckBox Name="C_LogDirectSound3D" HorizontalAlignment="Left" Margin="300,544,0,0" VerticalAlignment="Top"/>
+	<CheckBox Name="C_LogDirectSoundListener" HorizontalAlignment="Left" Margin="67,564,0,0" VerticalAlignment="Top"/>
+	<CheckBox Name="C_LogDirectSoundEAX" HorizontalAlignment="Left" Margin="300,564,0,0" VerticalAlignment="Top"/>
+	<CheckBox Name="C_LogDirectSoundTimingInfo" HorizontalAlignment="Left" Margin="67,584,0,0" VerticalAlignment="Top"/>
+	<CheckBox Name="C_LogStarvation" HorizontalAlignment="Left" Margin="300,584,0,0" VerticalAlignment="Top"/>
         <CheckBox Name="C_DisableNativeAl" HorizontalAlignment="Left" Margin="67,604,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>
@@ -639,14 +639,14 @@ $BoutonEdition.add_Click({
                 $RootDirInstallOption = $game.RootDirInstallOption
                 $DisableNativeAL = $game.DisableNativeAL
                 $DisableDirectMusic = $game.DisableDirectMusic
-				$LogDirectSound = $game.LogDirectSound
-				$LogDirectSound2D = $game.LogDirectSound2D
-				$LogDirectSound2DStreaming = $game.LogDirectSound2DStreaming
-				$LogDirectSound3D = $game.LogDirectSound3D
-				$LogDirectSoundListener = $game.LogDirectSoundListener
-				$LogDirectSoundEAX = $game.LogDirectSoundEAX
-				$LogDirectSoundTimingInfo = $game.LogDirectSoundTimingInfo
-				$LogStarvation = $game.LogStarvation
+		$LogDirectSound = $game.LogDirectSound
+		$LogDirectSound2D = $game.LogDirectSound2D
+		$LogDirectSound2DStreaming = $game.LogDirectSound2DStreaming
+		$LogDirectSound3D = $game.LogDirectSound3D
+		$LogDirectSoundListener = $game.LogDirectSoundListener
+		$LogDirectSoundEAX = $game.LogDirectSoundEAX
+		$LogDirectSoundTimingInfo = $game.LogDirectSoundTimingInfo
+		$LogStarvation = $game.LogStarvation
 
                 if ([string]::IsNullOrEmpty($game.RegPath)){
                     $T_Gamepath.text = $game.Gamepath
@@ -991,14 +991,14 @@ $BoutonEdition.add_Click({
                 $script:jeutrouve[$count].SubDir=$Subdir
                 $script:jeutrouve[$count].RootDirInstallOption=$RootDirInstallOption
                 $script:jeutrouve[$count].DisableNativeAL=$DisableNativeAL
-				$script:jeutrouve[$count].LogDirectSound=$LogDirectSound
-				$script:jeutrouve[$count].LogDirectSound2D=$LogDirectSound2D
-				$script:jeutrouve[$count].LogDirectSound2DStreaming=$LogDirectSound2DStreaming
-				$script:jeutrouve[$count].LogDirectSound3D=$LogDirectSound3D
-				$script:jeutrouve[$count].LogDirectSoundListener=$LogDirectSoundListener
-				$script:jeutrouve[$count].LogDirectSoundEAX=$LogDirectSoundEAX
-				$script:jeutrouve[$count].LogDirectSoundTimingInfo=$LogDirectSoundTimingInfo
-				$script:jeutrouve[$count].LogStarvation=$LogStarvation
+		$script:jeutrouve[$count].LogDirectSound=$LogDirectSound
+		$script:jeutrouve[$count].LogDirectSound2D=$LogDirectSound2D
+		$script:jeutrouve[$count].LogDirectSound2DStreaming=$LogDirectSound2DStreaming
+		$script:jeutrouve[$count].LogDirectSound3D=$LogDirectSound3D
+		$script:jeutrouve[$count].LogDirectSoundListener=$LogDirectSoundListener
+		$script:jeutrouve[$count].LogDirectSoundEAX=$LogDirectSoundEAX
+		$script:jeutrouve[$count].LogDirectSoundTimingInfo=$LogDirectSoundTimingInfo
+		$script:jeutrouve[$count].LogStarvation=$LogStarvation
 				
 				# Write change in file
                 $file = Get-content ".\Newalchemy.ini"
@@ -1017,14 +1017,14 @@ $BoutonEdition.add_Click({
                 $file[$LineNumber +6] = "SubDir=$Subdir" 
                 $file[$LineNumber +7] = "RootDirInstallOption=$RootDirInstallOption"
                 $file[$LineNumber +8] = "DisableNativeAL=$DisableNativeAL"
-				$file[$LineNumber +9] = "LogDirectSound=$LogDirectSound"
-				$file[$LineNumber +10] = "LogDirectSound2D=$LogDirectSound2D"
-				$file[$LineNumber +11] = "LogDirectSound2DStreaming=$LogDirectSound2DStreaming"
-				$file[$LineNumber +12] = "LogDirectSound3D=$LogDirectSound3D"
-				$file[$LineNumber +13] = "LogDirectSoundListener=$LogDirectSoundListener"
-				$file[$LineNumber +14] = "LogDirectSoundEAX=$LogDirectSoundEAX"
-				$file[$LineNumber +15] = "LogDirectSoundTimingInfo=$LogDirectSoundTimingInfo"
-				$file[$LineNumber +16] = "LogStarvation=$LogStarvation"
+		$file[$LineNumber +9] = "LogDirectSound=$LogDirectSound"
+		$file[$LineNumber +10] = "LogDirectSound2D=$LogDirectSound2D"
+		$file[$LineNumber +11] = "LogDirectSound2DStreaming=$LogDirectSound2DStreaming"
+		$file[$LineNumber +12] = "LogDirectSound3D=$LogDirectSound3D"
+		$file[$LineNumber +13] = "LogDirectSoundListener=$LogDirectSoundListener"
+		$file[$LineNumber +14] = "LogDirectSoundEAX=$LogDirectSoundEAX"
+		$file[$LineNumber +15] = "LogDirectSoundTimingInfo=$LogDirectSoundTimingInfo"
+		$file[$LineNumber +16] = "LogStarvation=$LogStarvation"
                 $file | Set-Content NewAlchemy.ini -encoding ascii
                 
                 $Window_edit.Close()
@@ -1143,15 +1143,15 @@ $BoutonAjouter.add_Click({
     $B_GamePath.IsEnabled=$False
     $T_Gamepath.IsReadOnly=$true
     $T_Gamepath.Background = '#e5e5e5'
-	$C_DisableNativeAl.IsChecked=$False
-	$C_LogDirectSound.IsChecked=$False
-	$C_LogDirectSound2D.IsChecked=$False
-	$C_LogDirectSound2DStreaming.IsChecked=$False
-	$C_LogDirectSound3D.IsChecked=$False
-	$C_LogDirectSoundListener.IsChecked=$False
-	$C_LogDirectSoundEAX.IsChecked=$False
-	$C_LogDirectSoundTimingInfo.IsChecked=$False
-	$C_LogStarvation.IsChecked=$False
+    $C_DisableNativeAl.IsChecked=$False
+    $C_LogDirectSound.IsChecked=$False
+    $C_LogDirectSound2D.IsChecked=$False
+    $C_LogDirectSound2DStreaming.IsChecked=$False
+    $C_LogDirectSound3D.IsChecked=$False
+    $C_LogDirectSoundListener.IsChecked=$False
+    $C_LogDirectSoundEAX.IsChecked=$False
+    $C_LogDirectSoundTimingInfo.IsChecked=$False
+    $C_LogStarvation.IsChecked=$False
  
     $C_Registre.Add_Checked({
         $T_Registre.IsReadOnly=$False
@@ -1458,14 +1458,14 @@ $BoutonAjouter.add_Click({
             "SubDir=$SubDir"| Out-File -Append NewAlchemy.ini -encoding ascii
             "RootDirInstallOption=$RootDirInstallOption"| Out-File -Append NewAlchemy.ini -encoding ascii
             "DisableNativeAL=$DisableNativeAL"| Out-File -Append NewAlchemy.ini -encoding ascii
-			"LogDirectSound=$LogDirectSound"| Out-File -Append NewAlchemy.ini -encoding ascii
-			"LogDirectSound2D=$LogDirectSound2D"| Out-File -Append NewAlchemy.ini -encoding ascii
-			"LogDirectSound2DStreaming=$LogDirectSound2DStreaming"| Out-File -Append NewAlchemy.ini -encoding ascii
-			"LogDirectSound3D=$LogDirectSound3D"| Out-File -Append NewAlchemy.ini -encoding ascii
-			"LogDirectSoundListener=$LogDirectSoundListener"| Out-File -Append NewAlchemy.ini -encoding ascii
-			"LogDirectSoundEAX=$LogDirectSoundEAX"| Out-File -Append NewAlchemy.ini -encoding ascii
-			"LogDirectSoundTimingInfo=$LogDirectSoundTimingInfo"| Out-File -Append NewAlchemy.ini -encoding ascii
-			"LogStarvation=$LogStarvation`r`n"| Out-File -Append NewAlchemy.ini -encoding ascii
+            "LogDirectSound=$LogDirectSound"| Out-File -Append NewAlchemy.ini -encoding ascii
+            "LogDirectSound2D=$LogDirectSound2D"| Out-File -Append NewAlchemy.ini -encoding ascii
+            "LogDirectSound2DStreaming=$LogDirectSound2DStreaming"| Out-File -Append NewAlchemy.ini -encoding ascii
+            "LogDirectSound3D=$LogDirectSound3D"| Out-File -Append NewAlchemy.ini -encoding ascii
+            "LogDirectSoundListener=$LogDirectSoundListener"| Out-File -Append NewAlchemy.ini -encoding ascii
+            "LogDirectSoundEAX=$LogDirectSoundEAX"| Out-File -Append NewAlchemy.ini -encoding ascii
+            "LogDirectSoundTimingInfo=$LogDirectSoundTimingInfo"| Out-File -Append NewAlchemy.ini -encoding ascii
+            "LogStarvation=$LogStarvation`r`n"| Out-File -Append NewAlchemy.ini -encoding ascii
 
             # Update list game to reflect change, Order listview by name
             $script:listejeux += add-Game -Name $Name -RegPath $RegPath -Gamepath $Gamepath -Buffers $buffers -Duration $duration -DisableDirectMusic $DisableDirectMusic -MaxVoiceCount $Voice -SubDir $SubDir -RootDirInstallOption $RootDirInstallOption -DisableNativeAL $DisableNativeAL -Found $True -Transmut $False      
