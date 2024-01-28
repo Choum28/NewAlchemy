@@ -27,12 +27,43 @@
     AUTEUR:    Choum
 
     HISTORIQUE VERSION:
+    1.4     28.01.2024    No need anymore to install the scripts inside alchemy folder (Creative alchemy installed is still required), add default (reset) button.
     1.3     24.01.2024    Script_Internationalization with psd1 file for easier translation, fix non critcal error, improve error message, add messagebox Icon.
     1.2     20.01.2024    Few Bugfix, add Debug settings, Remove NativeAl value question on first launch
     1.1     06.10.2021    Fix edit new add game bug, add Nativeal value question on first launch
     1.0     15.11.2020    First version
 .LINK
  #>
+ 
+function LocateAlchemy { # Locate Alchemy installation and check for necessary files, return Creative alchemy path.
+    if ([Environment]::Is64BitOperatingSystem -eq $true){
+        $key = "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{12321490-F573-4815-B6CC-7ABEF18C9AC4}"
+    } else {
+        $key = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{12321490-F573-4815-B6CC-7ABEF18C9AC4}"
+    }
+    $regkey = "InstallLocation"
+    if (test-path $key){
+        try { 
+        $d = Get-ItemPropertyvalue -Path $key -name $regkey 
+        }
+        catch { 
+            [System.Windows.MessageBox]::Show($txt.Badlocation,"",0,16)
+            exit
+        }
+        if (Test-Path -path "$d\alchemy.ini"){
+            if (Test-Path -path "$d\dsound.dll"){
+                return $d
+                } else {
+                    [System.Windows.MessageBox]::Show("$($txt.missfile) $d\dsound.dll","",0,	16)
+                }
+            } else {
+                [System.Windows.MessageBox]::Show("$($txt.missfile) $d\alchemy.ini","",0,	16)
+            }
+    } else {
+        [System.Windows.MessageBox]::Show($txt.Badlocation,"",0,16)
+    }  
+	exit
+}
 
 function add-Game { # Convert value into hash table.
     param([string]$Name,[string]$RegPath,[string]$Gamepath,[int]$Buffers,[int]$Duration,[string]$DisableDirectMusic,[int]$MaxVoiceCount,[string]$SubDir,[string]$RootDirInstallOption,[String]$DisableNativeAL,[bool]$Found,[bool]$Transmut,[string]$LogDirectSound,[string]$LogDirectSound2D,[string]$LogDirectSound2DStreaming,[string]$LogDirectSound3D,[string]$LogDirectSoundListener,[string]$LogDirectSoundEAX,[string]$LogDirectSoundTimingInfo,[string]$LogStarvation)
@@ -61,7 +92,7 @@ function add-Game { # Convert value into hash table.
     return $d
 }
 
-function read-file{ #read alchemy ini file and convert game to hash table with add-game function, default value are define here if not present in alchemy.ini.
+function read-file{ #read Newalchemy ini file and convert game to hash table with add-game function, default value are define here if not present in alchemy.ini.
     param([string]$file)
     $list = Get-content $file
     $liste = @()
@@ -327,13 +358,10 @@ Add-Type -AssemblyName System.Windows.Forms
 #load translation if exist, if not found will load en-US one.
 Import-LocalizedData -BindingVariable txt
 
-# check if inside alcheamy folder and if newalchemy.ini is present or generate a new one
-if (!(Test-Path -path ".\ALchemy.exe")) {
-    [System.Windows.MessageBox]::Show($txt.Badlocation,"",0,64)
-    exit
-}
+# check if inside alchemy folder and if newalchemy.ini is present or generate a new one
+$PathALchemy=LocateAlchemy
 if (!(Test-Path -path ".\newalchemy.ini")) {
-    GenerateNewAlchemy ".\Alchemy.ini"
+    GenerateNewAlchemy "$PathALchemy\Alchemy.ini"
 }
 
 $script:listejeux = read-file ".\NewAlchemy.ini"
@@ -367,11 +395,12 @@ $jeunontransmut = $script:jeutrouve | where-object {$_.Found -eq $true -and $_.T
         <Button Name="BoutonUnTransmut" Content="&lt;&lt;" HorizontalAlignment="Left" Height="45  " Margin="350,163,0,0" VerticalAlignment="Top" Width="100"/>
         <Button Name="BoutonEdition" HorizontalAlignment="Left" Height="25" Margin="350,256,0,0" VerticalAlignment="Top" Width="100"/>
         <Button Name="BoutonAjouter" HorizontalAlignment="Left" Height="25" Margin="350,293,0,0" VerticalAlignment="Top" Width="100"/>
+        <Button Name="BoutonParDefaut" HorizontalAlignment="Left" Height="25" Margin="350,330,0,0" VerticalAlignment="Top" Width="100"/>
         <TextBlock Name="Text_main" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="20,10,0,0" Width="762" Height="34"/>
         <TextBlock Name="Text_jeuInstall" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="20,54,0,0" Width="238"/>
         <TextBlock Name="Text_JeuTransmut" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="472,54,0,0" Width="173"/>
         <TextBlock Name="T_URL" HorizontalAlignment="Left" TextWrapping="Wrap" Text="https://github.com/Choum28/NewAlchemy" VerticalAlignment="Top" Margin="20,361,0,0" FontSize="8"/>
-        <TextBlock Name="T_version" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Version 1.02" VerticalAlignment="Top" Margin="733,359,0,0" FontSize="8"/>
+        <TextBlock Name="T_version" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Version 1.04" VerticalAlignment="Top" Margin="733,359,0,0" FontSize="8"/>
     </Grid>
 </Window>
 
@@ -382,6 +411,7 @@ $inputXML.SelectNodes("//*[@Name]") | Foreach-Object { Set-Variable -Name ($_.Na
 
 $BoutonEdition.Content="<< $($txt.BoutonEditionContent)"
 $BoutonAjouter.Content=$txt.BoutonAjouterContent
+$BoutonParDefaut.Content=$txt.BoutonDefaultContent
 $Text_main.Text=$txt.Text_main
 $Text_jeuInstall.Text=$txt.Text_jeuInstall
 $Text_JeuTransmut.Text=$txt.Text_JeuTransmut
@@ -396,7 +426,7 @@ $MenuDroite.Items.Clear()
 foreach ($jeu in $jeutransmut){
     $MenuDroite.Items.Add($jeu.name) | Out-Null
 }
-
+ 
 #Transmut Button Copy needed file to gamepath and refresh listview (sort by name)
 $BoutonTransmut.add_Click({
     $x = $Menugauche.SelectedItem
@@ -441,7 +471,7 @@ LogStarvation=$LogStarvation
                     }
                     New-Item -Path $gamepath -Name "dsound.ini" -force
                     $text | Out-File $gamepath\dsound.ini -encoding ascii
-                    Copy-Item -Path ".\dsound.dll" -Destination $gamepath
+                    Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath
                 } elseif ($RootDirInstallOption -eq "True"){
                     if (test-path ("$gamepath\dsound.ini")){
                         Remove-Item -Path "$gamepath\dsound.ini" -force
@@ -453,19 +483,19 @@ LogStarvation=$LogStarvation
                     New-Item -Path "$gamepath\" -Name "dsound.ini" -force
                     $text | Out-File $gamepath\dsound.ini -encoding ascii
                     $text | Out-File $gamepath\$Subdir\dsound.ini -encoding ascii
-                    Copy-Item -Path ".\dsound.dll" -Destination $gamepath
-                    Copy-Item -Path ".\dsound.dll" -Destination $gamepath\$Subdir
+                    Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath
+                    Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath\$Subdir
 
                 } elseif (test-path ("$gamepath\$SubDir\dsound.ini")){
                     Remove-Item -Path "$gamepath\$SubDir\dsound.ini" -force
                     New-Item -Path "$gamepath\$SubDir" -Name "dsound.ini" -force
                     $text | Out-File $gamepath\$SubDir\dsound.ini -encoding ascii
-                    Copy-Item -Path ".\dsound.dll" -Destination $gamepath\$Subdir
+                    Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath\$Subdir
 
                 } else { 
                     New-Item -Path "$gamepath\$Subdir" -Name "dsound.ini" -force
                     $text | Out-File $gamepath\$SubDir\dsound.ini -encoding ascii
-                    Copy-Item -Path ".\dsound.dll" -Destination $gamepath\$Subdir
+                    Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath\$Subdir
                 }
                 $MenuGauche.Items.Remove($x)
                 $MenuDroite.Items.Add($x)
@@ -1434,7 +1464,6 @@ $BoutonAjouter.add_Click({
             } else { 
                 $LogStarvation ="False"
             }
-
             # Write change in file, Registry first, Gamepath second choice
             "[$Name]" | Out-File -Append NewAlchemy.ini -encoding ascii
             if ($regprio -eq $true) {
@@ -1483,4 +1512,28 @@ $BoutonAjouter.add_Click({
     })
     $Window_add.ShowDialog() | out-null
 })
+
+### Default Button (MAIN FORM)
+$BoutonParDefaut.add_Click({
+    $choice = [System.Windows.MessageBox]::Show("$($txt.Defaultmsgbox)`r$($txt.Defaultmsgbox2)`r$(Get-Location)\NewAlchemy.bak`r`r$($txt.Defaultmsgbox3)" , "NewAlchemy" , 4,64)
+    if ($choice -eq 'Yes') {
+        move-Item ".\NewAlchemy.ini" ".\NewAlchemy.Bak" -force
+        GenerateNewAlchemy "$PathAlchemy\Alchemy.ini"	
+        $script:listejeux = read-file ".\NewAlchemy.ini"
+        checkinstall $script:listejeux | Out-Null
+        $script:jeutrouve = $script:listejeux | where-object Found -eq $true
+        checktransmut $script:jeutrouve | Out-Null
+        $jeutransmut = $script:jeutrouve | where-object Transmut -eq $true
+        $jeunontransmut = $script:jeutrouve | where-object {$_.Found -eq $true -and $_.Transmut -eq $False}
+        $MenuGauche.Items.Clear()
+        foreach ($jeu in $jeunontransmut){
+            $MenuGauche.Items.Add($jeu.name) | Out-Null
+        }
+        $MenuDroite.Items.Clear()
+        foreach ($jeu in $jeutransmut){
+            $MenuDroite.Items.Add($jeu.name) | Out-Null
+        }
+    }
+})
+
 $Window.ShowDialog() | out-null

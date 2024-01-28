@@ -1,13 +1,17 @@
 #culture="en-US"
 ConvertFrom-StringData @'
 	#main form Text
-	MainTitle2=Game Settings
 	BoutonAjouterContent=Add
 	BoutonEditionContent=Edit
+	BoutonDefaultContent=Default
+	Defaultmsgbox=This will revert the list of games and settings to the defaults. 
+	Defaultmsgbox2=A backup of this information will be saved to: 
+	Defaultmsgbox3=Are you sure you want to continue?
 	Text_main=NewALchemy restores hardware accelerated audio so that you can enjoy EAX effects and 3D Audio when playing Directsound 3D games in Microsoft Windows Vista and above.
 	Text_jeuInstall=Installed Games
 	Text_JeuTransmut=NewAlchemy-enabled Games
 	#Edit / add Form Text
+	MainTitle2=Game Settings
 	C_registreContent=Use Registry Path
 	C_GamepathContent=Use Game Path
 	T_registreToolTip=registry path containing string to executable or executable's directory (use this when available, alternative is GamePath)
@@ -43,8 +47,9 @@ ConvertFrom-StringData @'
 	FolderChoice=Select a Folder
 	SubFolderChoice=Select a Sub Folder
 	# Error message
-	Badlocation=NewAlchemy should be inside the Creative Alchemy folder.
-	RegKeyInc=Registry value incorrect
+	Badlocation=NewAlchemy required Creative Alchemy installation.
+	MissFile=Creative alchemy file missing in installation folder.
+	RegKeyInc=Registry key value incorrect
 	RegKeyValInc=Registry key value does not return a Path
 	RegKeyBad=Registry key invalid
 	RegKeyEmpty=Registry key empty
