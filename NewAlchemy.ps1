@@ -250,24 +250,7 @@ function GenerateNewAlchemy{ #Create New NewALchemy.ini file with new options, t
         $p = $line.LogDirectSoundEAX
         $q = $line.LogDirectSoundTimingInfo
         $r = $line.LogStarvation
-        "[$a]" | Out-File -Append NewAlchemy.ini -encoding ascii
-        "RegPath=$b" | Out-File -Append NewAlchemy.ini -encoding ascii
-        "GamePath=$c" | Out-File -Append NewAlchemy.ini -encoding ascii
-        "Buffers=$d" | Out-File -Append NewAlchemy.ini -encoding ascii
-        "Duration=$e" | Out-File -Append NewAlchemy.ini -encoding ascii
-        "DisableDirectMusic=$f" | Out-File -Append NewAlchemy.ini -encoding ascii
-        "MaxVoiceCount=$g" | Out-File -Append NewAlchemy.ini -encoding ascii
-        "SubDir=$h" | Out-File -Append NewAlchemy.ini -encoding ascii
-        "RootDirInstallOption=$i" | Out-File -Append NewAlchemy.ini -encoding ascii
-        "DisableNativeAL=$j" | Out-File -Append NewAlchemy.ini -encoding ascii
-        "LogDirectSound=$k" | Out-File -Append NewAlchemy.ini -encoding ascii
-        "LogDirectSound2D=$l" | Out-File -Append NewAlchemy.ini -encoding ascii
-        "LogDirectSound2DStreaming=$m" | Out-File -Append NewAlchemy.ini -encoding ascii
-        "LogDirectSound3D=$n" | Out-File -Append NewAlchemy.ini -encoding ascii
-        "LogDirectSoundListener=$o" | Out-File -Append NewAlchemy.ini -encoding ascii
-        "LogDirectSoundEAX=$p" | Out-File -Append NewAlchemy.ini -encoding ascii
-        "LogDirectSoundTimingInfo=$q" | Out-File -Append NewAlchemy.ini -encoding ascii
-        "LogStarvation=$r`r`n" | Out-File -Append NewAlchemy.ini -encoding ascii
+        "[$a]`rRegPath=$b`rGamePath=$c`rBuffers=$d`rDuration=$e`rDisableDirectMusic=$f`rMaxVoiceCount=$g`rSubDir=$h`rRootDirInstallOption=$i`rDisableNativeAL=$j`rLogDirectSound=$k`rLogDirectSound2D=$l`rLogDirectSound2DStreaming=$m`rLogDirectSound3D=$n`rLogDirectSoundListener=$o`rLogDirectSoundEAX=$p`rLogDirectSoundTimingInfo=$q`rLogStarvation=$r`r`n" | Out-File -Append NewAlchemy.ini -encoding ascii
     }
 }
 
@@ -1465,31 +1448,14 @@ $BoutonAjouter.add_Click({
                 $LogStarvation ="False"
             }
             # Write change in file, Registry first, Gamepath second choice
-            "[$Name]" | Out-File -Append NewAlchemy.ini -encoding ascii
             if ($regprio -eq $true) {
                 $RegPath = $T_Registre.Text
-                "RegPath=$RegPath" | Out-File -Append NewAlchemy.ini -encoding ascii
-                "GamePath="| Out-File -Append NewAlchemy.ini -encoding ascii
+                $Gamepath=""
             }else{
+                $RegPath=""
                 $Gamepath=$T_Gamepath.text
-                "RegPath=" | Out-File -Append NewAlchemy.ini -encoding ascii
-                "GamePath=$Gamepath"| Out-File -Append NewAlchemy.ini -encoding ascii
             }
-            "Buffers=$Buffers" | Out-File -Append NewAlchemy.ini -encoding ascii
-            "Duration=$Duration"| Out-File -Append NewAlchemy.ini -encoding ascii
-            "DisableDirectMusic=$DisableDirectMusic"| Out-File -Append NewAlchemy.ini -encoding ascii
-            "MaxVoiceCount=$Voice"| Out-File -Append NewAlchemy.ini -encoding ascii
-            "SubDir=$SubDir"| Out-File -Append NewAlchemy.ini -encoding ascii
-            "RootDirInstallOption=$RootDirInstallOption"| Out-File -Append NewAlchemy.ini -encoding ascii
-            "DisableNativeAL=$DisableNativeAL"| Out-File -Append NewAlchemy.ini -encoding ascii
-            "LogDirectSound=$LogDirectSound"| Out-File -Append NewAlchemy.ini -encoding ascii
-            "LogDirectSound2D=$LogDirectSound2D"| Out-File -Append NewAlchemy.ini -encoding ascii
-            "LogDirectSound2DStreaming=$LogDirectSound2DStreaming"| Out-File -Append NewAlchemy.ini -encoding ascii
-            "LogDirectSound3D=$LogDirectSound3D"| Out-File -Append NewAlchemy.ini -encoding ascii
-            "LogDirectSoundListener=$LogDirectSoundListener"| Out-File -Append NewAlchemy.ini -encoding ascii
-            "LogDirectSoundEAX=$LogDirectSoundEAX"| Out-File -Append NewAlchemy.ini -encoding ascii
-            "LogDirectSoundTimingInfo=$LogDirectSoundTimingInfo"| Out-File -Append NewAlchemy.ini -encoding ascii
-            "LogStarvation=$LogStarvation`r`n"| Out-File -Append NewAlchemy.ini -encoding ascii
+            "[$Name]`rRegPath=$RegPath`rGamePath=$Gamepath`rBuffers=$Buffers`rDuration=$Duration`rDisableDirectMusic=$DisableDirectMusic`rMaxVoiceCount=$Voice`rSubDir=$SubDir`rRootDirInstallOption=$RootDirInstallOption`rDisableNativeAL=$DisableNativeAL`rLogDirectSound=$LogDirectSound`rLogDirectSound2D=$LogDirectSound2D`rLogDirectSound2DStreaming=$LogDirectSound2DStreaming`rLogDirectSound3D=$LogDirectSound3D`rLogDirectSoundListener=$LogDirectSoundListener`rLogDirectSoundEAX=$LogDirectSoundEAX`rLogDirectSoundTimingInfo=$LogDirectSoundTimingInfo`rLogStarvation=$LogStarvation`r`n"| Out-File -Append NewAlchemy.ini -encoding ascii
 
             # Update list game to reflect change, Order listview by name
             $script:listejeux += add-Game -Name $Name -RegPath $RegPath -Gamepath $Gamepath -Buffers $buffers -Duration $duration -DisableDirectMusic $DisableDirectMusic -MaxVoiceCount $Voice -SubDir $SubDir -RootDirInstallOption $RootDirInstallOption -DisableNativeAL $DisableNativeAL -Found $True -Transmut $False      
