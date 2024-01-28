@@ -205,8 +205,7 @@ function read-file{ #read Newalchemy ini file and convert game to hash table wit
 }
 
 function GenerateNewAlchemy{ #Create New NewALchemy.ini file with new options, that will be used by the script
-    param([string]$file)
-    
+    param([string]$file) 
     @"
 ;Creative ALchemy titles
 ;Format/Options:
@@ -433,21 +432,8 @@ $BoutonTransmut.add_Click({
                 $LogDirectSoundEAX = $game.LogDirectSoundEAX
                 $LogDirectSoundTimingInfo = $game.LogDirectSoundTimingInfo
                 $LogStarvation = $game.LogStarvation
-                $text =   @"
-Buffers=$Buffers
-Duration=$Duration
-MaxVoiceCount=$MaxVoiceCount
-DisableDirectMusic=$DisableDirectMusic
-DisableNativeAL=$DisableNativeAL
-LogDirectSound=$LogDirectSound
-LogDirectSound2D=$LogDirectSound2D
-LogDirectSound2DStreaming=$LogDirectSound2DStreaming
-LogDirectSound3D=$LogDirectSound3D
-LogDirectSoundListener=$LogDirectSoundListener
-LogDirectSoundEAX=$LogDirectSoundEAX
-LogDirectSoundTimingInfo=$LogDirectSoundTimingInfo
-LogStarvation=$LogStarvation
-"@ 
+                $text = "Buffers=$Buffers`rDuration=$Duration`rMaxVoiceCount=$MaxVoiceCount`rDisableDirectMusic=$DisableDirectMusic`rDisableNativeAL=$DisableNativeAL`rLogDirectSound=$LogDirectSound`rLogDirectSound2D=$LogDirectSound2D`rLogDirectSound2DStreaming=$LogDirectSound2DStreaming`rLogDirectSound3D=$LogDirectSound3D`rLogDirectSoundListener=$LogDirectSoundListener`rLogDirectSoundEAX=$LogDirectSoundEAX`rLogDirectSoundTimingInfo=$LogDirectSoundTimingInfo`rLogStarvation=$LogStarvation`r"
+ 
                 if ([string]::IsNullOrEmpty($Subdir)){
                     if (test-path ("$gamepath\dsound.ini")){
                         Remove-Item -Path $gamepath\dsound.ini -force
