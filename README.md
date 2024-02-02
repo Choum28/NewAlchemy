@@ -15,16 +15,18 @@ French and English version avalaible.
             
     
 ## Install
-Copy the script and your language (culture) folder in your Creative alchemy folder (ex: C:\Program Files (x86)\Creative\ALchemy). 
+Creative ALchemy must be installed on your pc.  
+Copy the script and your language (culture) folder into a folder of your choise.  
+Launch the script
    
 The script will use for text translation in priority the culture folder of your language, or will load the en-us one if it's not present (ex: de-DE).   
 if you do not copy at least the en-US culture folder, you will have no text.   
 
-## launch application
+## launch the script  
 Launch the script and hide console
 .\powershell.exe -WindowStyle Hidden -ep bypass -file "C:\Program Files (x86)\Creative\ALchemy\NewAlchemy.ps1"
 
-The scripts will create and use a new NewAlchemy.ini in the alchemy folder to store games and options.
+The scripts will create and use a new NewAlchemy.ini in the script folder to store games and options.
 
 You can also use the EXE version that has been compiled with PS2EXE.
 
