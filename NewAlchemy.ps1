@@ -229,7 +229,7 @@ function GenerateNewAlchemy{ #Create New NewALchemy.ini file with new options, t
 ;  LogDirectSoundTimingInfo <-- Log DirectSound timing into dsound.txt(default is False).
 ;  LogStarvation <-- Log starvation into dsound.txt (default is False).
 
-"@ | Out-File -Append NewAlchemy.ini -encoding ascii
+"@ | Out-File -Append $PSScriptRoot\NewAlchemy.ini -encoding ascii
     $liste = read-file $file
     foreach ($line in $liste){
         $a = $line.Name
@@ -250,7 +250,7 @@ function GenerateNewAlchemy{ #Create New NewALchemy.ini file with new options, t
         $p = $line.LogDirectSoundEAX
         $q = $line.LogDirectSoundTimingInfo
         $r = $line.LogStarvation
-        "[$a]`rRegPath=$b`rGamePath=$c`rBuffers=$d`rDuration=$e`rDisableDirectMusic=$f`rMaxVoiceCount=$g`rSubDir=$h`rRootDirInstallOption=$i`rDisableNativeAL=$j`rLogDirectSound=$k`rLogDirectSound2D=$l`rLogDirectSound2DStreaming=$m`rLogDirectSound3D=$n`rLogDirectSoundListener=$o`rLogDirectSoundEAX=$p`rLogDirectSoundTimingInfo=$q`rLogStarvation=$r`r`n" | Out-File -Append NewAlchemy.ini -encoding ascii
+        "[$a]`rRegPath=$b`rGamePath=$c`rBuffers=$d`rDuration=$e`rDisableDirectMusic=$f`rMaxVoiceCount=$g`rSubDir=$h`rRootDirInstallOption=$i`rDisableNativeAL=$j`rLogDirectSound=$k`rLogDirectSound2D=$l`rLogDirectSound2DStreaming=$m`rLogDirectSound3D=$n`rLogDirectSoundListener=$o`rLogDirectSoundEAX=$p`rLogDirectSoundTimingInfo=$q`rLogStarvation=$r`r`n" | Out-File -Append $PSScriptRoot\NewAlchemy.ini -encoding ascii
     }
 }
 
@@ -343,11 +343,11 @@ Import-LocalizedData -BindingVariable txt
 
 # check if inside alchemy folder and if newalchemy.ini is present or generate a new one
 $PathALchemy=LocateAlchemy
-if (!(Test-Path -path ".\newalchemy.ini")) {
+if (!(Test-Path -path "$PSScriptRoot\newalchemy.ini")) {
     GenerateNewAlchemy "$PathALchemy\Alchemy.ini"
 }
 
-$script:listejeux = read-file ".\NewAlchemy.ini"
+$script:listejeux = read-file "$PSScriptRoot\NewAlchemy.ini"
 checkinstall $script:listejeux | Out-Null
 $script:jeutrouve = $script:listejeux | where-object Found -eq $true
 #$jeutrouve | Out-GridView
@@ -1003,8 +1003,8 @@ $BoutonEdition.add_Click({
                 $script:jeutrouve[$count].LogStarvation=$LogStarvation
                 
                 # Write change in file
-                $file = Get-content ".\Newalchemy.ini"
-                $LineNumber = Select-String -pattern ([regex]::Escape("[$Name]")) NewAlchemy.ini| Select-Object -ExpandProperty LineNumber
+                $file = Get-content "$PSScriptRoot\Newalchemy.ini"
+                $LineNumber = Select-String -pattern ([regex]::Escape("[$Name]")) $PSScriptRoot\NewAlchemy.ini| Select-Object -ExpandProperty LineNumber
                 if ($regprio -eq $true) {
                     $file[$LineNumber] = "RegPath=$RegPath"
                     $file[$LineNumber +1]="GamePath="
@@ -1027,7 +1027,7 @@ $BoutonEdition.add_Click({
                 $file[$LineNumber +14] = "LogDirectSoundEAX=$LogDirectSoundEAX"
                 $file[$LineNumber +15] = "LogDirectSoundTimingInfo=$LogDirectSoundTimingInfo"
                 $file[$LineNumber +16] = "LogStarvation=$LogStarvation"
-                $file | Set-Content NewAlchemy.ini -encoding ascii
+                $file | Set-Content $PSScriptRoot\NewAlchemy.ini -encoding ascii
                 
                 $Window_edit.Close()
                 }
@@ -1448,7 +1448,7 @@ $BoutonAjouter.add_Click({
                 $RegPath=""
                 $Gamepath=$T_Gamepath.text
             }
-            "[$Name]`rRegPath=$RegPath`rGamePath=$Gamepath`rBuffers=$Buffers`rDuration=$Duration`rDisableDirectMusic=$DisableDirectMusic`rMaxVoiceCount=$Voice`rSubDir=$SubDir`rRootDirInstallOption=$RootDirInstallOption`rDisableNativeAL=$DisableNativeAL`rLogDirectSound=$LogDirectSound`rLogDirectSound2D=$LogDirectSound2D`rLogDirectSound2DStreaming=$LogDirectSound2DStreaming`rLogDirectSound3D=$LogDirectSound3D`rLogDirectSoundListener=$LogDirectSoundListener`rLogDirectSoundEAX=$LogDirectSoundEAX`rLogDirectSoundTimingInfo=$LogDirectSoundTimingInfo`rLogStarvation=$LogStarvation`r`n"| Out-File -Append NewAlchemy.ini -encoding ascii
+            "[$Name]`rRegPath=$RegPath`rGamePath=$Gamepath`rBuffers=$Buffers`rDuration=$Duration`rDisableDirectMusic=$DisableDirectMusic`rMaxVoiceCount=$Voice`rSubDir=$SubDir`rRootDirInstallOption=$RootDirInstallOption`rDisableNativeAL=$DisableNativeAL`rLogDirectSound=$LogDirectSound`rLogDirectSound2D=$LogDirectSound2D`rLogDirectSound2DStreaming=$LogDirectSound2DStreaming`rLogDirectSound3D=$LogDirectSound3D`rLogDirectSoundListener=$LogDirectSoundListener`rLogDirectSoundEAX=$LogDirectSoundEAX`rLogDirectSoundTimingInfo=$LogDirectSoundTimingInfo`rLogStarvation=$LogStarvation`r`n"| Out-File -Append $PSScriptRoot\NewAlchemy.ini -encoding ascii
 
             # Update list game to reflect change, Order listview by name
             $script:listejeux += add-Game -Name $Name -RegPath $RegPath -Gamepath $Gamepath -Buffers $buffers -Duration $duration -DisableDirectMusic $DisableDirectMusic -MaxVoiceCount $Voice -SubDir $SubDir -RootDirInstallOption $RootDirInstallOption -DisableNativeAL $DisableNativeAL -Found $True -Transmut $False      
@@ -1476,9 +1476,9 @@ $BoutonAjouter.add_Click({
 $BoutonParDefaut.add_Click({
     $choice = [System.Windows.MessageBox]::Show("$($txt.Defaultmsgbox)`r$($txt.Defaultmsgbox2)`r$(Get-Location)\NewAlchemy.bak`r`r$($txt.Defaultmsgbox3)" , "NewAlchemy" , 4,64)
     if ($choice -eq 'Yes') {
-        move-Item ".\NewAlchemy.ini" ".\NewAlchemy.Bak" -force
+        move-Item "$PSScriptRoot\NewAlchemy.ini" "$PSScriptRoot\NewAlchemy.Bak" -force
         GenerateNewAlchemy "$PathAlchemy\Alchemy.ini"	
-        $script:listejeux = read-file ".\NewAlchemy.ini"
+        $script:listejeux = read-file "$PSScriptRoot\NewAlchemy.ini"
         checkinstall $script:listejeux | Out-Null
         $script:jeutrouve = $script:listejeux | where-object Found -eq $true
         checktransmut $script:jeutrouve | Out-Null
