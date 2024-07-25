@@ -27,7 +27,8 @@
     AUTEUR:    Choum
 
     HISTORIQUE VERSION:
-	1.05	23.07.2024	  WPF forms are now rezisable.
+    1.06    25.07.2024    Significant improved loading time.
+    1.05    23.07.2024    WPF forms are now rezisable.
     1.04    28.01.2024    No need anymore to install the scripts inside alchemy folder (Creative alchemy installed is still required), add default (reset) button.
     1.03    24.01.2024    Script_Internationalization with psd1 file for easier translation, fix non critcal error, improve error message, add messagebox Icon.
     1.02    20.01.2024    Few Bugfix, add Debug settings, Remove NativeAl value question on first launch
@@ -257,30 +258,38 @@ function GenerateNewAlchemy{ #Create New NewALchemy.ini file with new options, t
 function checkpresent{ # Check if game is present (registry in priority then gamepath)
     param($a)
     $b = $a.RegPath
-    if (![string]::IsNullOrEmpty($b)) {
-        if ($b -like "HKEY_LOCAL_MACHINE*") {
-            $b = $b.replace("HKEY_LOCAL_MACHINE","HKLM:")
-        } else {
-                if($b -like "HKEY_CURRENT_USER*") {
-                    $b = $b.replace("HKEY_CURRENT_USER","HKCU:")
+    if (![string]::IsNullOrEmpty($b)) {     #entrée pas vide
+        # recup chemin et clef séparé
+        $RegKey = $b|split-path -leaf
+        $KeyPath = $b.replace("\$regkey","")
+        
+        Switch -wildcard ($b) {
+            "HKEY_LOCAL_MACHINE*" {
+                $KeyPath = $KeyPath.replace("HKEY_LOCAL_MACHINE\","")
+                $RegTest = [Microsoft.Win32.Registry]::LocalMachine.OpenSubKey($KeyPath)
+                if ($Null -eq $RegTest) {
+                    $KeyPath = $Keypath.replace("SOFTWARE","SOFTWARE\WOW6432Node")
                 }
-            }        
-        # recover registry key
-        $regkey = $b|split-path -leaf
-        # delete key from registry link
-        $b = $b.replace("\$regkey","")
-        if (!(test-path $b)){
-            $b=$b.replace("HKLM:\SOFTWARE","HKLM:\SOFTWARE\WOW6432Node")
-            $b=$b.replace("HKCU:\SOFTWARE","HKCU:\SOFTWARE\WOW6432Node")
-        }
-        if (test-path $b){
-            try { $a.GamePath = Get-ItemPropertyvalue -Path $b -name $regkey
+                $RegTest = [Microsoft.Win32.Registry]::LocalMachine.OpenSubKey($KeyPath)
+                if ($Null -ne $RegTest) {
+                    $a.GamePath = $Regtest.GetValue($RegKey)
+                }
             }
-            catch {}
+            "HKEY_CURRENT_USER*"{
+                $KeyPath = $KeyPath.replace("HKEY_CURRENT_USER\","")
+                $RegTest = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey($KeyPath)
+                if ($Null -eq $RegTest) {
+                    $KeyPath = $Keypath.replace("SOFTWARE","SOFTWARE\WOW6432Node")
+                }
+                $RegTest = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey($KeyPath)
+                if ($Null -ne $RegTest) {
+                    $a.GamePath = $Regtest.GetValue($RegKey)
+                }
+            }
         }
     }
-    if (![string]::IsNullOrEmpty($a.gamePath)){
-        if (test-path $a.GamePath){
+    if (![string]::IsNullOrEmpty($a.gamePath)) {
+        if (test-path $a.GamePath) {
             $a.Found = $true
         }
         else {$a.Found = $false}
@@ -384,7 +393,7 @@ $jeunontransmut = $script:jeutrouve | where-object {$_.Found -eq $true -and $_.T
 			<TextBlock Name="Text_jeuInstall" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="20,54,0,0" Width="238"/>
 			<TextBlock Name="Text_JeuTransmut" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="472,54,0,0" Width="173"/>
 			<TextBlock Name="T_URL" HorizontalAlignment="Left" TextWrapping="Wrap" Text="https://github.com/Choum28/NewAlchemy" VerticalAlignment="Top" Margin="20,361,0,0" FontSize="8"/>
-			<TextBlock Name="T_version" HorizontalAlignment="Right" TextWrapping="Wrap" Text="Version 1.05" VerticalAlignment="Top" Margin="0,359,20,0" FontSize="8"/>
+			<TextBlock Name="T_version" HorizontalAlignment="Right" TextWrapping="Wrap" Text="Version 1.06" VerticalAlignment="Top" Margin="0,359,20,0" FontSize="8"/>
 		</Grid>
 	</Viewbox>
 </Window>
