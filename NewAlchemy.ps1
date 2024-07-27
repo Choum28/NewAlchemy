@@ -36,8 +36,9 @@
     1.0     15.11.2020    First version
 .LINK
  #>
- 
-function LocateAlchemy { # Locate Alchemy installation and check for necessary files, return Creative alchemy path.
+
+# Locate Alchemy installation and check for necessary files, return Creative alchemy path.
+function LocateAlchemy { 
     if ([Environment]::Is64BitOperatingSystem -eq $true){
         $key = "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{12321490-F573-4815-B6CC-7ABEF18C9AC4}"
     } else {
@@ -67,7 +68,8 @@ function LocateAlchemy { # Locate Alchemy installation and check for necessary f
 	exit
 }
 
-function add-Game { # Convert value into hash table.
+# Convert value into hash table.
+function add-Game { 
     param([string]$Name,[string]$RegPath,[string]$Gamepath,[int]$Buffers,[int]$Duration,[string]$DisableDirectMusic,[int]$MaxVoiceCount,[string]$SubDir,[string]$RootDirInstallOption,[String]$DisableNativeAL,[bool]$Found,[bool]$Transmut,[string]$LogDirectSound,[string]$LogDirectSound2D,[string]$LogDirectSound2DStreaming,[string]$LogDirectSound3D,[string]$LogDirectSoundListener,[string]$LogDirectSoundEAX,[string]$LogDirectSoundTimingInfo,[string]$LogStarvation)
     $d=@{
         Name=$Name
@@ -94,7 +96,8 @@ function add-Game { # Convert value into hash table.
     return $d
 }
 
-function read-file{ #read Newalchemy ini file and convert game to hash table with add-game function, default value are define here if not present in alchemy.ini.
+#read Newalchemy ini file and convert game to hash table with add-game function, default value are define here if not present in alchemy.ini.
+function read-file{ 
     param([string]$file)
     $list = Get-content $file
     $liste = @()
@@ -117,86 +120,51 @@ function read-file{ #read Newalchemy ini file and convert game to hash table wit
     $LogDirectSoundTimingInfo="False"
     $LogStarvation="False"
 
-    foreach ($line in $list) {
+    foreach ( $line in $list ) {
         $Number = $Number + 1
-        if($line -notlike ';*') {
-
-            if($line -like '`[*') {
-            if ($test -gt 0) {
-                    $liste += add-Game -Name $Name -RegPath $RegPath -Gamepath $Gamepath -Buffers $Buffers -Duration $Duration -DisableDirectMusic $DisableDirectMusic -MaxVoiceCount $MaxVoiceCount -SubDir $SubDir -RootDirInstallOption $RootDirInstallOption -DisableNativeAL $DisableNativeAL -Found $Found -Transmut $Transmut -LogDirectSound $LogDirectSound -LogDirectSound2D $LogDirectSound2D -LogDirectSound2DStreaming $LogDirectSound2DStreaming -LogDirectSound3D $LogDirectSound3D -LogDirectSoundListener $LogDirectSoundListener -LogDirectSoundEAX $LogDirectSoundEAX -LogDirectSoundTimingInfo $LogDirectSoundTimingInfo -LogStarvation $LogStarvation
-                    $RegPath=""
-                    $Gamepath=""
-                    $Buffers=4
-                    $Duration=25
-                    $DisableDirectMusic="False"
-                    $MaxVoiceCount=128
-                    $SubDir=""
-                    $RootDirInstallOption="False"
-                    $DisableNativeAL="False"
-                    $Found=$false
-                    $Transmut=$false
-                    $LogDirectSound="False"
-                    $LogDirectSound2D="False"
-                    $LogDirectSound2DStreaming="False"
-                    $LogDirectSound3D="False"
-                    $LogDirectSoundListener="False"
-                    $LogDirectSoundEAX="False"
-                    $LogDirectSoundTimingInfo="False"
-                    $LogStarvation="False"
-                }
-                $test = $test+1
-                $Name = $line -replace '[][]'
-            }
-            if($line -like "RegPath=*") {
-                $RegPath = $line.replace("RegPath=","")
-            }
-            if($line -like "GamePath=*") {
-                $Gamepath = $line.replace("GamePath=","")
-            }
-            if($line -like "Buffers=*") {
-                $Buffers = $line.replace("Buffers=","")
-            }
-            if($line -like "Duration=*") {
-                $Duration = $line.replace("Duration=","")
-            }
-            if($line -like "DisableDirectMusic=*") {
-                $DisableDirectMusic = $line.replace("DisableDirectMusic=","")
-            }
-            if($line -like "MaxVoiceCount=*") {
-                $MaxVoiceCount = $line.replace("MaxVoiceCount=","")
-            }
-            if($line -like "SubDir=*") {
-                $SubDir = $line.replace("SubDir=","")
-            }
-            if($line -like "RootDirInstallOption=*") {
-                $RootDirInstallOption = $line.replace("RootDirInstallOption=","")
-            }
-            if($line -like "DisableNativeAL=*") {
-                $DisableNativeAL = $line.replace("DisableNativeAL=","")
-            }
-            if($line -like "LogDirectSound=*") {
-                $LogDirectSound = $line.replace("LogDirectSound=","")
-            }
-            if($line -like "LogDirectSound2D=*") {
-                $LogDirectSound2D = $line.replace("LogDirectSound2D=","")
-            }
-            if($line -like "LogDirectSound2DStreaming=*") {
-                $LogDirectSound2DStreaming = $line.replace("LogDirectSound2DStreaming=","")
-            }
-            if($line -like "LogDirectSound3D=*") {
-                $LogDirectSound3D = $line.replace("LogDirectSound3D=","")
-            }
-            if($line -like "LogDirectSoundListener=*") {
-                $LogDirectSoundListener = $line.replace("LogDirectSoundListener=","")
-            }
-            if($line -like "LogDirectSoundEAX=*") {
-                $LogDirectSoundEAX = $line.replace("LogDirectSoundEAX=","")
-            }
-            if($line -like "LogDirectSoundTimingInfo=*") {
-                $LogDirectSoundTimingInfo = $line.replace("LogDirectSoundTimingInfo=","")
-            }
-            if($line -like "LogStarvation=*") {
-                $LogStarvation = $line.replace("LogStarvation=","")
+        if ($line -notlike ';*') {
+            Switch -wildcard ($line) {
+                '`[*' {
+                        if ($test -gt 0) {
+                                $liste += Add-Game -Name $Name -RegPath $RegPath -Gamepath $Gamepath -SubDir $SubDir -RootDirInstallOption $RootDirInstallOption -x64 $x64 -Conf $Conf -Found $Found -Transmut $Transmut
+                                $RegPath = ""
+                                $Gamepath = ""
+                                $SubDir = ""
+                                $RootDirInstallOption = "False"
+                                $Conf = ""
+                                $Found = $false
+                                $Transmut = $false
+                                $LogDirectSound="False"
+                                $LogDirectSound2D="False"
+                                $LogDirectSound2DStreaming="False"
+                                $LogDirectSound3D="False"
+                                $LogDirectSoundListener="False"
+                                $LogDirectSoundEAX="False"
+                                $LogDirectSoundTimingInfo="False"
+                                $LogStarvation="False"
+                                $x64 = "False"
+                        }
+                            $test = $test+1
+                            $Name = $line -replace '[][]' 
+                    }
+                "RegPath=*" { $RegPath = $line.replace("RegPath=","") }
+                "GamePath=*" { $Gamepath = $line.replace("GamePath=","") }
+                "Buffers=*" { $Buffers = $line.replace("Buffers=","") }
+                "Duration=*" { $Duration = $line.replace("Duration=","") }
+                "DisableDirectMusic=*" { $DisableDirectMusic = $line.replace("DisableDirectMusic=","") }
+                "MaxVoiceCount=*" { $MaxVoiceCount = $line.replace("MaxVoiceCount=","") }
+                "SubDir=*" { $SubDir = $line.replace("SubDir=","") }
+                "RootDirInstallOption=*" { $RootDirInstallOption = $line.replace("RootDirInstallOption=","") }
+                "DisableNativeAL=*" { $DisableNativeAL = $line.replace("DisableNativeAL=","") }
+                "LogDirectSound=*" { $LogDirectSound = $line.replace("LogDirectSound=","") }
+                "LogDirectSound2D=*" { $LogDirectSound2D = $line.replace("LogDirectSound2D=","") }
+                "LogDirectSound2DStreaming=*" { $LogDirectSound2DStreaming = $line.replace("LogDirectSound2DStreaming=","") }
+                "LogDirectSound3D=*" { $LogDirectSound3D = $line.replace("LogDirectSound3D=","") }
+                "LogDirectSoundListener=*" { $LogDirectSoundListener = $line.replace("LogDirectSoundListener=","") }
+                "LogDirectSoundEAX=*" { $LogDirectSoundEAX = $line.replace("LogDirectSoundEAX=","") }
+                "LogDirectSoundTimingInfo=*" { $LogDirectSoundTimingInfo = $line.replace("LogDirectSoundTimingInfo=","") }
+                "LogStarvation=*" { $LogStarvation = $line.replace("LogStarvation=","") }
+                "x64=*" { $x64 = $line.replace("x64=","") }
             }
         }
     }
@@ -206,7 +174,8 @@ function read-file{ #read Newalchemy ini file and convert game to hash table wit
     return $liste
 }
 
-function GenerateNewAlchemy{ #Create New NewALchemy.ini file with new options, that will be used by the script
+#Create New NewALchemy.ini file with new options, that will be used by the script
+function GenerateNewAlchemy{ 
     param([string]$file) 
     @"
 ;Creative ALchemy titles
@@ -255,7 +224,8 @@ function GenerateNewAlchemy{ #Create New NewALchemy.ini file with new options, t
     }
 }
 
-function checkpresent{ # Check if game is present (registry in priority then gamepath)
+# Check if game is present (registry in priority then gamepath)
+function checkpresent{ 
     param($a)
     $b = $a.RegPath
     if (![string]::IsNullOrEmpty($b)) {     #entrée pas vide
@@ -297,7 +267,8 @@ function checkpresent{ # Check if game is present (registry in priority then gam
     return $a
 }
 
-function checkinstall{ # Check if the game list is installed with check present function.
+# Check if the game list is installed with check present function.
+function checkinstall{ 
     param($liste)
     $test = 0
     foreach ($game in $liste){ 
@@ -307,7 +278,8 @@ function checkinstall{ # Check if the game list is installed with check present 
     return $liste
 }
 
-function checkTransmut{ # Check if game is transmuted (dsound.dll present)
+# Check if game is transmuted (dsound.dll present)
+function checkTransmut{ 
     param($liste)
     $test = 0
     foreach ($game in $liste){
