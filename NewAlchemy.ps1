@@ -16,7 +16,7 @@
         Launch the script
 
  -------------------------- EXEMPLE 2 --------------------------
- .\powershell.exe -WindowStyle Hidden -ep bypass -file "C:\Program Files (x86)\Creative\ALchemy\Alchemy.ps1"
+ .\powershell.exe -WindowStyle Hidden -ep bypass -file "C:\apps\NewAlchemy-main\Alchemy.ps1"
         Launch the script and hide console
 
 .OUTPUTS
@@ -367,7 +367,7 @@ $jeunontransmut = $script:jeutrouve | where-object {$_.Found -eq $true -and $_.T
 # Main windows
 [xml]$inputXML =@"
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        Title="New Alchemy" Height="417" Width="818" MinHeight="417" MinWidth="818" ResizeMode="CanResizeWithGrip">
+        Title="New Alchemy" Height="417" Width="818" MinHeight="417" MinWidth="818" ResizeMode="CanResizeWithGrip" Icon="$PSScriptRoot\NewAlchemy.ico">	
 	<Viewbox Stretch="Uniform" StretchDirection="UpOnly">
 		<Grid>
 			<ListView Name="MenuGauche" HorizontalAlignment="Left" Height="280" Margin="20,75,0,0" VerticalAlignment="Top" Width="310">
@@ -518,7 +518,7 @@ $BoutonEdition.add_Click({
     if (!($x -eq $null)) {
         [xml]$InputXML =@"
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        Height="710" Width="558" MinHeight="710" MinWidth="558" VerticalAlignment="Bottom" ResizeMode="CanResizeWithGrip">
+        Height="710" Width="558" MinHeight="710" MinWidth="558" VerticalAlignment="Bottom" ResizeMode="CanResizeWithGrip" Icon="$PSScriptRoot\NewAlchemy.ico">
 	<Viewbox Stretch="Uniform" StretchDirection="UpOnly">
 		<Grid>
 			<TextBox Name="T_titrejeu" HorizontalAlignment="Left" Height="22" Margin="28,44,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="485"/>
@@ -1049,7 +1049,7 @@ $BoutonEdition.add_Click({
 $BoutonAjouter.add_Click({
     [xml]$InputXML =@"
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        Height="710" Width="558" MinHeight="710" MinWidth="558" VerticalAlignment="Bottom" ResizeMode="CanResizeWithGrip">
+        Height="710" Width="558" MinHeight="710" MinWidth="558" VerticalAlignment="Bottom" ResizeMode="CanResizeWithGrip" Icon="$PSScriptRoot\NewAlchemy.ico">
 		<Viewbox Stretch="Uniform" StretchDirection="UpOnly">
 			<Grid>
 			<TextBox Name="T_titrejeu" HorizontalAlignment="Left" Height="22" Margin="28,44,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="485"/>
@@ -1483,7 +1483,7 @@ $BoutonAjouter.add_Click({
 
 ### Default Button (MAIN FORM)
 $BoutonParDefaut.add_Click({
-    $choice = [System.Windows.MessageBox]::Show("$($txt.Defaultmsgbox)`r$($txt.Defaultmsgbox2)`r$(Get-Location)\NewAlchemy.bak`r`r$($txt.Defaultmsgbox3)" , "NewAlchemy" , 4,64)
+    $choice = [System.Windows.MessageBox]::Show("$($txt.Defaultmsgbox)`r$($txt.Defaultmsgbox2)`r$($PSScriptRoot)\NewAlchemy.bak`r`r$($txt.Defaultmsgbox3)" , "NewAlchemy" , 4,64)
     if ($choice -eq 'Yes') {
         move-Item "$PSScriptRoot\NewAlchemy.ini" "$PSScriptRoot\NewAlchemy.Bak" -force
         GenerateNewAlchemy "$PathAlchemy\Alchemy.ini"	
