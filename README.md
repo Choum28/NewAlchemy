@@ -23,14 +23,15 @@ The script will use for text translation in priority the culture folder of your 
 if you do not copy at least the en-US culture folder, you will have no text.   
 
 ## launch the script  
-Launch the script and hide console
+Create a shortcut with following command:
+
 .\powershell.exe -WindowStyle Hidden -ep bypass -file "C:\Program Files (x86)\Creative\ALchemy\NewAlchemy.ps1"
 
-The scripts will create and use a new NewAlchemy.ini in the script folder to store games and options.
+To remove the minimized windows behind the Gui, set in the properties of the shortcut Run=minimized
 
-You can also use the EXE version that has been compiled with PS2EXE.
-
-When launched, NewALchemy application will search the system for supported DirectSound3D enabled games. All the games found will be listed in the left pane (titled "Installed Games"). The right pane (titled "NewALchemy-enabled Games”) will show any games which have already been converted to use ALchemy. To enable ALchemy support for a particular game, select it from the left panel, and press the “>>” button. To undo ALchemy support, select the game from the right panel and press the “<<” button. You can select multiple games at once and then use the directional arrow buttons to update them all.
+## How to use
+When launched, NewALchemy application will search the system for supported DirectSound3D enabled games. All the games found will be listed in the left pane (titled "Installed Games"). The right pane (titled "NewALchemy-enabled Games”) will show any games which have already been converted to use ALchemy. To enable ALchemy support for a particular game, select it from the left panel, and press the “>>” button. To undo ALchemy support, select the game from the right panel and press the “<<” button. You can select multiple games at once and then use the directional arrow buttons to update them all. 
+The script will create and use a new NewAlchemy.ini in the script folder to store games and options.
 
 <img src="https://i.imgur.com/MIhlNTC.png">
 <img src="https://i.imgur.com/kvZsC3t.png">
