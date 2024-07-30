@@ -70,7 +70,29 @@ function LocateAlchemy {
 
 # Convert value into hash table.
 function add-Game { 
-    param([string]$Name,[string]$RegPath,[string]$Gamepath,[int]$Buffers,[int]$Duration,[string]$DisableDirectMusic,[int]$MaxVoiceCount,[string]$SubDir,[string]$RootDirInstallOption,[String]$DisableNativeAL,[bool]$Found,[bool]$Transmut,[string]$LogDirectSound,[string]$LogDirectSound2D,[string]$LogDirectSound2DStreaming,[string]$LogDirectSound3D,[string]$LogDirectSoundListener,[string]$LogDirectSoundEAX,[string]$LogDirectSoundTimingInfo,[string]$LogStarvation)
+    param(
+        [string]$Name,
+        [string]$RegPath,
+        [string]$Gamepath,
+        [int]$Buffers,
+        [int]$Duration,
+        [string]$DisableDirectMusic,
+        [int]$MaxVoiceCount,
+        [string]$SubDir,
+        [string]$RootDirInstallOption,
+        [String]$DisableNativeAL,
+        [bool]$Found,
+        [bool]$Transmut,
+        [string]$LogDirectSound,
+        [string]$LogDirectSound2D,
+        [string]$LogDirectSound2DStreaming,
+        [string]$LogDirectSound3D,
+        [string]$LogDirectSoundListener,
+        [string]$LogDirectSoundEAX,
+        [string]$LogDirectSoundTimingInfo,
+        [string]$LogStarvation
+    )
+    
     $d=@{
         Name=$Name
         RegPath=$RegPath
@@ -97,8 +119,11 @@ function add-Game {
 }
 
 #read Newalchemy ini file and convert game to hash table with add-game function, default value are define here if not present in alchemy.ini.
-function read-file{ 
-    param([string]$file)
+function read-file { 
+    param(
+        [string]$file
+    )
+    
     $list = Get-content $file
     $liste = @()
     $test = 0
@@ -126,12 +151,16 @@ function read-file{
             Switch -wildcard ($line) {
                 '`[*' {
                         if ($test -gt 0) {
-                                $liste += Add-Game -Name $Name -RegPath $RegPath -Gamepath $Gamepath -SubDir $SubDir -RootDirInstallOption $RootDirInstallOption -x64 $x64 -Conf $Conf -Found $Found -Transmut $Transmut
+                                $liste += Add-Game -Name $Name -RegPath $RegPath -Gamepath $Gamepath -Buffers $Buffers -Duration $Duration -DisableDirectMusic $DisableDirectMusic -MaxVoiceCount $MaxVoiceCount -SubDir $SubDir -RootDirInstallOption $RootDirInstallOption -DisableNativeAL $DisableNativeAL -Found $Found -Transmut $Transmut -LogDirectSound $LogDirectSound -LogDirectSound2D $LogDirectSound2D -LogDirectSound2DStreaming $LogDirectSound2DStreaming -LogDirectSound3D $LogDirectSound3D -LogDirectSoundListener $LogDirectSoundListener -LogDirectSoundEAX $LogDirectSoundEAX -LogDirectSoundTimingInfo $LogDirectSoundTimingInfo -LogStarvation $LogStarvation
                                 $RegPath = ""
                                 $Gamepath = ""
+                                $Buffers=4
+                                $Duration=25
+                                $DisableDirectMusic="False"
+                                $MaxVoiceCount=128
                                 $SubDir = ""
                                 $RootDirInstallOption = "False"
-                                $Conf = ""
+                                $DisableNativeAL="False"
                                 $Found = $false
                                 $Transmut = $false
                                 $LogDirectSound="False"
@@ -142,7 +171,6 @@ function read-file{
                                 $LogDirectSoundEAX="False"
                                 $LogDirectSoundTimingInfo="False"
                                 $LogStarvation="False"
-                                $x64 = "False"
                         }
                             $test = $test+1
                             $Name = $line -replace '[][]' 
@@ -164,7 +192,6 @@ function read-file{
                 "LogDirectSoundEAX=*" { $LogDirectSoundEAX = $line.replace("LogDirectSoundEAX=","") }
                 "LogDirectSoundTimingInfo=*" { $LogDirectSoundTimingInfo = $line.replace("LogDirectSoundTimingInfo=","") }
                 "LogStarvation=*" { $LogStarvation = $line.replace("LogStarvation=","") }
-                "x64=*" { $x64 = $line.replace("x64=","") }
             }
         }
     }
@@ -259,7 +286,7 @@ function checkpresent{
         }
     }
     if (![string]::IsNullOrEmpty($a.gamePath)) {
-        if (test-path $a.GamePath) {
+        if ([System.IO.Directory]::Exists($a.GamePath)) {
             $a.Found = $true
         }
         else {$a.Found = $false}
@@ -283,23 +310,34 @@ function checkTransmut{
     param($liste)
     $test = 0
     foreach ($game in $liste){
-        $gamepath=$game.Gamepath
-        $Subdir=$game.SubDir
+        $gamepath = $game.Gamepath
+        $Subdir = $game.SubDir
+        $RootDirInstallOption = $game.RootDirInstallOption
         if ([string]::IsNullOrEmpty($Subdir)){
-            if (test-path ("$gamepath\dsound.dll")){
+            if ([System.IO.File]::Exists("$gamepath\dsound.dll")) {
                 $game.Transmut = $true
             }
             else {
                 $game.Transmut = $false
             }
-        } else {
-            if (test-path ("$gamepath\$Subdir\dsound.dll")){
+        } elseif ( $RootDirInstallOption -eq $False ) {
+            if ([System.IO.File]::Exists("$gamepath\$Subdir\dsound.dll")) {
                 $game.Transmut = $true
             }
             else {
                 $game.Transmut = $false
             }
-        }
+        } else { 
+                if ([System.IO.File]::Exists("$gamepath\dsound.dll")) {
+                    if ([System.IO.File]::Exists("$gamepath\$Subdir\dsound.dll")){
+                        $game.Transmut = $true 
+                    } else {
+                        $game.Transmut = $false 
+                      }
+                } else { 
+                    $game.Transmut = $false 
+                }
+          }
         $liste[$test] = $game
         $test = $test +1 
     }
