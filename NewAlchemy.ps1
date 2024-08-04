@@ -27,6 +27,7 @@
     AUTEUR:    Choum
 
     HISTORIQUE VERSION:
+    1.07    04.08.2024    Test subdir path (if filled) before adding game to the detected list on startup.
     1.06    25.07.2024    Significant improved loading time.
     1.05    23.07.2024    WPF forms are now rezisable.
     1.04    28.01.2024    No need anymore to install the scripts inside alchemy folder (Creative alchemy installed is still required), add default (reset) button.
@@ -251,15 +252,14 @@ function GenerateNewAlchemy{
     }
 }
 
-# Check if game is present (registry in priority then gamepath)
+# Check if game is present (registry in priority then gamepath), then test if gamepath with/without subdir exist.
 function checkpresent{ 
     param($a)
     $b = $a.RegPath
-    if (![string]::IsNullOrEmpty($b)) {     #entrée pas vide
-        # recup chemin et clef séparé
+    if (![string]::IsNullOrEmpty($b)) {
+        # recover key and value
         $RegKey = $b|split-path -leaf
         $KeyPath = $b.replace("\$regkey","")
-        
         Switch -wildcard ($b) {
             "HKEY_LOCAL_MACHINE*" {
                 $KeyPath = $KeyPath.replace("HKEY_LOCAL_MACHINE\","")
@@ -287,9 +287,20 @@ function checkpresent{
     }
     if (![string]::IsNullOrEmpty($a.gamePath)) {
         if ([System.IO.Directory]::Exists($a.GamePath)) {
-            $a.Found = $true
+            if (![string]::IsNullOrEmpty($a.SubDir)){
+                if ([System.IO.Directory]::Exists("$($a.GamePath)\$($a.SubDir)")) {
+                    $a.Found = $true
+                } else { 
+                    $a.Found = $false 
+                }
+            } else {
+                $a.Found = $true 
+            }
+        } else {
+            $a.Found = $false
         }
-        else {$a.Found = $false}
+    } else {
+        $a.Found = $false
     }
     return $a
 }
@@ -403,7 +414,7 @@ $jeunontransmut = $script:jeutrouve | where-object {$_.Found -eq $true -and $_.T
 			<TextBlock Name="Text_jeuInstall" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="20,54,0,0" Width="238"/>
 			<TextBlock Name="Text_JeuTransmut" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="472,54,0,0" Width="173"/>
 			<TextBlock Name="T_URL" HorizontalAlignment="Left" TextWrapping="Wrap" Text="https://github.com/Choum28/NewAlchemy" VerticalAlignment="Top" Margin="20,361,0,0" FontSize="8"/>
-			<TextBlock Name="T_version" HorizontalAlignment="Right" TextWrapping="Wrap" Text="Version 1.06" VerticalAlignment="Top" Margin="0,359,20,0" FontSize="8"/>
+			<TextBlock Name="T_version" HorizontalAlignment="Right" TextWrapping="Wrap" Text="Version 1.07" VerticalAlignment="Top" Margin="0,359,20,0" FontSize="8"/>
 		</Grid>
 	</Viewbox>
 </Window>
@@ -425,11 +436,13 @@ $MenuGauche.Items.Clear()
 foreach ($jeu in $jeunontransmut){
     $MenuGauche.Items.Add($jeu.name) | Out-Null
 }
+Sortlistview $MenuGauche
 
 $MenuDroite.Items.Clear()
 foreach ($jeu in $jeutransmut){
     $MenuDroite.Items.Add($jeu.name) | Out-Null
 }
+Sortlistview $MenuDroite
  
 #Transmut Button Copy needed file to gamepath and refresh listview (sort by name)
 $BoutonTransmut.add_Click({
