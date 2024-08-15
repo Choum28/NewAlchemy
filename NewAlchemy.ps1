@@ -393,12 +393,12 @@ function Transmut{
 
             if ([string]::IsNullOrEmpty($Subdir)){
                 # no subdir
-                if (test-path ("$gamepath\dsound.ini")){
+                if ([System.IO.File]::Exists("$gamepath\dsound.ini")){
                     Remove-Item -Path $gamepath\dsound.ini -force
                 }
                 New-Item -Path $gamepath -Name "dsound.ini" -force
                 $text | Out-File $gamepath\dsound.ini -encoding ascii
-                if (test-path ("$gamepath\dsound.dll")){
+                if ([System.IO.File]::Exists("$gamepath\dsound.dll")){
                     $destHash = (Get-FileHash -Path "$gamepath\dsound.dll" -Algorithm SHA256).Hash
                     if ($script:dsoundHash -ne $destHash) {
                         Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath
@@ -408,17 +408,17 @@ function Transmut{
                 }
             } elseif ($RootDirInstallOption -eq "True"){
                 # Subdir + root install
-                if (test-path ("$gamepath\dsound.ini")){
+                if ([System.IO.File]::Exists("$gamepath\dsound.ini")){
                     Remove-Item -Path "$gamepath\dsound.ini" -force
                 }
-                if (test-path ("$gamepath\$SubDir\dsound.ini")){
+                if ([System.IO.File]::Exists("$gamepath\$SubDir\dsound.ini")){
                     Remove-Item -Path "$gamepath\$SubDir\dsound.ini" -force
                 }
                 New-Item -Path "$gamepath\$Subdir" -Name "dsound.ini" -force
                 New-Item -Path "$gamepath\" -Name "dsound.ini" -force
                 $text | Out-File $gamepath\dsound.ini -encoding ascii
                 $text | Out-File $gamepath\$Subdir\dsound.ini -encoding ascii
-                if (test-path ("$gamepath\dsound.dll")){
+                if ([System.IO.File]::Exists("$gamepath\dsound.dll")){
                     $destHash = (Get-FileHash -Path "$gamepath\dsound.dll" -Algorithm SHA256).Hash
                     if ($script:dsoundHash -ne $destHash) {
                         Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath
@@ -426,7 +426,7 @@ function Transmut{
                 } else {
                      Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath
                 }
-                if (test-path ("$gamepath\$Subdir\dsound.dll")){
+                if ([System.IO.File]::Exists("$gamepath\$Subdir\dsound.dll")){
                     $destHash = (Get-FileHash -Path "$gamepath\$Subdir\dsound.dll" -Algorithm SHA256).Hash
                     if ($script:dsoundHash -ne $destHash) {
                         Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath\$Subdir
@@ -436,18 +436,18 @@ function Transmut{
                 }
             } else {
                 # Subdir only
-                if (test-path ("$gamepath\dsound.ini")) {
+                if ([System.IO.File]::Exists("$gamepath\dsound.ini")) {
                     Remove-Item -Path "$gamepath\dsound.ini" -force
                 }
-                if (test-path ("$gamepath\dsound.dll")) {
+                if ([System.IO.File]::Exists("$gamepath\dsound.dll")) {
                     Remove-Item -Path "$gamepath\dsound.dll" -force
                 }
-                if (test-path ("$gamepath\$SubDir\dsound.ini")) {
+                if ([System.IO.File]::Exists("$gamepath\$SubDir\dsound.ini")) {
                     Remove-Item -Path "$gamepath\$SubDir\dsound.ini" -force
                 }
                 New-Item -Path "$gamepath\$SubDir" -Name "dsound.ini" -force
                 $text | Out-File $gamepath\$SubDir\dsound.ini -encoding ascii
-                if (test-path ("$gamepath\$Subdir\dsound.dll")) {
+                if ([System.IO.File]::Exists("$gamepath\$Subdir\dsound.dll")) {
                     $destHash = (Get-FileHash -Path "$gamepath\$Subdir\dsound.dll" -Algorithm SHA256).Hash
                     if ($script:dsoundHash -ne $destHash) {
                         Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath\$Subdir
