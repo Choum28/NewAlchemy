@@ -559,6 +559,7 @@ $Text_main.Text=$txt.Text_main
 $Text_jeuInstall.Text=$txt.Text_jeuInstall
 $Text_JeuTransmut.Text=$txt.Text_JeuTransmut
 $BoutonEdition.IsEnabled=$False
+$Window.WindowStartupLocation = "CenterScreen"
 
 
 # populate each listview, disable counter output in terminal
@@ -612,7 +613,7 @@ $MenuGauche.Add_SelectionChanged({
     $script:lastSelectedListView = $MenuGauche
 })
 
-### EDIT BUTON, Check each mandatory info, add then to global var and edit newalchemy file entry.
+### EDIT BUTTON, Check each mandatory info, add then to global var and edit newalchemy file entry.
 $BoutonEdition.add_Click({
     $x = $script:lastSelectedListView.SelectedItem
     if (!($x -eq $null)) {
@@ -660,10 +661,10 @@ $BoutonEdition.add_Click({
         $reader=(New-Object System.Xml.XmlNodeReader $inputXML)
         $Window_edit =[Windows.Markup.XamlReader]::Load( $reader )
         $inputXML.SelectNodes("//*[@Name]") | Foreach-Object { Set-Variable -Name ($_.Name) -Value $Window_edit.FindName($_.Name)}
-
+        $Window_edit.WindowStartupLocation = "CenterScreen"
+        
         $T_Titrejeu.IsReadOnly=$true
         $T_Titrejeu.Background = '#e5e5e5'
-
         $Window_edit.Title=$txt.MainTitle2    
         $C_Gamepath.Content = $txt.C_GamepathContent
         $C_registre.Content=$txt.C_registreContent
@@ -1204,6 +1205,7 @@ $BoutonAjouter.add_Click({
     $reader=(New-Object System.Xml.XmlNodeReader $inputXML)
     $Window_add =[Windows.Markup.XamlReader]::Load( $reader )
     $inputXML.SelectNodes("//*[@Name]") | Foreach-Object { Set-Variable -Name ($_.Name) -Value $Window_add.FindName($_.Name)}
+    $Window_add.WindowStartupLocation = "CenterScreen"
     
     # WPF Content, tooltip values
     $Window_add.Title=$txt.MainTitle2    
