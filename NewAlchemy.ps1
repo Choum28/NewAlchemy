@@ -951,6 +951,8 @@ $BoutonEdition.add_Click({
             $MenuGauche.SelectedIndex = -1
             $MenuDroite.SelectedIndex = -1
             $BoutonEdition.IsEnabled=$False
+            $BoutonTransmut.IsEnabled=$False
+            $BoutonUnTransmut.IsEnabled=$False
             $Window_edit.Close()
         })
 
@@ -1161,6 +1163,8 @@ $BoutonEdition.add_Click({
             $MenuGauche.SelectedIndex = -1
             $MenuDroite.SelectedIndex = -1
             $BoutonEdition.IsEnabled=$False
+            $BoutonTransmut.IsEnabled=$False
+            $BoutonUnTransmut.IsEnabled=$False
         }
         $Window_edit.Add_Closing($closingHandler)
         $Window_edit.ShowDialog() | out-null
@@ -1417,6 +1421,8 @@ $BoutonAjouter.add_Click({
         $MenuGauche.SelectedIndex = -1
         $MenuDroite.SelectedIndex = -1
         $BoutonEdition.IsEnabled=$False
+        $BoutonTransmut.IsEnabled=$False
+        $BoutonUnTransmut.IsEnabled=$False
         $Window_add.Close()
     })
    
@@ -1608,6 +1614,8 @@ $BoutonAjouter.add_Click({
         $MenuGauche.SelectedIndex = -1
         $MenuDroite.SelectedIndex = -1
         $BoutonEdition.IsEnabled=$False
+        $BoutonTransmut.IsEnabled=$False
+        $BoutonUnTransmut.IsEnabled=$False
     }
     $Window_add.Add_Closing($closingHandler)
     $Window_add.ShowDialog() | out-null
