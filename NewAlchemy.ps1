@@ -559,6 +559,8 @@ $Text_main.Text=$txt.Text_main
 $Text_jeuInstall.Text=$txt.Text_jeuInstall
 $Text_JeuTransmut.Text=$txt.Text_JeuTransmut
 $BoutonEdition.IsEnabled=$False
+$BoutonTransmut.IsEnabled=$False
+$BoutonUnTransmut.IsEnabled=$False
 $Window.WindowStartupLocation = "CenterScreen"
 
 
@@ -588,12 +590,14 @@ $BoutonUnTransmut.add_Click({
 $MenuGauche.Add_MouseDoubleClick({
     if ($MenuGauche.SelectedItem -ne $null) {
         Transmut $MenuGauche.SelectedItem
+        $BoutonTransmut.IsEnabled=$False
     }
 })
 
 $MenuDroite.Add_MouseDoubleClick({
     if ($MenuDroite.SelectedItem -ne $null) {
         UnTransmut $MenuDroite.SelectedItem
+        $BoutonUnTransmut.IsEnabled=$False
     }
 })
 
@@ -602,6 +606,8 @@ $MenuDroite.Add_SelectionChanged({
          $MenuGauche.SelectedIndex = -1
     }
     $BoutonEdition.IsEnabled=$True
+    $BoutonTransmut.IsEnabled=$False
+    $BoutonUnTransmut.IsEnabled=$True
     $script:lastSelectedListView = $MenuDroite
 })
 
@@ -610,6 +616,8 @@ $MenuGauche.Add_SelectionChanged({
         $MenuDroite.SelectedIndex = -1
     }
     $BoutonEdition.IsEnabled=$True
+    $BoutonTransmut.IsEnabled=$True
+    $BoutonUnTransmut.IsEnabled=$False
     $script:lastSelectedListView = $MenuGauche
 })
 
