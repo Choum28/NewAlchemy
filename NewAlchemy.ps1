@@ -392,13 +392,22 @@ function Transmut{
             $text = "Buffers=$Buffers`rDuration=$Duration`rMaxVoiceCount=$MaxVoiceCount`rDisableDirectMusic=$DisableDirectMusic`rDisableNativeAL=$DisableNativeAL`rLogDirectSound=$LogDirectSound`rLogDirectSound2D=$LogDirectSound2D`rLogDirectSound2DStreaming=$LogDirectSound2DStreaming`rLogDirectSound3D=$LogDirectSound3D`rLogDirectSoundListener=$LogDirectSoundListener`rLogDirectSoundEAX=$LogDirectSoundEAX`rLogDirectSoundTimingInfo=$LogDirectSoundTimingInfo`rLogStarvation=$LogStarvation`r"
 
             if ([string]::IsNullOrEmpty($Subdir)){
+                # no subdir
                 if (test-path ("$gamepath\dsound.ini")){
                     Remove-Item -Path $gamepath\dsound.ini -force
                 }
                 New-Item -Path $gamepath -Name "dsound.ini" -force
                 $text | Out-File $gamepath\dsound.ini -encoding ascii
-                Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath
+                if (test-path ("$gamepath\dsound.dll")){
+                    $destHash = (Get-FileHash -Path "$gamepath\dsound.dll" -Algorithm SHA256).Hash
+                    if ($script:dsoundHash -ne $destHash) {
+                        Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath
+                    }
+                } else {
+                     Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath
+                }
             } elseif ($RootDirInstallOption -eq "True"){
+                # Subdir + root install
                 if (test-path ("$gamepath\dsound.ini")){
                     Remove-Item -Path "$gamepath\dsound.ini" -force
                 }
@@ -409,19 +418,43 @@ function Transmut{
                 New-Item -Path "$gamepath\" -Name "dsound.ini" -force
                 $text | Out-File $gamepath\dsound.ini -encoding ascii
                 $text | Out-File $gamepath\$Subdir\dsound.ini -encoding ascii
-                Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath
-                Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath\$Subdir
-
-            } elseif (test-path ("$gamepath\$SubDir\dsound.ini")){
-                Remove-Item -Path "$gamepath\$SubDir\dsound.ini" -force
+                if (test-path ("$gamepath\dsound.dll")){
+                    $destHash = (Get-FileHash -Path "$gamepath\dsound.dll" -Algorithm SHA256).Hash
+                    if ($script:dsoundHash -ne $destHash) {
+                        Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath
+                    }
+                } else {
+                     Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath
+                }
+                if (test-path ("$gamepath\$Subdir\dsound.dll")){
+                    $destHash = (Get-FileHash -Path "$gamepath\$Subdir\dsound.dll" -Algorithm SHA256).Hash
+                    if ($script:dsoundHash -ne $destHash) {
+                        Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath\$Subdir
+                    }
+                } else {
+                    Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath\$Subdir
+                }
+            } else {
+                # Subdir only
+                if (test-path ("$gamepath\dsound.ini")) {
+                    Remove-Item -Path "$gamepath\dsound.ini" -force
+                }
+                if (test-path ("$gamepath\dsound.dll")) {
+                    Remove-Item -Path "$gamepath\dsound.dll" -force
+                }
+                if (test-path ("$gamepath\$SubDir\dsound.ini")) {
+                    Remove-Item -Path "$gamepath\$SubDir\dsound.ini" -force
+                }
                 New-Item -Path "$gamepath\$SubDir" -Name "dsound.ini" -force
                 $text | Out-File $gamepath\$SubDir\dsound.ini -encoding ascii
-                Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath\$Subdir
-
-            } else { 
-                New-Item -Path "$gamepath\$Subdir" -Name "dsound.ini" -force
-                $text | Out-File $gamepath\$SubDir\dsound.ini -encoding ascii
-                Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath\$Subdir
+                if (test-path ("$gamepath\$Subdir\dsound.dll")) {
+                    $destHash = (Get-FileHash -Path "$gamepath\$Subdir\dsound.dll" -Algorithm SHA256).Hash
+                    if ($script:dsoundHash -ne $destHash) {
+                        Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath\$Subdir
+                    }
+                } else {
+                    Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath\$Subdir
+                }
             }
             $MenuGauche.Items.Remove($x)
             $MenuDroite.Items.Add($x)
@@ -470,6 +503,7 @@ $PathALchemy=LocateAlchemy
 if (!(Test-Path -path "$PSScriptRoot\newalchemy.ini")) {
     GenerateNewAlchemy "$PathALchemy\Alchemy.ini"
 }
+$script:dsoundHash = (Get-FileHash -Path "$PathAlchemy\dsound.dll" -Algorithm SHA256).Hash 
 
 $script:listejeux = read-file "$PSScriptRoot\NewAlchemy.ini"
 checkinstall $script:listejeux | Out-Null
@@ -524,19 +558,21 @@ $BoutonParDefaut.Content=$txt.BoutonDefaultContent
 $Text_main.Text=$txt.Text_main
 $Text_jeuInstall.Text=$txt.Text_jeuInstall
 $Text_JeuTransmut.Text=$txt.Text_JeuTransmut
+$BoutonEdition.IsEnabled=$False
+
 
 # populate each listview, disable counter output in terminal
 $MenuGauche.Items.Clear()
 foreach ($jeu in $jeunontransmut){
     $MenuGauche.Items.Add($jeu.name) | Out-Null
 }
-Sortlistview $MenuGauche
+Sortlistview $MenuGauche | Out-Null
 
 $MenuDroite.Items.Clear()
 foreach ($jeu in $jeutransmut){
     $MenuDroite.Items.Add($jeu.name) | Out-Null
 }
-Sortlistview $MenuDroite
+Sortlistview $MenuDroite | Out-Null
  
 #Transmut Button Copy needed file to gamepath and refresh listview (sort by name)
 $BoutonTransmut.add_Click({
@@ -561,10 +597,18 @@ $MenuDroite.Add_MouseDoubleClick({
 })
 
 $MenuDroite.Add_SelectionChanged({
+    if ($MenuDroite.SelectedIndex -ne -1) {
+         $MenuGauche.SelectedIndex = -1
+    }
+    $BoutonEdition.IsEnabled=$True
     $script:lastSelectedListView = $MenuDroite
 })
 
 $MenuGauche.Add_SelectionChanged({
+    if ($MenuGauche.SelectedIndex -ne -1) {
+        $MenuDroite.SelectedIndex = -1
+    }
+    $BoutonEdition.IsEnabled=$True
     $script:lastSelectedListView = $MenuGauche
 })
 
@@ -895,6 +939,9 @@ $BoutonEdition.add_Click({
         })
         # Cancel Button (EDIT FORM)
         $B_Cancel.add_Click({
+            $MenuGauche.SelectedIndex = -1
+            $MenuDroite.SelectedIndex = -1
+            $BoutonEdition.IsEnabled=$False
             $Window_edit.Close()
         })
 
@@ -1099,8 +1146,14 @@ $BoutonEdition.add_Click({
                     Transmut $x
                 }
                 $Window_edit.Close()
-                }
+            }
         })
+        $closingHandler = {
+            $MenuGauche.SelectedIndex = -1
+            $MenuDroite.SelectedIndex = -1
+            $BoutonEdition.IsEnabled=$False
+        }
+        $Window_edit.Add_Closing($closingHandler)
         $Window_edit.ShowDialog() | out-null
     }
 })
@@ -1351,6 +1404,9 @@ $BoutonAjouter.add_Click({
         }
     })
     $B_Cancel.add_Click({
+        $MenuGauche.SelectedIndex = -1
+        $MenuDroite.SelectedIndex = -1
+        $BoutonEdition.IsEnabled=$False
         $Window_add.Close()
     })
    
@@ -1538,6 +1594,12 @@ $BoutonAjouter.add_Click({
             $Window_add.Close()
         }
     })
+    $closingHandler = {
+        $MenuGauche.SelectedIndex = -1
+        $MenuDroite.SelectedIndex = -1
+        $BoutonEdition.IsEnabled=$False
+    }
+    $Window_add.Add_Closing($closingHandler)
     $Window_add.ShowDialog() | out-null
 })
 
