@@ -27,11 +27,12 @@
     AUTEUR:    Choum
 
     HISTORIQUE VERSION:
+    1.08    15.08.2024    Add doubleclick support to transmut/Untransmut, possibility to edit from both Listview.
     1.07    04.08.2024    Test subdir path (if filled) before adding game to the detected list on startup.
     1.06    25.07.2024    Significant improved loading time.
     1.05    23.07.2024    WPF forms are now rezisable.
     1.04    28.01.2024    No need anymore to install the scripts inside alchemy folder (Creative alchemy installed is still required), add default (reset) button.
-    1.03    24.01.2024    Script_Internationalization with psd1 file for easier translation, fix non critcal error, improve error message, add messagebox Icon.
+    1.03    24.01.2024    Script_Internationalization with psd1 file for easier translation, fix non critical error, improve error message, add messagebox Icon.
     1.02    20.01.2024    Few Bugfix, add Debug settings, Remove NativeAl value question on first launch
     1.01    06.10.2021    Fix edit new add game bug, add Nativeal value question on first launch
     1.0     15.11.2020    First version
@@ -66,7 +67,7 @@ function LocateAlchemy {
     } else {
         [System.Windows.MessageBox]::Show($txt.Badlocation,"",0,16)
     }  
-	exit
+    exit
 }
 
 # Convert value into hash table.
@@ -119,7 +120,7 @@ function add-Game {
     return $d
 }
 
-#read Newalchemy ini file and convert game to hash table with add-game function, default value are define here if not present in alchemy.ini.
+#read Newalchemy ini file and convert game to hash table with add-game function, default value are defined here if not present in alchemy.ini.
 function read-file { 
     param(
         [string]$file
@@ -173,8 +174,8 @@ function read-file {
                                 $LogDirectSoundTimingInfo="False"
                                 $LogStarvation="False"
                         }
-                            $test = $test+1
-                            $Name = $line -replace '[][]' 
+                        $test = $test+1
+                        $Name = $line -replace '[][]' 
                     }
                 "RegPath=*" { $RegPath = $line.replace("RegPath=","") }
                 "GamePath=*" { $Gamepath = $line.replace("GamePath=","") }
@@ -365,6 +366,99 @@ function Sortlistview{
     return $listview
 }
 
+function Transmut{
+    param ($x)
+    
+    foreach($game in $script:jeutrouve){
+        if ($x -eq $game.Name){
+            $gamepath = $game.Gamepath
+            $SubDir = $game.SubDir
+            $Buffers= $game.Buffers
+            $Duration = $game.Duration
+            $MaxVoiceCount = $game.MaxVoiceCount
+            $DisableDirectMusic = $game.DisableDirectMusic
+            $DisableNativeAL = $game.DisableNativeAL
+            $RootDirInstallOption = $game.RootDirInstallOption
+            $DisableDirectMusic = $DisableDirectMusic -ireplace("False","0")
+            $DisableDirectMusic = $DisableDirectMusic -ireplace("True","1")
+            $LogDirectSound = $game.LogDirectSound
+            $LogDirectSound2D = $game.LogDirectSound2D
+            $LogDirectSound2DStreaming = $game.LogDirectSound2DStreaming
+            $LogDirectSound3D = $game.LogDirectSound3D
+            $LogDirectSoundListener = $game.LogDirectSoundListener
+            $LogDirectSoundEAX = $game.LogDirectSoundEAX
+            $LogDirectSoundTimingInfo = $game.LogDirectSoundTimingInfo
+            $LogStarvation = $game.LogStarvation
+            $text = "Buffers=$Buffers`rDuration=$Duration`rMaxVoiceCount=$MaxVoiceCount`rDisableDirectMusic=$DisableDirectMusic`rDisableNativeAL=$DisableNativeAL`rLogDirectSound=$LogDirectSound`rLogDirectSound2D=$LogDirectSound2D`rLogDirectSound2DStreaming=$LogDirectSound2DStreaming`rLogDirectSound3D=$LogDirectSound3D`rLogDirectSoundListener=$LogDirectSoundListener`rLogDirectSoundEAX=$LogDirectSoundEAX`rLogDirectSoundTimingInfo=$LogDirectSoundTimingInfo`rLogStarvation=$LogStarvation`r"
+
+            if ([string]::IsNullOrEmpty($Subdir)){
+                if (test-path ("$gamepath\dsound.ini")){
+                    Remove-Item -Path $gamepath\dsound.ini -force
+                }
+                New-Item -Path $gamepath -Name "dsound.ini" -force
+                $text | Out-File $gamepath\dsound.ini -encoding ascii
+                Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath
+            } elseif ($RootDirInstallOption -eq "True"){
+                if (test-path ("$gamepath\dsound.ini")){
+                    Remove-Item -Path "$gamepath\dsound.ini" -force
+                }
+                if (test-path ("$gamepath\$SubDir\dsound.ini")){
+                    Remove-Item -Path "$gamepath\$SubDir\dsound.ini" -force
+                }
+                New-Item -Path "$gamepath\$Subdir" -Name "dsound.ini" -force
+                New-Item -Path "$gamepath\" -Name "dsound.ini" -force
+                $text | Out-File $gamepath\dsound.ini -encoding ascii
+                $text | Out-File $gamepath\$Subdir\dsound.ini -encoding ascii
+                Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath
+                Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath\$Subdir
+
+            } elseif (test-path ("$gamepath\$SubDir\dsound.ini")){
+                Remove-Item -Path "$gamepath\$SubDir\dsound.ini" -force
+                New-Item -Path "$gamepath\$SubDir" -Name "dsound.ini" -force
+                $text | Out-File $gamepath\$SubDir\dsound.ini -encoding ascii
+                Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath\$Subdir
+
+            } else { 
+                New-Item -Path "$gamepath\$Subdir" -Name "dsound.ini" -force
+                $text | Out-File $gamepath\$SubDir\dsound.ini -encoding ascii
+                Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath\$Subdir
+            }
+            $MenuGauche.Items.Remove($x)
+            $MenuDroite.Items.Add($x)
+            Sortlistview $MenuDroite
+        }
+    }
+}
+
+function UnTransmut{
+    param ($x)
+    
+    $x = $Menudroite.SelectedItem
+    foreach ($game in $script:jeutrouve){
+        if ($x -eq $game.Name){
+            $gamepath = $game.Gamepath
+            $SubDir = $game.SubDir
+            $RootDirInstallOption = $game.RootDirInstallOption
+            if ([string]::IsNullOrEmpty($Subdir)){
+                Remove-Item $gamepath\dsound.ini
+                Remove-Item $gamepath\dsound.dll
+            } elseif ($RootDirInstallOption -eq "True"){
+                Remove-Item "$gamepath\dsound.ini"
+                Remove-Item "$gamepath\dsound.dll"
+                Remove-Item "$gamepath\$Subdir\dsound.ini"
+                Remove-Item "$gamepath\$Subdir\dsound.dll"
+            } else {
+                Remove-Item "$gamepath\$Subdir\dsound.ini"
+                Remove-Item "$gamepath\$Subdir\dsound.dll"
+            }
+            $MenuDroite.Items.Remove($x)
+            $MenuGauche.Items.Add($x)
+            Sortlistview $MenuGauche
+        }
+    }
+}
+
+
 Add-Type -AssemblyName PresentationFramework
 Add-Type -AssemblyName System.Windows.Forms
 
@@ -414,7 +508,7 @@ $jeunontransmut = $script:jeutrouve | where-object {$_.Found -eq $true -and $_.T
 			<TextBlock Name="Text_jeuInstall" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="20,54,0,0" Width="238"/>
 			<TextBlock Name="Text_JeuTransmut" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="472,54,0,0" Width="173"/>
 			<TextBlock Name="T_URL" HorizontalAlignment="Left" TextWrapping="Wrap" Text="https://github.com/Choum28/NewAlchemy" VerticalAlignment="Top" Margin="20,361,0,0" FontSize="8"/>
-			<TextBlock Name="T_version" HorizontalAlignment="Right" TextWrapping="Wrap" Text="Version 1.07" VerticalAlignment="Top" Margin="0,359,20,0" FontSize="8"/>
+			<TextBlock Name="T_version" HorizontalAlignment="Right" TextWrapping="Wrap" Text="Version 1.08" VerticalAlignment="Top" Margin="0,359,20,0" FontSize="8"/>
 		</Grid>
 	</Viewbox>
 </Window>
@@ -424,7 +518,7 @@ $reader=(New-Object System.Xml.XmlNodeReader $inputXML)
 $Window =[Windows.Markup.XamlReader]::Load( $reader )
 $inputXML.SelectNodes("//*[@Name]") | Foreach-Object { Set-Variable -Name ($_.Name) -Value $Window.FindName($_.Name)}
 
-$BoutonEdition.Content="<< $($txt.BoutonEditionContent)"
+$BoutonEdition.Content=$txt.BoutonEditionContent
 $BoutonAjouter.Content=$txt.BoutonAjouterContent
 $BoutonParDefaut.Content=$txt.BoutonDefaultContent
 $Text_main.Text=$txt.Text_main
@@ -446,98 +540,37 @@ Sortlistview $MenuDroite
  
 #Transmut Button Copy needed file to gamepath and refresh listview (sort by name)
 $BoutonTransmut.add_Click({
-    $x = $Menugauche.SelectedItem
-        foreach($game in $script:jeutrouve){
-            if ($x -eq $game.Name){
-                $gamepath = $game.Gamepath
-                $SubDir = $game.SubDir
-                $Buffers= $game.Buffers
-                $Duration = $game.Duration
-                $MaxVoiceCount = $game.MaxVoiceCount
-                $DisableDirectMusic = $game.DisableDirectMusic
-                $DisableNativeAL = $game.DisableNativeAL
-                $RootDirInstallOption = $game.RootDirInstallOption
-                $DisableDirectMusic = $DisableDirectMusic -ireplace("False","0")
-                $DisableDirectMusic = $DisableDirectMusic -ireplace("True","1")
-                $LogDirectSound = $game.LogDirectSound
-                $LogDirectSound2D = $game.LogDirectSound2D
-                $LogDirectSound2DStreaming = $game.LogDirectSound2DStreaming
-                $LogDirectSound3D = $game.LogDirectSound3D
-                $LogDirectSoundListener = $game.LogDirectSoundListener
-                $LogDirectSoundEAX = $game.LogDirectSoundEAX
-                $LogDirectSoundTimingInfo = $game.LogDirectSoundTimingInfo
-                $LogStarvation = $game.LogStarvation
-                $text = "Buffers=$Buffers`rDuration=$Duration`rMaxVoiceCount=$MaxVoiceCount`rDisableDirectMusic=$DisableDirectMusic`rDisableNativeAL=$DisableNativeAL`rLogDirectSound=$LogDirectSound`rLogDirectSound2D=$LogDirectSound2D`rLogDirectSound2DStreaming=$LogDirectSound2DStreaming`rLogDirectSound3D=$LogDirectSound3D`rLogDirectSoundListener=$LogDirectSoundListener`rLogDirectSoundEAX=$LogDirectSoundEAX`rLogDirectSoundTimingInfo=$LogDirectSoundTimingInfo`rLogStarvation=$LogStarvation`r"
- 
-                if ([string]::IsNullOrEmpty($Subdir)){
-                    if (test-path ("$gamepath\dsound.ini")){
-                        Remove-Item -Path $gamepath\dsound.ini -force
-                    }
-                    New-Item -Path $gamepath -Name "dsound.ini" -force
-                    $text | Out-File $gamepath\dsound.ini -encoding ascii
-                    Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath
-                } elseif ($RootDirInstallOption -eq "True"){
-                    if (test-path ("$gamepath\dsound.ini")){
-                        Remove-Item -Path "$gamepath\dsound.ini" -force
-                    }
-                    if (test-path ("$gamepath\$SubDir\dsound.ini")){
-                        Remove-Item -Path "$gamepath\$SubDir\dsound.ini" -force
-                    }
-                    New-Item -Path "$gamepath\$Subdir" -Name "dsound.ini" -force
-                    New-Item -Path "$gamepath\" -Name "dsound.ini" -force
-                    $text | Out-File $gamepath\dsound.ini -encoding ascii
-                    $text | Out-File $gamepath\$Subdir\dsound.ini -encoding ascii
-                    Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath
-                    Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath\$Subdir
-
-                } elseif (test-path ("$gamepath\$SubDir\dsound.ini")){
-                    Remove-Item -Path "$gamepath\$SubDir\dsound.ini" -force
-                    New-Item -Path "$gamepath\$SubDir" -Name "dsound.ini" -force
-                    $text | Out-File $gamepath\$SubDir\dsound.ini -encoding ascii
-                    Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath\$Subdir
-
-                } else { 
-                    New-Item -Path "$gamepath\$Subdir" -Name "dsound.ini" -force
-                    $text | Out-File $gamepath\$SubDir\dsound.ini -encoding ascii
-                    Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath\$Subdir
-                }
-                $MenuGauche.Items.Remove($x)
-                $MenuDroite.Items.Add($x)
-                Sortlistview $MenuDroite
-            }
-    }
+    Transmut $MenuGauche.SelectedItem
  })
 
 #Button Untransmut, remove Dsound files and refresh each listview (sort by name)
 $BoutonUnTransmut.add_Click({
-    $x = $Menudroite.SelectedItem
-    foreach ($game in $script:jeutrouve){
-        if ($x -eq $game.Name){
-            $gamepath = $game.Gamepath
-            $SubDir = $game.SubDir
-            $RootDirInstallOption = $game.RootDirInstallOption
-            if ([string]::IsNullOrEmpty($Subdir)){
-                Remove-Item $gamepath\dsound.ini
-                Remove-Item $gamepath\dsound.dll
-            } elseif ($RootDirInstallOption -eq "True"){
-                Remove-Item "$gamepath\dsound.ini"
-                Remove-Item "$gamepath\dsound.dll"
-                Remove-Item "$gamepath\$Subdir\dsound.ini"
-                Remove-Item "$gamepath\$Subdir\dsound.dll"
-            } else {
-                Remove-Item "$gamepath\$Subdir\dsound.ini"
-                Remove-Item "$gamepath\$Subdir\dsound.dll"
-            }
-            $MenuDroite.Items.Remove($x)
-            $MenuGauche.Items.Add($x)
-            Sortlistview $MenuGauche
-        }
+    UnTransmut $MenuDroite.SelectedItem
+})
+
+$MenuGauche.Add_MouseDoubleClick({
+    if ($MenuGauche.SelectedItem -ne $null) {
+        Transmut $MenuGauche.SelectedItem
     }
+})
+
+$MenuDroite.Add_MouseDoubleClick({
+    if ($MenuDroite.SelectedItem -ne $null) {
+        UnTransmut $MenuDroite.SelectedItem
+    }
+})
+
+$MenuDroite.Add_SelectionChanged({
+    $script:lastSelectedListView = $MenuDroite
+})
+
+$MenuGauche.Add_SelectionChanged({
+    $script:lastSelectedListView = $MenuGauche
 })
 
 ### EDIT BUTON, Check each mandatory info, add then to global var and edit newalchemy file entry.
 $BoutonEdition.add_Click({
-    $x = $MenuGauche.SelectedItem
+    $x = $script:lastSelectedListView.SelectedItem
     if (!($x -eq $null)) {
         [xml]$InputXML =@"
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -1060,7 +1093,11 @@ $BoutonEdition.add_Click({
                 $file[$LineNumber +15] = "LogDirectSoundTimingInfo=$LogDirectSoundTimingInfo"
                 $file[$LineNumber +16] = "LogStarvation=$LogStarvation"
                 $file | Set-Content $PSScriptRoot\NewAlchemy.ini -encoding ascii
-                
+                # Update file/conf if game is already transmuted (Re-transmut)
+                if ( $script:lastSelectedListView -eq $MenuDroite ) {
+                    $MenuDroite.Items.Remove($x)
+                    Transmut $x
+                }
                 $Window_edit.Close()
                 }
         })
@@ -1509,7 +1546,7 @@ $BoutonParDefaut.add_Click({
     $choice = [System.Windows.MessageBox]::Show("$($txt.Defaultmsgbox)`r$($txt.Defaultmsgbox2)`r$($PSScriptRoot)\NewAlchemy.bak`r`r$($txt.Defaultmsgbox3)" , "NewAlchemy" , 4,64)
     if ($choice -eq 'Yes') {
         move-Item "$PSScriptRoot\NewAlchemy.ini" "$PSScriptRoot\NewAlchemy.Bak" -force
-        GenerateNewAlchemy "$PathAlchemy\Alchemy.ini"	
+        GenerateNewAlchemy "$PathAlchemy\Alchemy.ini"
         $script:listejeux = read-file "$PSScriptRoot\NewAlchemy.ini"
         checkinstall $script:listejeux | Out-Null
         $script:jeutrouve = $script:listejeux | where-object Found -eq $true
@@ -1520,10 +1557,12 @@ $BoutonParDefaut.add_Click({
         foreach ($jeu in $jeunontransmut){
             $MenuGauche.Items.Add($jeu.name) | Out-Null
         }
+        Sortlistview $MenuGauche
         $MenuDroite.Items.Clear()
         foreach ($jeu in $jeutransmut){
             $MenuDroite.Items.Add($jeu.name) | Out-Null
         }
+        Sortlistview $MenuDroite
     }
 })
 
