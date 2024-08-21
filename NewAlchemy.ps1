@@ -1,6 +1,6 @@
 <# 
 .SYNOPSIS
-    This script is a test to recreate the Creative Alchemy application in powershell with some new options and possibilities.
+    This script is a test to recreate the Creative Alchemy application in powershell with new options and possibilities.
 
 .DESCRIPTION
     What different from creative alchemy :
@@ -15,7 +15,7 @@
     .\NewALchemy.ps1
         Launch the script
 
- -------------------------- EXEMPLE 2 --------------------------
+ -------------------------- EXAMPLE 2 --------------------------
  .\powershell.exe -WindowStyle Hidden -ep bypass -file "C:\apps\NewAlchemy-main\Alchemy.ps1"
         Launch the script and hide console
 
@@ -23,10 +23,10 @@
     This script will generate an ini file NewAlchemy.ini to store gamelist audio options and change.
     
 .NOTES
-    NOM:       NewALchemy.ps1
-    AUTEUR:    Choum
+    NAME:       NewALchemy.ps1
+    AUTHOR:    Choum
 
-    HISTORIQUE VERSION:
+    VERSION HISTORY:
     1.09    17.08.2024    Hash check for transmuted game to exclude game with dsoal dsound.dll to appears as transmuted per newalchemy, fix bug related to missing dsound.ini log info when you transmut a newly created game.
     1.08    15.08.2024    Add doubleclick support to transmut/Untransmut, possibility to edit from both Listview.
     1.07    04.08.2024    Test subdir path (if filled) before adding game to the detected list on startup.
@@ -38,6 +38,7 @@
     1.01    06.10.2021    Fix edit new add game bug, add Nativeal value question on first launch
     1.0     15.11.2020    First version
 .LINK
+    https://github.com/Choum28/NewAlchemy
  #>
 
 # Locate Alchemy installation and check for necessary files, return Creative alchemy path.
