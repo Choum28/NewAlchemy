@@ -47,9 +47,7 @@ function LocateAlchemy {
     } else { $key = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{12321490-F573-4815-B6CC-7ABEF18C9AC4}" }
     $regkey = "InstallLocation"
     if ( test-path $key ) {
-        try { 
-            $path = Get-ItemPropertyvalue -Path $key -name $regkey 
-        }
+        try { $path = Get-ItemPropertyvalue -Path $key -name $regkey }
         catch { 
             [System.Windows.MessageBox]::Show($txt.Badlocation,"",0,16)
             exit
@@ -57,8 +55,8 @@ function LocateAlchemy {
         if ( Test-Path -path "$path\alchemy.ini" ) {
             if ( Test-Path -path "$path\dsound.dll" ) {
                 return $path
-            } else { [System.Windows.MessageBox]::Show("$($txt.missfile) $path\dsound.dll","",0,	16) }
-        } else { [System.Windows.MessageBox]::Show("$($txt.missfile) $path\alchemy.ini","",0,	16) }
+            } else { [System.Windows.MessageBox]::Show("$($txt.missfile) $path\dsound.dll","",0,16) }
+        } else { [System.Windows.MessageBox]::Show("$($txt.missfile) $path\alchemy.ini","",0,16) }
     } else { [System.Windows.MessageBox]::Show($txt.Badlocation,"",0,16) }  
     exit
 }
@@ -553,10 +551,12 @@ Sortlistview $MenuDroite | Out-Null
  
 $BoutonTransmut.add_Click({
     Transmut $MenuGauche.SelectedItem
+    if ( $Null -eq $MenuGauche.SelectedItem) { $BoutonTransmut.IsEnabled = $False }
  })
 
 $BoutonUnTransmut.add_Click({
     UnTransmut $MenuDroite.SelectedItem
+    if ( $Null -eq $MenuDroite.SelectedItem) { $BoutonUnTransmut.IsEnabled = $False }
 })
 
 $MenuGauche.Add_MouseDoubleClick({
