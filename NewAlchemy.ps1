@@ -42,11 +42,11 @@
 
 # Locate Alchemy installation and check for necessary files, return Creative alchemy path.
 function LocateAlchemy { 
-    if ([Environment]::Is64BitOperatingSystem -eq $true){
+    if ( [Environment]::Is64BitOperatingSystem -eq $true ) {
         $key = "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{12321490-F573-4815-B6CC-7ABEF18C9AC4}"
     } else { $key = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{12321490-F573-4815-B6CC-7ABEF18C9AC4}" }
     $regkey = "InstallLocation"
-    if (test-path $key){
+    if ( test-path $key ) {
         try { 
             $path = Get-ItemPropertyvalue -Path $key -name $regkey 
         }
@@ -54,8 +54,8 @@ function LocateAlchemy {
             [System.Windows.MessageBox]::Show($txt.Badlocation,"",0,16)
             exit
         }
-        if (Test-Path -path "$path\alchemy.ini"){
-            if (Test-Path -path "$path\dsound.dll"){
+        if ( Test-Path -path "$path\alchemy.ini" ) {
+            if ( Test-Path -path "$path\dsound.dll" ) {
                 return $path
             } else { [System.Windows.MessageBox]::Show("$($txt.missfile) $path\dsound.dll","",0,	16) }
         } else { [System.Windows.MessageBox]::Show("$($txt.missfile) $path\alchemy.ini","",0,	16) }
@@ -88,27 +88,27 @@ function add-Game {
         [string]$LogStarvation
     )
     
-    $d=@{
-        Name=$Name
-        RegPath=$RegPath
-        Gamepath=$Gamepath
-        Buffers=$Buffers
-        Duration=$Duration
-        DisableDirectMusic=$DisableDirectMusic
-        MaxVoiceCount=$MaxVoiceCount
-        SubDir=$SubDir
-        RootDirInstallOption=$RootDirInstallOption
-        DisableNativeAL=$DisableNativeAL
-        Found=$Found
-        Transmut=$Transmut
-        LogDirectSound=$LogDirectSound
-        LogDirectSound2D=$LogDirectSound2D
-        LogDirectSound2DStreaming=$LogDirectSound2DStreaming
-        LogDirectSound3D=$LogDirectSound3D
-        LogDirectSoundListener=$LogDirectSoundListener
-        LogDirectSoundEAX=$LogDirectSoundEAX
-        LogDirectSoundTimingInfo=$LogDirectSoundTimingInfo
-        LogStarvation=$LogStarvation
+    $d = @{
+        Name = $Name
+        RegPath = $RegPath
+        Gamepath = $Gamepath
+        Buffers = $Buffers
+        Duration = $Duration
+        DisableDirectMusic = $DisableDirectMusic
+        MaxVoiceCount = $MaxVoiceCount
+        SubDir = $SubDir
+        RootDirInstallOption = $RootDirInstallOption
+        DisableNativeAL = $DisableNativeAL
+        Found = $Found
+        Transmut = $Transmut
+        LogDirectSound = $LogDirectSound
+        LogDirectSound2D = $LogDirectSound2D
+        LogDirectSound2DStreaming = $LogDirectSound2DStreaming
+        LogDirectSound3D = $LogDirectSound3D
+        LogDirectSoundListener = $LogDirectSoundListener
+        LogDirectSoundEAX = $LogDirectSoundEAX
+        LogDirectSoundTimingInfo = $LogDirectSoundTimingInfo
+        LogStarvation = $LogStarvation
     }
     return $d
 }
@@ -125,47 +125,47 @@ function read-file {
     $Number = 0
     $Buffers=4
     $Duration=25
-    $DisableDirectMusic="False"
-    $MaxVoiceCount=128
-    $RootDirInstallOption="False"
-    $DisableNativeAL="False"
-    $Found=$false
-    $Transmut=$false
-    $LogDirectSound="False"
-    $LogDirectSound2D="False"
-    $LogDirectSound2DStreaming="False"
-    $LogDirectSound3D="False"
-    $LogDirectSoundListener="False"
-    $LogDirectSoundEAX="False"
-    $LogDirectSoundTimingInfo="False"
-    $LogStarvation="False"
+    $DisableDirectMusic = "False"
+    $MaxVoiceCount = 128
+    $RootDirInstallOption = "False"
+    $DisableNativeAL = "False"
+    $Found = $false
+    $Transmut = $false
+    $LogDirectSound = "False"
+    $LogDirectSound2D = "False"
+    $LogDirectSound2DStreaming = "False"
+    $LogDirectSound3D = "False"
+    $LogDirectSoundListener = "False"
+    $LogDirectSoundEAX = "False"
+    $LogDirectSoundTimingInfo = "False"
+    $LogStarvation = "False"
 
     foreach ( $line in $list ) {
         $Number = $Number + 1
-        if ($line -notlike ';*') {
+        if ( $line -notlike ';*' ) {
             Switch -wildcard ($line) {
                 '`[*' {
-                        if ($count -gt 0) {
+                        if ( $count -gt 0 ) {
                                 $liste += Add-Game -Name $Name -RegPath $RegPath -Gamepath $Gamepath -Buffers $Buffers -Duration $Duration -DisableDirectMusic $DisableDirectMusic -MaxVoiceCount $MaxVoiceCount -SubDir $SubDir -RootDirInstallOption $RootDirInstallOption -DisableNativeAL $DisableNativeAL -Found $Found -Transmut $Transmut -LogDirectSound $LogDirectSound -LogDirectSound2D $LogDirectSound2D -LogDirectSound2DStreaming $LogDirectSound2DStreaming -LogDirectSound3D $LogDirectSound3D -LogDirectSoundListener $LogDirectSoundListener -LogDirectSoundEAX $LogDirectSoundEAX -LogDirectSoundTimingInfo $LogDirectSoundTimingInfo -LogStarvation $LogStarvation
                                 $RegPath = ""
                                 $Gamepath = ""
-                                $Buffers=4
-                                $Duration=25
-                                $DisableDirectMusic="False"
-                                $MaxVoiceCount=128
+                                $Buffers = 4
+                                $Duration = 25
+                                $DisableDirectMusic = "False"
+                                $MaxVoiceCount = 128
                                 $SubDir = ""
                                 $RootDirInstallOption = "False"
-                                $DisableNativeAL="False"
+                                $DisableNativeAL = "False"
                                 $Found = $false
                                 $Transmut = $false
-                                $LogDirectSound="False"
-                                $LogDirectSound2D="False"
-                                $LogDirectSound2DStreaming="False"
-                                $LogDirectSound3D="False"
-                                $LogDirectSoundListener="False"
-                                $LogDirectSoundEAX="False"
-                                $LogDirectSoundTimingInfo="False"
-                                $LogStarvation="False"
+                                $LogDirectSound = "False"
+                                $LogDirectSound2D = "False"
+                                $LogDirectSound2DStreaming = "False"
+                                $LogDirectSound3D = "False"
+                                $LogDirectSoundListener = "False"
+                                $LogDirectSoundEAX = "False"
+                                $LogDirectSoundTimingInfo = "False"
+                                $LogStarvation = "False"
                         }
                         $count = $count+1
                         $Name = $line -replace '[][]' 
@@ -190,7 +190,7 @@ function read-file {
             }
         }
     }
-    if ($Number -ne $count){
+    if ( $Number -ne $count ) {
         $liste += add-Game -Name $Name -RegPath $RegPath -Gamepath $Gamepath -Buffers $Buffers -Duration $Duration -DisableDirectMusic $DisableDirectMusic -MaxVoiceCount $MaxVoiceCount -SubDir $SubDir -RootDirInstallOption $RootDirInstallOption -DisableNativeAL $DisableNativeAL -Transmut $Transmut -LogDirectSound $LogDirectSound -LogDirectSound2D $LogDirectSound2D -LogDirectSound2DStreaming $LogDirectSound2DStreaming -LogDirectSound3D $LogDirectSound3D -LogDirectSoundListener $LogDirectSoundListener -LogDirectSoundEAX $LogDirectSoundEAX -LogDirectSoundTimingInfo $LogDirectSoundTimingInfo -LogStarvation $LogStarvation
     }
     return $liste
@@ -198,7 +198,7 @@ function read-file {
 
 #Create New NewALchemy.ini file with new options, that will be used by the script
 function GenerateNewAlchemy{ 
-    param([string]$file) 
+    param( [string]$file ) 
     @"
 ;Creative ALchemy titles
 ;Format/Options:
@@ -223,7 +223,7 @@ function GenerateNewAlchemy{
 
 "@ | Out-File -Append $PSScriptRoot\NewAlchemy.ini -encoding ascii
     $liste = read-file $file
-    foreach ($line in $liste){
+    foreach ( $line in $liste ) {
         $a = $line.Name
         $b = $line.RegPath
         $c = $line.Gamepath
@@ -250,7 +250,7 @@ function GenerateNewAlchemy{
 function checkpresent{ 
     param($game)
     $RegPath = $game.RegPath
-    if (![string]::IsNullOrEmpty($RegPath)) {
+    if ( ![string]::IsNullOrEmpty($RegPath) ) {
         # recover key and value
         $RegKey = $RegPath|split-path -leaf
         $KeyPath = $RegPath.replace("\$regkey","")
@@ -258,31 +258,31 @@ function checkpresent{
             "HKEY_LOCAL_MACHINE*" {
                 $KeyPath = $KeyPath.replace("HKEY_LOCAL_MACHINE\","")
                 $RegTest = [Microsoft.Win32.Registry]::LocalMachine.OpenSubKey($KeyPath)
-                if ($Null -eq $RegTest) {
+                if ( $Null -eq $RegTest ) {
                     $KeyPath = $Keypath.replace("SOFTWARE","SOFTWARE\WOW6432Node")
                     $RegTest = [Microsoft.Win32.Registry]::LocalMachine.OpenSubKey($KeyPath)
                 }
-                if ($Null -ne $RegTest) {
+                if ( $Null -ne $RegTest ) {
                     $game.GamePath = $Regtest.GetValue($RegKey)
                 }
             }
             "HKEY_CURRENT_USER*"{
                 $KeyPath = $KeyPath.replace("HKEY_CURRENT_USER\","")
                 $RegTest = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey($KeyPath)
-                if ($Null -eq $RegTest) {
+                if ( $Null -eq $RegTest ) {
                     $KeyPath = $Keypath.replace("SOFTWARE","SOFTWARE\WOW6432Node")
                     $RegTest = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey($KeyPath)
                 }
-                if ($Null -ne $RegTest) {
+                if ( $Null -ne $RegTest ) {
                     $game.GamePath = $Regtest.GetValue($RegKey)
                 }
             }
         }
     }
-    if (![string]::IsNullOrEmpty($game.gamePath)) {
-        if ([System.IO.Directory]::Exists($game.GamePath)) {
-            if (![string]::IsNullOrEmpty($game.SubDir)){
-                if ([System.IO.Directory]::Exists("$($game.GamePath)\$($game.SubDir)")) {
+    if ( ![string]::IsNullOrEmpty($game.gamePath) ) {
+        if ( [System.IO.Directory]::Exists($game.GamePath) ) {
+            if ( ![string]::IsNullOrEmpty($game.SubDir) ) {
+                if ( [System.IO.Directory]::Exists("$($game.GamePath)\$($game.SubDir)") ) {
                     $game.Found = $true
                 } else { $game.Found = $false }
             } else { $game.Found = $true }
@@ -295,7 +295,7 @@ function checkpresent{
 function checkinstall{ 
     param($liste)
     $count = 0
-    foreach ($game in $liste){ 
+    foreach ( $game in $liste ) { 
         $liste[$count] = checkpresent $game
         $count = $count +1
     }
@@ -306,24 +306,24 @@ function checkinstall{
 function checkTransmut{ 
     param($liste)
     $count = 0
-    foreach ($game in $liste){
+    foreach ( $game in $liste ) {
         $gamepath = $game.Gamepath
         $Subdir = $game.SubDir
         $RootDirInstallOption = $game.RootDirInstallOption
-        if ([string]::IsNullOrEmpty($Subdir)){
-            if ([System.IO.File]::Exists("$gamepath\dsound.dll")) {
+        if ( [string]::IsNullOrEmpty($Subdir) ) {
+            if ( [System.IO.File]::Exists("$gamepath\dsound.dll") ) {
                 $game.Transmut = CheckHash "$gamepath\dsound.dll"
             }
             else { $game.Transmut = $false }
         } elseif ( $RootDirInstallOption -eq $False ) {
-            if ([System.IO.File]::Exists("$gamepath\$Subdir\dsound.dll")) {
+            if ( [System.IO.File]::Exists("$gamepath\$Subdir\dsound.dll") ) {
                 $game.Transmut = CheckHash "$gamepath\$Subdir\dsound.dll"
             }
             else { $game.Transmut = $false}
         } else { 
-                if ([System.IO.File]::Exists("$gamepath\dsound.dll")) {
-                    if (CheckHash "$gamepath\dsound.dll") {
-                        if ([System.IO.File]::Exists("$gamepath\$Subdir\dsound.dll")){
+                if ( [System.IO.File]::Exists("$gamepath\dsound.dll") ) {
+                    if ( CheckHash "$gamepath\dsound.dll" ) {
+                        if ( [System.IO.File]::Exists("$gamepath\$Subdir\dsound.dll") ) {
                             $game.Transmut = CheckHash "$gamepath\$Subdir\dsound.dll"
                         } else { $game.Transmut = $false }
                     } else { $game.Transmut = $false }
@@ -339,7 +339,7 @@ function Sortlistview{
     param($listview)
     $items = $listview.items | Sort-Object
     $listview.Items.Clear()
-    foreach ($item in $items){
+    foreach ( $item in $items ) {
         $listview.Items.Add($item)
     }
     return $listview
@@ -348,8 +348,8 @@ function Sortlistview{
 function Transmut{
     param ($jeu)
     
-    foreach($game in $script:jeutrouve){
-        if ($jeu -eq $game.Name){
+    foreach( $game in $script:jeutrouve ) {
+        if ( $jeu -eq $game.Name ) {
             $gamepath = $game.Gamepath
             $SubDir = $game.SubDir
             $Buffers= $game.Buffers
@@ -370,59 +370,59 @@ function Transmut{
             $LogStarvation = $game.LogStarvation
             $text = "Buffers=$Buffers`r`nDuration=$Duration`r`nMaxVoiceCount=$MaxVoiceCount`r`nDisableDirectMusic=$DisableDirectMusic`r`nDisableNativeAL=$DisableNativeAL`r`nLogDirectSound=$LogDirectSound`r`nLogDirectSound2D=$LogDirectSound2D`r`nLogDirectSound2DStreaming=$LogDirectSound2DStreaming`r`nLogDirectSound3D=$LogDirectSound3D`r`nLogDirectSoundListener=$LogDirectSoundListener`r`nLogDirectSoundEAX=$LogDirectSoundEAX`r`nLogDirectSoundTimingInfo=$LogDirectSoundTimingInfo`r`nLogStarvation=$LogStarvation`r`n"
 
-            if ([string]::IsNullOrEmpty($Subdir)){
+            if ( [string]::IsNullOrEmpty($Subdir) ) {
                 # no subdir
-                if ([System.IO.File]::Exists("$gamepath\dsound.ini")){
+                if ( [System.IO.File]::Exists("$gamepath\dsound.ini") ) {
                     Remove-Item -Path $gamepath\dsound.ini -force
                 }
                 New-Item -Path $gamepath -Name "dsound.ini" -force
                 $text | Out-File $gamepath\dsound.ini -encoding ascii
-                if ([System.IO.File]::Exists("$gamepath\dsound.dll")){
+                if ( [System.IO.File]::Exists("$gamepath\dsound.dll") ) {
                     $destHash = (Get-FileHash -Path "$gamepath\dsound.dll" -Algorithm SHA256).Hash
-                    if ($script:dsoundHash -ne $destHash) {
+                    if ( $script:dsoundHash -ne $destHash ) {
                         Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath
                     }
                 } else { Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath }
-            } elseif ($RootDirInstallOption -eq "True"){
+            } elseif ( $RootDirInstallOption -eq "True" ) {
                 # Subdir + root install
-                if ([System.IO.File]::Exists("$gamepath\dsound.ini")){
+                if ( [System.IO.File]::Exists("$gamepath\dsound.ini") ) {
                     Remove-Item -Path "$gamepath\dsound.ini" -force
                 }
-                if ([System.IO.File]::Exists("$gamepath\$SubDir\dsound.ini")){
+                if ( [System.IO.File]::Exists("$gamepath\$SubDir\dsound.ini") ) {
                     Remove-Item -Path "$gamepath\$SubDir\dsound.ini" -force
                 }
                 New-Item -Path "$gamepath\$Subdir" -Name "dsound.ini" -force
                 New-Item -Path "$gamepath\" -Name "dsound.ini" -force
                 $text | Out-File $gamepath\dsound.ini -encoding ascii
                 $text | Out-File $gamepath\$Subdir\dsound.ini -encoding ascii
-                if ([System.IO.File]::Exists("$gamepath\dsound.dll")){
+                if ( [System.IO.File]::Exists("$gamepath\dsound.dll") ) {
                     $destHash = (Get-FileHash -Path "$gamepath\dsound.dll" -Algorithm SHA256).Hash
-                    if ($script:dsoundHash -ne $destHash) {
+                    if ( $script:dsoundHash -ne $destHash ) {
                         Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath
                     }
                 } else { Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath}
-                if ([System.IO.File]::Exists("$gamepath\$Subdir\dsound.dll")){
+                if ( [System.IO.File]::Exists("$gamepath\$Subdir\dsound.dll") ) {
                     $destHash = (Get-FileHash -Path "$gamepath\$Subdir\dsound.dll" -Algorithm SHA256).Hash
-                    if ($script:dsoundHash -ne $destHash) {
+                    if ( $script:dsoundHash -ne $destHash ) {
                         Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath\$Subdir
                     }
                 } else { Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath\$Subdir }
             } else {
                 # Subdir only
-                if ([System.IO.File]::Exists("$gamepath\dsound.ini")) {
+                if ( [System.IO.File]::Exists("$gamepath\dsound.ini") ) {
                     Remove-Item -Path "$gamepath\dsound.ini" -force
                 }
-                if ([System.IO.File]::Exists("$gamepath\dsound.dll")) {
+                if ( [System.IO.File]::Exists("$gamepath\dsound.dll") ) {
                     Remove-Item -Path "$gamepath\dsound.dll" -force
                 }
-                if ([System.IO.File]::Exists("$gamepath\$SubDir\dsound.ini")) {
+                if ( [System.IO.File]::Exists("$gamepath\$SubDir\dsound.ini") ) {
                     Remove-Item -Path "$gamepath\$SubDir\dsound.ini" -force
                 }
                 New-Item -Path "$gamepath\$SubDir" -Name "dsound.ini" -force
                 $text | Out-File $gamepath\$SubDir\dsound.ini -encoding ascii
-                if ([System.IO.File]::Exists("$gamepath\$Subdir\dsound.dll")) {
+                if ( [System.IO.File]::Exists("$gamepath\$Subdir\dsound.dll") ) {
                     $destHash = (Get-FileHash -Path "$gamepath\$Subdir\dsound.dll" -Algorithm SHA256).Hash
-                    if ($script:dsoundHash -ne $destHash) {
+                    if ( $script:dsoundHash -ne $destHash ) {
                         Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath\$Subdir
                     }
                 } else { Copy-Item -Path "$PathAlchemy\dsound.dll" -Destination $gamepath\$Subdir }
@@ -438,15 +438,15 @@ function UnTransmut{
     param ($Jeu)
     
     $Jeu = $Menudroite.SelectedItem
-    foreach ($game in $script:jeutrouve){
-        if ($Jeu -eq $game.Name){
+    foreach ( $game in $script:jeutrouve ) {
+        if ( $Jeu -eq $game.Name ) {
             $gamepath = $game.Gamepath
             $SubDir = $game.SubDir
             $RootDirInstallOption = $game.RootDirInstallOption
-            if ([string]::IsNullOrEmpty($Subdir)){
+            if ( [string]::IsNullOrEmpty($Subdir) ) {
                 Remove-Item $gamepath\dsound.ini
                 Remove-Item $gamepath\dsound.dll
-            } elseif ($RootDirInstallOption -eq "True"){
+            } elseif ( $RootDirInstallOption -eq "True" ) {
                 Remove-Item "$gamepath\dsound.ini"
                 Remove-Item "$gamepath\dsound.dll"
                 Remove-Item "$gamepath\$Subdir\dsound.ini"
@@ -467,7 +467,7 @@ function CheckHash{
     param($filepath)
     
     $destHash = (Get-FileHash -Path $filepath -Algorithm SHA256).Hash
-    if ($script:dsoundHash -ne $destHash) { $Correcthash = $False } else { $Correcthash = $True }
+    if ( $script:dsoundHash -ne $destHash ) { $Correcthash = $False } else { $Correcthash = $True }
     return $Correcthash
 }    
     
@@ -477,9 +477,9 @@ Add-Type -AssemblyName System.Windows.Forms
 #load translation if exist, if not found will load en-US one.
 Import-LocalizedData -BindingVariable txt
 
-# check if inside alchemy folder and if newalchemy.ini is present or generate a new one
-$PathALchemy=LocateAlchemy
-if (!(Test-Path -path "$PSScriptRoot\newalchemy.ini")) { GenerateNewAlchemy "$PathALchemy\Alchemy.ini" }
+# Locate alchemy folder and test if newalchemy.ini is present or generate a new one
+$PathALchemy = LocateAlchemy
+if ( !(Test-Path -path "$PSScriptRoot\newalchemy.ini") ) { GenerateNewAlchemy "$PathALchemy\Alchemy.ini" }
 $script:dsoundHash = (Get-FileHash -Path "$PathAlchemy\dsound.dll" -Algorithm SHA256).Hash
 $script:listejeux = read-file "$PSScriptRoot\NewAlchemy.ini"
 checkinstall $script:listejeux | Out-Null
@@ -490,239 +490,235 @@ $jeutransmut = $script:jeutrouve | where-object Transmut -eq $true
 $jeunontransmut = $script:jeutrouve | where-object {$_.Found -eq $true -and $_.Transmut -eq $False}
 
 # Main windows
-[xml]$inputXML =@"
+[xml]$inputXML = @"
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        Title="New Alchemy" Height="417" Width="818" MinHeight="417" MinWidth="818" ResizeMode="CanResizeWithGrip" Icon="$PSScriptRoot\NewAlchemy.ico">	
-	<Viewbox Stretch="Uniform" StretchDirection="UpOnly">
-		<Grid>
-			<ListView Name="MenuGauche" HorizontalAlignment="Left" Height="280" Margin="20,75,0,0" VerticalAlignment="Top" Width="310">
-				<ListView.View>
-					<GridView>
-						<GridViewColumn Width="300"/>
-					</GridView>
-				</ListView.View>
-			</ListView>
-			<ListView Name="MenuDroite" HorizontalAlignment="Left" Height="280" Margin="472,75,20,0" VerticalAlignment="Top" Width="310">
-				<ListView.View>
-					<GridView>
-						<GridViewColumn Width="300"/>
-					</GridView>
-				</ListView.View>
-			</ListView>
-			<Button Name="BoutonTransmut" Content="&gt;&gt;" HorizontalAlignment="Left" Height="45" Margin="350,100,0,0" VerticalAlignment="Top" Width="100"/>
-			<Button Name="BoutonUnTransmut" Content="&lt;&lt;" HorizontalAlignment="Left" Height="45  " Margin="350,163,0,0" VerticalAlignment="Top" Width="100"/>
-			<Button Name="BoutonEdition" HorizontalAlignment="Left" Height="25" Margin="350,256,0,0" VerticalAlignment="Top" Width="100"/>
-			<Button Name="BoutonAjouter" HorizontalAlignment="Left" Height="25" Margin="350,293,0,0" VerticalAlignment="Top" Width="100"/>
-			<Button Name="BoutonParDefaut" HorizontalAlignment="Left" Height="25" Margin="350,330,0,0" VerticalAlignment="Top" Width="100"/>
-			<TextBlock Name="Text_main" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="20,10,0,0" Width="762" Height="34"/>
-			<TextBlock Name="Text_jeuInstall" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="20,54,0,0" Width="238"/>
-			<TextBlock Name="Text_JeuTransmut" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="472,54,0,0" Width="173"/>
-			<TextBlock Name="T_URL" HorizontalAlignment="Left" TextWrapping="Wrap" Text="https://github.com/Choum28/NewAlchemy" VerticalAlignment="Top" Margin="20,361,0,0" FontSize="8"/>
-			<TextBlock Name="T_version" HorizontalAlignment="Right" TextWrapping="Wrap" Text="Version 1.09" VerticalAlignment="Top" Margin="0,359,20,0" FontSize="8"/>
-		</Grid>
-	</Viewbox>
+    Title="New Alchemy" Height="417" Width="818" MinHeight="417" MinWidth="818" ResizeMode="CanResizeWithGrip" Icon="$PSScriptRoot\NewAlchemy.ico">
+    <Viewbox Stretch="Uniform" StretchDirection="UpOnly">
+        <Grid>
+            <ListView Name="MenuGauche" HorizontalAlignment="Left" Height="280" Margin="20,75,0,0" VerticalAlignment="Top" Width="310">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Width="300"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <ListView Name="MenuDroite" HorizontalAlignment="Left" Height="280" Margin="472,75,20,0" VerticalAlignment="Top" Width="310">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Width="300"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <Button Name="BoutonTransmut" Content="&gt;&gt;" HorizontalAlignment="Left" Height="45" Margin="350,100,0,0" VerticalAlignment="Top" Width="100"/>
+            <Button Name="BoutonUnTransmut" Content="&lt;&lt;" HorizontalAlignment="Left" Height="45  " Margin="350,163,0,0" VerticalAlignment="Top" Width="100"/>
+            <Button Name="BoutonEdition" HorizontalAlignment="Left" Height="25" Margin="350,256,0,0" VerticalAlignment="Top" Width="100"/>
+            <Button Name="BoutonAjouter" HorizontalAlignment="Left" Height="25" Margin="350,293,0,0" VerticalAlignment="Top" Width="100"/>
+            <Button Name="BoutonParDefaut" HorizontalAlignment="Left" Height="25" Margin="350,330,0,0" VerticalAlignment="Top" Width="100"/>
+            <TextBlock Name="Text_main" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="20,10,0,0" Width="762" Height="34"/>
+            <TextBlock Name="Text_jeuInstall" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="20,54,0,0" Width="238"/>
+            <TextBlock Name="Text_JeuTransmut" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="472,54,0,0" Width="173"/>
+            <TextBlock Name="T_URL" HorizontalAlignment="Left" TextWrapping="Wrap" Text="https://github.com/Choum28/NewAlchemy" VerticalAlignment="Top" Margin="20,361,0,0" FontSize="8"/>
+            <TextBlock Name="T_version" HorizontalAlignment="Right" TextWrapping="Wrap" Text="Version 1.09" VerticalAlignment="Top" Margin="0,359,20,0" FontSize="8"/>
+        </Grid>
+    </Viewbox>
 </Window>
-
 "@
-$reader=(New-Object System.Xml.XmlNodeReader $inputXML)
-$Window =[Windows.Markup.XamlReader]::Load( $reader )
+$reader = (New-Object System.Xml.XmlNodeReader $inputXML)
+$Window = [Windows.Markup.XamlReader]::Load( $reader )
 $inputXML.SelectNodes("//*[@Name]") | Foreach-Object { Set-Variable -Name ($_.Name) -Value $Window.FindName($_.Name)}
 
-$BoutonEdition.Content=$txt.BoutonEditionContent
-$BoutonAjouter.Content=$txt.BoutonAjouterContent
-$BoutonParDefaut.Content=$txt.BoutonDefaultContent
-$Text_main.Text=$txt.Text_main
-$Text_jeuInstall.Text=$txt.Text_jeuInstall
-$Text_JeuTransmut.Text=$txt.Text_JeuTransmut
-$BoutonEdition.IsEnabled=$False
-$BoutonTransmut.IsEnabled=$False
-$BoutonUnTransmut.IsEnabled=$False
 $Window.WindowStartupLocation = "CenterScreen"
-
+$BoutonEdition.Content = $txt.BoutonEditionContent
+$BoutonAjouter.Content = $txt.BoutonAjouterContent
+$BoutonParDefaut.Content = $txt.BoutonDefaultContent
+$Text_main.Text = $txt.Text_main
+$Text_jeuInstall.Text = $txt.Text_jeuInstall
+$Text_JeuTransmut.Text = $txt.Text_JeuTransmut
+$BoutonEdition.IsEnabled = $False
+$BoutonTransmut.IsEnabled = $False
+$BoutonUnTransmut.IsEnabled = $False
 
 # populate each listview, disable counter output in terminal
 $MenuGauche.Items.Clear()
-foreach ($jeu in $jeunontransmut){
+foreach ( $jeu in $jeunontransmut ) {
     $MenuGauche.Items.Add($jeu.name) | Out-Null
 }
 Sortlistview $MenuGauche | Out-Null
 
 $MenuDroite.Items.Clear()
-foreach ($jeu in $jeutransmut){
+foreach ( $jeu in $jeutransmut ) {
     $MenuDroite.Items.Add($jeu.name) | Out-Null
 }
 Sortlistview $MenuDroite | Out-Null
  
-#Transmut Button Copy needed file to gamepath and refresh listview (sort by name)
 $BoutonTransmut.add_Click({
     Transmut $MenuGauche.SelectedItem
  })
 
-#Button Untransmut, remove Dsound files and refresh each listview (sort by name)
 $BoutonUnTransmut.add_Click({
     UnTransmut $MenuDroite.SelectedItem
 })
 
 $MenuGauche.Add_MouseDoubleClick({
-    if ($MenuGauche.SelectedItem -ne $null) {
+    if ( $Null -ne $MenuGauche.SelectedItem ) {
         Transmut $MenuGauche.SelectedItem
-        $BoutonTransmut.IsEnabled=$False
+        $BoutonTransmut.IsEnabled = $False
     }
 })
 
 $MenuDroite.Add_MouseDoubleClick({
-    if ($MenuDroite.SelectedItem -ne $null) {
+    if ( $Null -ne $MenuDroite.SelectedItem ) {
         UnTransmut $MenuDroite.SelectedItem
-        $BoutonUnTransmut.IsEnabled=$False
+        $BoutonUnTransmut.IsEnabled = $False
     }
 })
 
 $MenuDroite.Add_SelectionChanged({
-    if ($MenuDroite.SelectedIndex -ne -1) { $MenuGauche.SelectedIndex = -1 }
-    $BoutonEdition.IsEnabled=$True
-    $BoutonTransmut.IsEnabled=$False
-    $BoutonUnTransmut.IsEnabled=$True
+    if ( $MenuDroite.SelectedIndex -ne -1 ) { $MenuGauche.SelectedIndex = -1 }
+    $BoutonEdition.IsEnabled = $True
+    $BoutonTransmut.IsEnabled = $False
+    $BoutonUnTransmut.IsEnabled = $True
     $script:lastSelectedListView = $MenuDroite
 })
 
 $MenuGauche.Add_SelectionChanged({
-    if ($MenuGauche.SelectedIndex -ne -1) { $MenuDroite.SelectedIndex = -1 }
-    $BoutonEdition.IsEnabled=$True
-    $BoutonTransmut.IsEnabled=$True
-    $BoutonUnTransmut.IsEnabled=$False
+    if ( $MenuGauche.SelectedIndex -ne -1 ) { $MenuDroite.SelectedIndex = -1 }
+    $BoutonEdition.IsEnabled = $True
+    $BoutonTransmut.IsEnabled = $True
+    $BoutonUnTransmut.IsEnabled = $False
     $script:lastSelectedListView = $MenuGauche
 })
 
 ### EDIT BUTTON, Check each mandatory info, add then to global var and edit newalchemy file entry.
 $BoutonEdition.add_Click({
     $gamename = $script:lastSelectedListView.SelectedItem
-    if (!($gamename -eq $null)) {
-        [xml]$InputXML =@"
+    if ( !($Null -eq $gamename) ) {
+        [xml]$InputXML = @"
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        Height="710" Width="558" MinHeight="710" MinWidth="558" VerticalAlignment="Bottom" ResizeMode="CanResizeWithGrip" Icon="$PSScriptRoot\NewAlchemy.ico">
-	<Viewbox Stretch="Uniform" StretchDirection="UpOnly">
-		<Grid>
-			<TextBox Name="T_titrejeu" HorizontalAlignment="Left" Height="22" Margin="28,44,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="485"/>
-			<RadioButton Name="C_registre" HorizontalAlignment="Left" Margin="67,85,0,0" VerticalAlignment="Top" Width="252"/>
-			<RadioButton Name="C_Gamepath" HorizontalAlignment="Left" Margin="67,136,0,0" VerticalAlignment="Top" Width="252"/>
-			<TextBox Name="T_registre" HorizontalAlignment="Left" Height="22" Margin="67,105,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="410"/>
-			<TextBox Name="T_Gamepath" HorizontalAlignment="Left" Height="22" Margin="67,156,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="410" />
-			<TextBox Name="T_buffers" HorizontalAlignment="Left" Height="22" Margin="188,331,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="293"/>
-			<TextBox Name="T_Duration" HorizontalAlignment="Left" Height="22" Margin="188,359,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="293"/>
-			<TextBox Name="T_voice" HorizontalAlignment="Left" Height="22" Margin="188,387,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="293"/>
-			<CheckBox Name="C_SubDir" HorizontalAlignment="Left" Height="18" Margin="67,188,0,0" VerticalAlignment="Top" Width="192"/>
-			<TextBox Name="T_Subdir" HorizontalAlignment="Left" Height="22" Margin="67,211,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="410"/>
-			<CheckBox Name="C_DisableDirectMusic" HorizontalAlignment="Left" Margin="188,424,0,0" VerticalAlignment="Top"/>
-			<CheckBox Name="C_Rootdir" HorizontalAlignment="Left" Margin="67,243,0,0" VerticalAlignment="Top"/>
-			<Label Name ="L_GameTitle" HorizontalAlignment="Left" Margin="67,13,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.526,0"/>
-			<Label Name ="L_Buffers" HorizontalAlignment="Left" Margin="45,327,0,0" VerticalAlignment="Top" Width="79" Height="26"/>
-			<Label Name="L_Duration" HorizontalAlignment="Left" Margin="45,358,0,0" VerticalAlignment="Top" Height="23" Width="79"/>
-			<Label Name="L_Voice" HorizontalAlignment="Left" Height="25" Margin="45,384,0,0" VerticalAlignment="Top" Width="143"/>
-			<Label Name="L_Settings" HorizontalAlignment="Left" Margin="28,297,0,0" VerticalAlignment="Top" Width="143"/>
-			<Button Name="B_Cancel" HorizontalAlignment="Left" Height="25" Margin="439,634,0,13" VerticalAlignment="Top" Width="90"/>
-			<Button Name="B_ok" HorizontalAlignment="Left" Height="25" Margin="331,634,0,13" VerticalAlignment="Top" Width="90"/>
-			<Button Name="B_GamePath" Content="..." HorizontalAlignment="Left" Height="22" Margin="491,156,0,0" VerticalAlignment="Top" Width="22"/>
-			<Button Name="B_SubDir" Content="..." HorizontalAlignment="Left" Height="22" Margin="491,211,0,0" VerticalAlignment="Top" Width="22"/>
-			<Label Name="L_Debug1" HorizontalAlignment="Left" Margin="0,464,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.484,0"/>
-			<Label Name="L_Debug2" HorizontalAlignment="Left" Margin="20,484,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.526,0"/>
-			<CheckBox Name="C_LogDirectSound" HorizontalAlignment="Left" Margin="67,524,0,0" VerticalAlignment="Top"/>
-			<CheckBox Name="C_LogDirectSound2D" HorizontalAlignment="Left" Margin="300,524,0,0" VerticalAlignment="Top"/>
-			<CheckBox Name="C_LogDirectSound2DStreaming" HorizontalAlignment="Left" Margin="67,544,0,0" VerticalAlignment="Top"/>
-			<CheckBox Name="C_LogDirectSound3D" HorizontalAlignment="Left" Margin="300,544,0,0" VerticalAlignment="Top"/>
-			<CheckBox Name="C_LogDirectSoundListener" HorizontalAlignment="Left" Margin="67,564,0,0" VerticalAlignment="Top"/>
-			<CheckBox Name="C_LogDirectSoundEAX" HorizontalAlignment="Left" Margin="300,564,0,0" VerticalAlignment="Top"/>
-			<CheckBox Name="C_LogDirectSoundTimingInfo" HorizontalAlignment="Left" Margin="67,584,0,0" VerticalAlignment="Top"/>
-			<CheckBox Name="C_LogStarvation" HorizontalAlignment="Left" Margin="300,584,0,0" VerticalAlignment="Top"/>
-			<CheckBox Name="C_DisableNativeAl" HorizontalAlignment="Left" Margin="67,604,0,0" VerticalAlignment="Top"/>
-		</Grid>
-	</Viewbox>
+    Height="710" Width="558" MinHeight="710" MinWidth="558" VerticalAlignment="Bottom" ResizeMode="CanResizeWithGrip" Icon="$PSScriptRoot\NewAlchemy.ico">
+    <Viewbox Stretch="Uniform" StretchDirection="UpOnly">
+        <Grid>
+            <TextBox Name="T_titrejeu" HorizontalAlignment="Left" Height="22" Margin="28,44,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="485"/>
+            <RadioButton Name="C_registre" HorizontalAlignment="Left" Margin="67,85,0,0" VerticalAlignment="Top" Width="252"/>
+            <RadioButton Name="C_Gamepath" HorizontalAlignment="Left" Margin="67,136,0,0" VerticalAlignment="Top" Width="252"/>
+            <TextBox Name="T_registre" HorizontalAlignment="Left" Height="22" Margin="67,105,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="410"/>
+            <TextBox Name="T_Gamepath" HorizontalAlignment="Left" Height="22" Margin="67,156,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="410" />
+            <TextBox Name="T_buffers" HorizontalAlignment="Left" Height="22" Margin="188,331,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="293"/>
+            <TextBox Name="T_Duration" HorizontalAlignment="Left" Height="22" Margin="188,359,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="293"/>
+            <TextBox Name="T_voice" HorizontalAlignment="Left" Height="22" Margin="188,387,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="293"/>
+            <CheckBox Name="C_SubDir" HorizontalAlignment="Left" Height="18" Margin="67,188,0,0" VerticalAlignment="Top" Width="192"/>
+            <TextBox Name="T_Subdir" HorizontalAlignment="Left" Height="22" Margin="67,211,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="410"/>
+            <CheckBox Name="C_DisableDirectMusic" HorizontalAlignment="Left" Margin="188,424,0,0" VerticalAlignment="Top"/>
+            <CheckBox Name="C_Rootdir" HorizontalAlignment="Left" Margin="67,243,0,0" VerticalAlignment="Top"/>
+            <Label Name ="L_GameTitle" HorizontalAlignment="Left" Margin="67,13,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.526,0"/>
+            <Label Name ="L_Buffers" HorizontalAlignment="Left" Margin="45,327,0,0" VerticalAlignment="Top" Width="79" Height="26"/>
+            <Label Name="L_Duration" HorizontalAlignment="Left" Margin="45,358,0,0" VerticalAlignment="Top" Height="23" Width="79"/>
+            <Label Name="L_Voice" HorizontalAlignment="Left" Height="25" Margin="45,384,0,0" VerticalAlignment="Top" Width="143"/>
+            <Label Name="L_Settings" HorizontalAlignment="Left" Margin="28,297,0,0" VerticalAlignment="Top" Width="143"/>
+            <Button Name="B_Cancel" HorizontalAlignment="Left" Height="25" Margin="439,634,0,13" VerticalAlignment="Top" Width="90"/>
+            <Button Name="B_ok" HorizontalAlignment="Left" Height="25" Margin="331,634,0,13" VerticalAlignment="Top" Width="90"/>
+            <Button Name="B_GamePath" Content="..." HorizontalAlignment="Left" Height="22" Margin="491,156,0,0" VerticalAlignment="Top" Width="22"/>
+            <Button Name="B_SubDir" Content="..." HorizontalAlignment="Left" Height="22" Margin="491,211,0,0" VerticalAlignment="Top" Width="22"/>
+            <Label Name="L_Debug1" HorizontalAlignment="Left" Margin="0,464,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.484,0"/>
+            <Label Name="L_Debug2" HorizontalAlignment="Left" Margin="20,484,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.526,0"/>
+            <CheckBox Name="C_LogDirectSound" HorizontalAlignment="Left" Margin="67,524,0,0" VerticalAlignment="Top"/>
+            <CheckBox Name="C_LogDirectSound2D" HorizontalAlignment="Left" Margin="300,524,0,0" VerticalAlignment="Top"/>
+            <CheckBox Name="C_LogDirectSound2DStreaming" HorizontalAlignment="Left" Margin="67,544,0,0" VerticalAlignment="Top"/>
+            <CheckBox Name="C_LogDirectSound3D" HorizontalAlignment="Left" Margin="300,544,0,0" VerticalAlignment="Top"/>
+            <CheckBox Name="C_LogDirectSoundListener" HorizontalAlignment="Left" Margin="67,564,0,0" VerticalAlignment="Top"/>
+            <CheckBox Name="C_LogDirectSoundEAX" HorizontalAlignment="Left" Margin="300,564,0,0" VerticalAlignment="Top"/>
+            <CheckBox Name="C_LogDirectSoundTimingInfo" HorizontalAlignment="Left" Margin="67,584,0,0" VerticalAlignment="Top"/>
+            <CheckBox Name="C_LogStarvation" HorizontalAlignment="Left" Margin="300,584,0,0" VerticalAlignment="Top"/>
+            <CheckBox Name="C_DisableNativeAl" HorizontalAlignment="Left" Margin="67,604,0,0" VerticalAlignment="Top"/>
+        </Grid>
+    </Viewbox>
 </Window>
 "@
-        $reader=(New-Object System.Xml.XmlNodeReader $inputXML)
-        $Window_edit =[Windows.Markup.XamlReader]::Load( $reader )
+        $reader = (New-Object System.Xml.XmlNodeReader $inputXML)
+        $Window_edit = [Windows.Markup.XamlReader]::Load( $reader )
         $inputXML.SelectNodes("//*[@Name]") | Foreach-Object { Set-Variable -Name ($_.Name) -Value $Window_edit.FindName($_.Name)}
+
         $Window_edit.WindowStartupLocation = "CenterScreen"
-        
-        $T_Titrejeu.IsReadOnly=$true
+        $T_Titrejeu.IsReadOnly = $true
         $T_Titrejeu.Background = '#e5e5e5'
-        $Window_edit.Title=$txt.MainTitle2    
+        $Window_edit.Title = $txt.MainTitle2    
         $C_Gamepath.Content = $txt.C_GamepathContent
-        $C_registre.Content=$txt.C_registreContent
+        $C_registre.Content = $txt.C_registreContent
         $T_registre.ToolTip = $txt.T_registreToolTip
-        $T_Gamepath.ToolTip= $txt.T_GamepathToolTip
+        $T_Gamepath.ToolTip = $txt.T_GamepathToolTip
         $T_voice.ToolTip = $txt.T_voiceToolTip
         $C_SubDir.Content = $txt.C_SubDirContent
         $T_Subdir.ToolTip = $txt.T_SubdirToolTip
-        $C_DisableDirectMusic.Content=$txt.C_DisableDirectMusicContent
-        $C_DisableDirectMusic.ToolTip=$txt.C_DisableDirectMusicToolTip
-        $C_Rootdir.Content=$txt.C_RootdirContent
-        $L_GameTitle.Content=$txt.L_GameTitleContent
+        $C_DisableDirectMusic.Content = $txt.C_DisableDirectMusicContent
+        $C_DisableDirectMusic.ToolTip = $txt.C_DisableDirectMusicToolTip
+        $C_Rootdir.Content = $txt.C_RootdirContent
+        $L_GameTitle.Content = $txt.L_GameTitleContent
         $T_buffers.ToolTip = $txt.T_buffersToolTip
-        $L_Buffers.Content=$txt.T_BuffersContent
-        $L_Buffers.toolTip=$txt.T_BuffersToolTip
+        $L_Buffers.Content = $txt.T_BuffersContent
+        $L_Buffers.toolTip = $txt.T_BuffersToolTip
         $T_duration.toolTip = $txt.T_DurationToolTip
-        $L_Duration.Content=$txt.T_DurationContent
-        $L_Duration.ToolTip=$txt.T_DurationToolTip
-        $L_Voice.Content=$txt.T_VoiceContent
-        $L_Settings.Content=$txt.L_Settings
-        $B_Cancel.Content=$txt.B_CancelContent
-        $B_ok.Content=$txt.B_OkContent
-        $L_Debug1.Content=$txt.L_Debug1Content
-        $L_Debug2.Content=$txt.L_Debug2Content
-        $C_LogDirectSound.Content=$txt.C_LogDirectSoundContent
-        $C_LogDirectSound2D.Content=$txt.C_LogDirectSound2DContent
-        $C_LogDirectSound2DStreaming.Content=$txt.C_LogDirectSound2DStreamingContent
-        $C_LogDirectSound3D.Content=$txt.C_LogDirectSound3DContent
-        $C_LogDirectSoundListener.Content=$txt.C_LogDirectSoundListenerContent
-        $C_LogDirectSoundEAX.Content=$txt.C_LogDirectSoundEAXContent
-        $C_LogDirectSoundTimingInfo.Content=$txt.C_LogDirectSoundTimingInfoContent
-        $C_LogStarvation.Content=$txt.C_LogStarvationContent
-        $C_LogDirectSound.ToolTip=$txt.C_logtextTooltip
-        $C_LogDirectSound2D.ToolTip=$txt.C_logtextTooltip
-        $C_LogDirectSound2DStreaming.ToolTip=$txt.C_logtextTooltip
-        $C_LogDirectSound3D.ToolTip=$txt.C_logtextTooltip
-        $C_LogDirectSoundListener.ToolTip=$txt.C_logtextTooltip
-        $C_LogDirectSoundEAX.ToolTip=$txt.C_logtextTooltip
-        $C_LogDirectSoundTimingInfo.ToolTip=$txt.C_logtextTooltip
-        $C_LogStarvation.ToolTip=$txt.C_logtextTooltip
-        $C_DisableNativeAl.Content=$txt.C_DisableNativeAlContent
-        $C_DisableNativeAl.ToolTip=$txt.C_DisableNativeAlToolTip
+        $L_Duration.Content = $txt.T_DurationContent
+        $L_Duration.ToolTip = $txt.T_DurationToolTip
+        $L_Voice.Content = $txt.T_VoiceContent
+        $L_Settings.Content = $txt.L_Settings
+        $B_Cancel.Content = $txt.B_CancelContent
+        $B_ok.Content = $txt.B_OkContent
+        $L_Debug1.Content = $txt.L_Debug1Content
+        $L_Debug2.Content = $txt.L_Debug2Content
+        $C_LogDirectSound.Content = $txt.C_LogDirectSoundContent
+        $C_LogDirectSound2D.Content = $txt.C_LogDirectSound2DContent
+        $C_LogDirectSound2DStreaming.Content = $txt.C_LogDirectSound2DStreamingContent
+        $C_LogDirectSound3D.Content = $txt.C_LogDirectSound3DContent
+        $C_LogDirectSoundListener.Content = $txt.C_LogDirectSoundListenerContent
+        $C_LogDirectSoundEAX.Content = $txt.C_LogDirectSoundEAXContent
+        $C_LogDirectSoundTimingInfo.Content = $txt.C_LogDirectSoundTimingInfoContent
+        $C_LogStarvation.Content = $txt.C_LogStarvationContent
+        $C_LogDirectSound.ToolTip = $txt.C_logtextTooltip
+        $C_LogDirectSound2D.ToolTip = $txt.C_logtextTooltip
+        $C_LogDirectSound2DStreaming.ToolTip = $txt.C_logtextTooltip
+        $C_LogDirectSound3D.ToolTip = $txt.C_logtextTooltip
+        $C_LogDirectSoundListener.ToolTip = $txt.C_logtextTooltip
+        $C_LogDirectSoundEAX.ToolTip = $txt.C_logtextTooltip
+        $C_LogDirectSoundTimingInfo.ToolTip = $txt.C_logtextTooltip
+        $C_LogStarvation.ToolTip = $txt.C_logtextTooltip
+        $C_DisableNativeAl.Content = $txt.C_DisableNativeAlContent
+        $C_DisableNativeAl.ToolTip = $txt.C_DisableNativeAlToolTip
 
         $C_Registre.Add_Checked({
-            $T_Registre.IsReadOnly=$False
+            $T_Registre.IsReadOnly = $False
             $T_Registre.Background = '#ffffff'
-            $B_GamePath.IsEnabled=$False
-            $T_Gamepath.IsReadOnly=$true
+            $B_GamePath.IsEnabled = $False
+            $T_Gamepath.IsReadOnly = $true
             $T_Gamepath.Background = '#e5e5e5'
         })
         $C_Gamepath.Add_Checked({
-            $T_Registre.IsReadOnly=$true
+            $T_Registre.IsReadOnly = $true
             $T_Registre.Background = '#e5e5e5'
-            $T_Gamepath.IsReadOnly=$False
+            $T_Gamepath.IsReadOnly = $False
             $T_Gamepath.Background = '#ffffff'
-            $B_GamePath.IsEnabled=$True
+            $B_GamePath.IsEnabled = $True
         })
         $C_SubDir.Add_Checked({
-            $T_SubDir.IsReadOnly=$False
+            $T_SubDir.IsReadOnly = $False
             $T_SubDir.Background = '#ffffff'
             $C_Rootdir.Background = '#ffffff'
-            $C_Rootdir.IsEnabled=$true
-            $B_SubDir.IsEnabled=$True
+            $C_Rootdir.IsEnabled = $true
+            $B_SubDir.IsEnabled = $True
         })
         $C_SubDir.Add_UnChecked({
-            $T_SubDir.IsReadOnly=$True
+            $T_SubDir.IsReadOnly = $True
             $T_SubDir.Background = '#e5e5e5'
             $C_Rootdir.Background = '#e5e5e5'
-            $C_Rootdir.IsChecked=$False
-            $B_SubDir.IsEnabled=$False
-            $C_Rootdir.IsEnabled=$False
+            $C_Rootdir.IsChecked = $False
+            $B_SubDir.IsEnabled = $False
+            $C_Rootdir.IsEnabled = $False
         })
 
     ## RETREIVE EDIT FORM VALUES
         $count = 0
         $found = 0
-        foreach ($game in $script:jeutrouve){
-            if ($gamename -eq $game.Name){
+        foreach ( $game in $script:jeutrouve ) {
+            if ( $gamename -eq $game.Name ) {
                 $found = 1
                 $T_titrejeu.text = $game.Name
                 $T_buffers.text = $game.Buffers
@@ -741,42 +737,42 @@ $BoutonEdition.add_Click({
                 $LogDirectSoundTimingInfo = $game.LogDirectSoundTimingInfo
                 $LogStarvation = $game.LogStarvation
 
-                if ([string]::IsNullOrEmpty($game.RegPath)){
+                if ( [string]::IsNullOrEmpty($game.RegPath) ) {
                     $T_Gamepath.text = $game.Gamepath
-                    $T_Registre.IsReadOnly=$true
+                    $T_Registre.IsReadOnly = $true
                     $T_Registre.Background = '#e5e5e5'
-                    $C_GamePath.IsChecked=$true
-                } else{
-                    $T_registre.text = $game.RegPath
-                    $T_Gamepath.IsReadOnly=$true
-                    $T_Gamepath.Background = '#e5e5e5'
-                    $B_GamePath.IsEnabled=$False
-                    $C_Registre.IsChecked=$True
-                }
-                if ($DisableDirectMusic -eq "True"){ $C_DisableDirectMusic.IsChecked = $True } else { $C_DisableDirectMusic.IsChecked = $False }
-                if ($DisableNativeAL -eq "True"){ $C_DisableNativeAl.IsChecked=$True } else { $C_DisableNativeAl.IsChecked=$False }
-                if ([string]::IsNullOrEmpty($T_Subdir.text)){
-                    $T_SubDir.IsReadOnly=$True
-                    $T_SubDir.Background = '#e5e5e5'
-                    $C_Rootdir.IsEnabled=$False
-                    $C_Rootdir.Background = '#e5e5e5'
-                    $B_SubDir.IsEnabled=$False
-                    $C_SubDir.IsChecked=$False
-                    $C_Rootdir.IsChecked=$False
+                    $C_GamePath.IsChecked = $true
                 } else {
-                    $C_SubDir.Ischecked= $true
-                    $C_Rootdir.IsEnabled=$true
-                    if ($RootDirInstallOption -eq "True"){ $C_Rootdir.IsChecked=$True } else { $C_Rootdir.IsChecked=$False }
+                    $T_registre.text = $game.RegPath
+                    $T_Gamepath.IsReadOnly = $true
+                    $T_Gamepath.Background = '#e5e5e5'
+                    $B_GamePath.IsEnabled = $False
+                    $C_Registre.IsChecked = $True
                 }
-                if ($LogDirectSound -eq "True"){ $C_LogDirectSound.IsChecked=$True } else { $C_LogDirectSound.IsChecked=$False }
-                if ($LogDirectSound2D -eq "True"){ $C_LogDirectSound2D.IsChecked=$True } else { $C_LogDirectSound2D.IsChecked=$False }
-                if ($LogDirectSound2DStreaming -eq "True"){ $C_LogDirectSound2DStreaming.IsChecked=$True } else { $C_LogDirectSound2DStreaming.IsChecked=$False }
-                if ($LogDirectSound3D -eq "True"){ $C_LogDirectSound3D.IsChecked=$True } else { $C_LogDirectSound3D.IsChecked=$False }
-                if ($LogDirectSoundListener -eq "True"){ $C_LogDirectSoundListener.IsChecked=$True } else { $C_LogDirectSoundListener.IsChecked=$False }
-                if ($LogDirectSoundEAX -eq "True"){ $C_LogDirectSoundEAX.IsChecked=$True } else { $C_LogDirectSoundEAX.IsChecked=$False }
-                if ($LogDirectSoundTimingInfo -eq "True"){ $C_LogDirectSoundTimingInfo.IsChecked=$True } else { $C_LogDirectSoundTimingInfo.IsChecked=$False }
-                if ($LogStarvation -eq "True"){ $C_LogStarvation.IsChecked=$True }else { $C_LogStarvation.IsChecked=$False }
-            } else { if ($found -ne 1) { $count = $count +1 } }
+                if ( $DisableDirectMusic -eq "True" ) { $C_DisableDirectMusic.IsChecked = $True } else { $C_DisableDirectMusic.IsChecked = $False }
+                if ( $DisableNativeAL -eq "True" ) { $C_DisableNativeAl.IsChecked = $True } else { $C_DisableNativeAl.IsChecked = $False }
+                if ( [string]::IsNullOrEmpty($T_Subdir.text) ) {
+                    $T_SubDir.IsReadOnly = $True
+                    $T_SubDir.Background = '#e5e5e5'
+                    $C_Rootdir.IsEnabled = $False
+                    $C_Rootdir.Background = '#e5e5e5'
+                    $B_SubDir.IsEnabled = $False
+                    $C_SubDir.IsChecked = $False
+                    $C_Rootdir.IsChecked = $False
+                } else {
+                    $C_SubDir.Ischecked = $true
+                    $C_Rootdir.IsEnabled = $true
+                    if ( $RootDirInstallOption -eq "True" ) { $C_Rootdir.IsChecked = $True } else { $C_Rootdir.IsChecked = $False }
+                }
+                if ( $LogDirectSound -eq "True" ) { $C_LogDirectSound.IsChecked = $True } else { $C_LogDirectSound.IsChecked = $False }
+                if ( $LogDirectSound2D -eq "True" ) { $C_LogDirectSound2D.IsChecked = $True } else { $C_LogDirectSound2D.IsChecked = $False }
+                if ( $LogDirectSound2DStreaming -eq "True" ) { $C_LogDirectSound2DStreaming.IsChecked = $True } else { $C_LogDirectSound2DStreaming.IsChecked = $False }
+                if ( $LogDirectSound3D -eq "True" ) { $C_LogDirectSound3D.IsChecked = $True } else { $C_LogDirectSound3D.IsChecked = $False }
+                if ( $LogDirectSoundListener -eq "True" ) { $C_LogDirectSoundListener.IsChecked = $True } else { $C_LogDirectSoundListener.IsChecked = $False }
+                if ( $LogDirectSoundEAX -eq "True" ) { $C_LogDirectSoundEAX.IsChecked = $True } else { $C_LogDirectSoundEAX.IsChecked = $False }
+                if ( $LogDirectSoundTimingInfo -eq "True" ) { $C_LogDirectSoundTimingInfo.IsChecked = $True } else { $C_LogDirectSoundTimingInfo.IsChecked = $False }
+                if ( $LogStarvation -eq "True" ) { $C_LogStarvation.IsChecked = $True }else { $C_LogStarvation.IsChecked = $False }
+            } else { if ( $found -ne 1 ) { $count = $count +1 } }
         }
 
     ## CLICK ON ICON GAMEPATH (EDIT FORM)
@@ -784,20 +780,20 @@ $BoutonEdition.add_Click({
             $foldername = New-Object System.Windows.Forms.FolderBrowserDialog
             $foldername.Description = $txt.FolderChoice
             $foldername.rootfolder = "MyComputer"
-            if ($C_Gamepath.IsChecked) { $foldername.SelectedPath = $T_Gamepath.text }
-            if($foldername.ShowDialog() -eq "OK") { $T_Gamepath.text = $foldername.SelectedPath }
+            if ( $C_Gamepath.IsChecked ) { $foldername.SelectedPath = $T_Gamepath.text }
+            if( $foldername.ShowDialog() -eq "OK" ) { $T_Gamepath.text = $foldername.SelectedPath }
         })
 
     ## CLICK ON SUBDIR BUTTON (EDIT FORM)
         $B_SubDir.add_Click({
-            $fail=$False
-            if ($C_registre.IsChecked) {
+            $fail = $False
+            if ( $C_registre.IsChecked ) {
                     $registre = $T_Registre.Text
-                    if (![string]::IsNullOrEmpty($registre)){
-                        if ($registre -like "HKEY_LOCAL_MACHINE*") {
+                    if ( ![string]::IsNullOrEmpty($registre) ) {
+                        if ( $registre -like "HKEY_LOCAL_MACHINE*" ) {
                             $registre = $registre.replace("HKEY_LOCAL_MACHINE","HKLM:")
                         } else {
-                            if($registre -like "HKEY_CURRENT_USER*") {
+                            if ( $registre -like "HKEY_CURRENT_USER*" ) {
                             $registre = $registre.replace("HKEY_CURRENT_USER","HKCU:")
                             } else {
                                 $fail = $True
@@ -808,14 +804,14 @@ $BoutonEdition.add_Click({
                             $fail = $True
                             [System.Windows.MessageBox]::Show($txt.RegKeyEmpty,"",0,64)
                     }
-                    if ($fail -eq $False){            
+                    if ( $fail -eq $False ) {
                         #retreive registry key
                         $regkey = $registre|split-path -leaf
                         #remove registry key from registry link"
                         $registre = $registre.replace("\$regkey","")
-                        if (!(test-path $registre)){
-                            $registre=$registre.replace("HKLM:\SOFTWARE","HKLM:\SOFTWARE\WOW6432Node")
-                            $registre=$registre.replace("HKCU:\SOFTWARE","HKCU:\SOFTWARE\WOW6432Node")
+                        if ( !(test-path $registre) ) {
+                            $registre = $registre.replace("HKLM:\SOFTWARE","HKLM:\SOFTWARE\WOW6432Node")
+                            $registre = $registre.replace("HKCU:\SOFTWARE","HKCU:\SOFTWARE\WOW6432Node")
                         }
                         if (test-path $registre) {
                             try { $Gamepath = Get-ItemPropertyvalue -Path $registre -name $regkey }
@@ -823,8 +819,8 @@ $BoutonEdition.add_Click({
                                 [System.Windows.MessageBox]::Show($txt.RegKeyInc,"",0,48)
                                 $fail = $true
                             }
-                            if ($fail -eq $False) {
-                                if (!(test-path $Gamepath)){
+                            if ( $fail -eq $False ) {
+                                if ( !(test-path $Gamepath) ) {
                                     [System.Windows.MessageBox]::Show($txt.RegKeyValInc,"",0,48)
                                     $fail = $true
                                 }
@@ -836,25 +832,25 @@ $BoutonEdition.add_Click({
                     }
             } else {
                     $Gamepath = $T_Gamepath.text
-                    if ([string]::IsNullOrEmpty($Gamepath)){
+                    if ( [string]::IsNullOrEmpty($Gamepath) ) {
                         $fail = $True
                         [System.Windows.MessageBox]::Show($txt.PathEmpty,"",0,64)
                     }
             }
-            if ($fail -eq $False) {
-                if (!(test-path $Gamepath)){
+            if ( $fail -eq $False ) {
+                if ( !(test-path $Gamepath) ) {
                     [System.Windows.MessageBox]::Show($txt.BadPath,"",0,48)
                     $fail = $true
                 }
-                if ($fail -eq $False) {
+                if ( $fail -eq $False ) {
                     $foldername = New-Object System.Windows.Forms.FolderBrowserDialog
                     $foldername.Description = $txt.SubFolderChoice
                     $foldername.SelectedPath = $Gamepath
-                    if($foldername.ShowDialog() -eq "OK"){
+                    if ( $foldername.ShowDialog() -eq "OK" ) {
                         $Subdir = $foldername.SelectedPath
                         $Subdir = $Subdir -ireplace[regex]::Escape("$Gamepath"),""
                         $Subdir = $Subdir.Trimstart("\")
-                        if (test-path $Gamepath\$Subdir){
+                        if ( test-path $Gamepath\$Subdir ) {
                             $T_Subdir.text = $Subdir
                         } else { [System.Windows.MessageBox]::Show($txt.BadPathOrSub,"",0,48) }
                     }
@@ -865,9 +861,9 @@ $BoutonEdition.add_Click({
         $B_Cancel.add_Click({
             $MenuGauche.SelectedIndex = -1
             $MenuDroite.SelectedIndex = -1
-            $BoutonEdition.IsEnabled=$False
-            $BoutonTransmut.IsEnabled=$False
-            $BoutonUnTransmut.IsEnabled=$False
+            $BoutonEdition.IsEnabled = $False
+            $BoutonTransmut.IsEnabled = $False
+            $BoutonUnTransmut.IsEnabled = $False
             $Window_edit.Close()
         })
 
@@ -876,33 +872,33 @@ $BoutonEdition.add_Click({
         $B_Ok.add_Click({
             $fail = $false
             $regprio = $false
-            if ($C_registre.IsChecked) {
+            if ( $C_registre.IsChecked ) {
                 $registre = $T_Registre.Text
-                if (![string]::IsNullOrEmpty($registre)) {    
-                    if ($registre -like "HKEY_LOCAL_MACHINE*") {
+                if ( ![string]::IsNullOrEmpty($registre) ) {
+                    if ( $registre -like "HKEY_LOCAL_MACHINE*" ) {
                         $registre = $registre.replace("HKEY_LOCAL_MACHINE","HKLM:")
                     } else {
-                            if($registre -like "HKEY_CURRENT_USER*") {
-                                $registre = $registre.replace("HKEY_CURRENT_USER","HKCU:")
-                            }
-                        }        
+                        if ( $registre -like "HKEY_CURRENT_USER*" ) {
+                            $registre = $registre.replace("HKEY_CURRENT_USER","HKCU:")
+                        }
+                    }        
                     #Recover Reg Key
                     $regkey = $registre|split-path -leaf
                     #"supprimer clef du lien registre"
                     $registre = $registre.replace("\$regkey","")
-                    if (!(test-path $registre)){
-                    $registre=$registre.replace("HKLM:\SOFTWARE","HKLM:\SOFTWARE\WOW6432Node")
-                    $registre=$registre.replace("HKCU:\SOFTWARE","HKCU:\SOFTWARE\WOW6432Node")
+                    if ( !(test-path $registre) ) {
+                    $registre = $registre.replace("HKLM:\SOFTWARE","HKLM:\SOFTWARE\WOW6432Node")
+                    $registre = $registre.replace("HKCU:\SOFTWARE","HKCU:\SOFTWARE\WOW6432Node")
                     }
-                    if (test-path $registre){
+                    if ( test-path $registre ) {
                         try { $Gamepath = Get-ItemPropertyvalue -Path $registre -name $regkey
                         }
                         catch {
                             $fail = $true
                             [System.Windows.MessageBox]::Show($txt.RegKeyInc,"",0,48)
                         }
-                        if ($fail -eq $False) {
-                            if (!(test-path $Gamepath)){
+                        if ( $fail -eq $False ) {
+                            if ( !(test-path $Gamepath) ) {
                                 [System.Windows.MessageBox]::Show($txt.RegKeyValInc,"",0,48)
                                 $fail = $true
                             } else {
@@ -920,91 +916,90 @@ $BoutonEdition.add_Click({
                 }
             } else {
                 $Gamepath = $T_Gamepath.text
-                if ([string]::IsNullOrEmpty($Gamepath)){ 
+                if ( [string]::IsNullOrEmpty($Gamepath) ) { 
                             $fail = $true
                             [System.Windows.MessageBox]::Show($txt.PathEmpty,"",0,64)
                     }
             }
-            if ($fail -eq $False) {
+            if ( $fail -eq $False ) {
                 $Gamepath = $Gamepath.TrimEnd("\")
-                if (![string]::IsNullOrEmpty($Gamepath)){
-                    if (!(test-path $Gamepath)){
+                if ( ![string]::IsNullOrEmpty($Gamepath) ) {
+                    if ( !(test-path $Gamepath) ) {
                         $fail = $true
                         [System.Windows.MessageBox]::Show($txt.BadPath,"",0,48)
                     } 
                 }
             }
-            if ($C_SubDir.IsChecked -and $fail -eq $false){
+            if ( $C_SubDir.IsChecked -and $fail -eq $false ) {
                 $Subdir = $T_Subdir.text
-                if (!(test-path $Gamepath\$Subdir)){
+                if ( !(test-path $Gamepath\$Subdir) ) {
                     $fail = $true
                     [System.Windows.MessageBox]::Show($txt.SubNotFound,"",0,48)
                 } 
             }
-            if (!($T_buffers.text -In 2..10)){
+            if ( !($T_buffers.text -In 2..10) ) {
                 $fail = $true
                 [System.Windows.MessageBox]::Show($txt.BuffersErr,"",0,48)
             }
-            if (!($T_Duration.Text -In 2..50)){
+            if ( !($T_Duration.Text -In 2..50) ) {
                     $fail = $true
                     [System.Windows.MessageBox]::Show($txt.DurationErr,"",0,48)
             }
-            if (!($T_voice.text -In 32..128)){
+            if ( !($T_voice.text -In 32..128) ) {
                     $fail = $true
                     [System.Windows.MessageBox]::Show($txt.VoiceErr,"",0,48)
             }
             # Test if no error
-            if ($fail -eq $False){
-
+            if ( $fail -eq $False ) {
                 # Prepare Game value to write
                 $Name = $T_titrejeu.text
                 $Buffers = $T_buffers.text
                 $Voice = $T_voice.text
                 $Duration = $T_Duration.text
-                if ($C_DisableDirectMusic.IsChecked) { $DisableDirectMusic = "True" } else { $DisableDirectMusic = "False" }
-                if ($C_Rootdir.IsChecked){ $RootDirInstallOption = "True" } else { $RootDirInstallOption = "False" }
-                if ($C_DisableNativeAl.IsChecked){ $DisableNativeAL = "True" } else {  $DisableNativeAL = "False" }
-                if ($C_SubDir.IsUnChecked){
+                if ( $C_DisableDirectMusic.IsChecked ) { $DisableDirectMusic = "True" } else { $DisableDirectMusic = "False" }
+                if ( $C_Rootdir.IsChecked ) { $RootDirInstallOption = "True" } else { $RootDirInstallOption = "False" }
+                if ( $C_DisableNativeAl.IsChecked ) { $DisableNativeAL = "True" } else {  $DisableNativeAL = "False" }
+                if ( $C_SubDir.IsUnChecked ) {
                     $SubDir = ""
                     $RootDirInstallOption = "False"
                 }
-                if ($C_LogDirectSound.IsChecked){ $LogDirectSound = "True" } else { $LogDirectSound ="False" }
-                if ($C_LogDirectSound2D.IsChecked){ $LogDirectSound2D = "True" } else { $LogDirectSound2D ="False" }
-                if ($C_LogDirectSound2DStreaming.IsChecked){ $LogDirectSound2DStreaming = "True" } else { $LogDirectSound2DStreaming = "False" }
-                if ($C_LogDirectSound3D.IsChecked){ $LogDirectSound3D = "True" } else { $LogDirectSound3D = "False" }
-                if ( $C_LogDirectSoundListener.IsChecked ){ $LogDirectSoundListener = "True" } else { $LogDirectSoundListener = "False" }
-                if ($C_LogDirectSoundEAX.IsChecked){ $LogDirectSoundEAX = "True" } else { $LogDirectSoundEAX = "False" }
-                if ($C_LogDirectSoundTimingInfo.IsChecked){ $LogDirectSoundTimingInfo = "True" } else { $LogDirectSoundTimingInfo = "False" }
-                if ($C_LogStarvation.IsChecked){ $LogStarvation = "True" } else { $LogStarvation = "False" }
+                if ( $C_LogDirectSound.IsChecked) { $LogDirectSound = "True" } else { $LogDirectSound ="False" }
+                if ( $C_LogDirectSound2D.IsChecked) { $LogDirectSound2D = "True" } else { $LogDirectSound2D ="False" }
+                if ( $C_LogDirectSound2DStreaming.IsChecked ) { $LogDirectSound2DStreaming = "True" } else { $LogDirectSound2DStreaming = "False" }
+                if ( $C_LogDirectSound3D.IsChecked ) { $LogDirectSound3D = "True" } else { $LogDirectSound3D = "False" }
+                if ( $C_LogDirectSoundListener.IsChecked ) { $LogDirectSoundListener = "True" } else { $LogDirectSoundListener = "False" }
+                if ( $C_LogDirectSoundEAX.IsChecked ) { $LogDirectSoundEAX = "True" } else { $LogDirectSoundEAX = "False" }
+                if ( $C_LogDirectSoundTimingInfo.IsChecked ) { $LogDirectSoundTimingInfo = "True" } else { $LogDirectSoundTimingInfo = "False" }
+                if ( $C_LogStarvation.IsChecked ) { $LogStarvation = "True" } else { $LogStarvation = "False" }
                 
                 # Update list game to reflect change    
-                $script:jeutrouve[$count].RegPath=$RegPath
-                $script:jeutrouve[$count].Gamepath=$Gamepath
-                $script:jeutrouve[$count].Buffers=$Buffers
-                $script:jeutrouve[$count].Duration=$Duration
-                $script:jeutrouve[$count].DisableDirectMusic=$DisableDirectMusic
-                $script:jeutrouve[$count].MaxVoiceCount=$Voice
-                $script:jeutrouve[$count].SubDir=$Subdir
-                $script:jeutrouve[$count].RootDirInstallOption=$RootDirInstallOption
-                $script:jeutrouve[$count].DisableNativeAL=$DisableNativeAL
-                $script:jeutrouve[$count].LogDirectSound=$LogDirectSound
-                $script:jeutrouve[$count].LogDirectSound2D=$LogDirectSound2D
-                $script:jeutrouve[$count].LogDirectSound2DStreaming=$LogDirectSound2DStreaming
-                $script:jeutrouve[$count].LogDirectSound3D=$LogDirectSound3D
-                $script:jeutrouve[$count].LogDirectSoundListener=$LogDirectSoundListener
-                $script:jeutrouve[$count].LogDirectSoundEAX=$LogDirectSoundEAX
-                $script:jeutrouve[$count].LogDirectSoundTimingInfo=$LogDirectSoundTimingInfo
-                $script:jeutrouve[$count].LogStarvation=$LogStarvation
+                $script:jeutrouve[$count].RegPath = $RegPath
+                $script:jeutrouve[$count].Gamepath = $Gamepath
+                $script:jeutrouve[$count].Buffers = $Buffers
+                $script:jeutrouve[$count].Duration = $Duration
+                $script:jeutrouve[$count].DisableDirectMusic = $DisableDirectMusic
+                $script:jeutrouve[$count].MaxVoiceCount = $Voice
+                $script:jeutrouve[$count].SubDir = $Subdir
+                $script:jeutrouve[$count].RootDirInstallOption = $RootDirInstallOption
+                $script:jeutrouve[$count].DisableNativeAL = $DisableNativeAL
+                $script:jeutrouve[$count].LogDirectSound = $LogDirectSound
+                $script:jeutrouve[$count].LogDirectSound2D = $LogDirectSound2D
+                $script:jeutrouve[$count].LogDirectSound2DStreaming = $LogDirectSound2DStreaming
+                $script:jeutrouve[$count].LogDirectSound3D = $LogDirectSound3D
+                $script:jeutrouve[$count].LogDirectSoundListener = $LogDirectSoundListener
+                $script:jeutrouve[$count].LogDirectSoundEAX = $LogDirectSoundEAX
+                $script:jeutrouve[$count].LogDirectSoundTimingInfo = $LogDirectSoundTimingInfo
+                $script:jeutrouve[$count].LogStarvation = $LogStarvation
                 
                 # Write change in file
                 $file = Get-content "$PSScriptRoot\Newalchemy.ini"
                 $LineNumber = Select-String -pattern ([regex]::Escape("[$Name]")) $PSScriptRoot\NewAlchemy.ini| Select-Object -ExpandProperty LineNumber
-                if ($regprio -eq $true) {
+                if ( $regprio -eq $true ) {
                     $file[$LineNumber] = "RegPath=$RegPath"
-                    $file[$LineNumber +1]="GamePath="
+                    $file[$LineNumber +1] ="GamePath="
                 }else{
                     $file[$LineNumber] = "RegPath="
-                    $file[$LineNumber +1]="GamePath=$Gamepath" 
+                    $file[$LineNumber +1] ="GamePath=$Gamepath" 
                 }
                 $file[$LineNumber +2] = "Buffers=$Buffers" 
                 $file[$LineNumber +3] = "Duration=$Duration" 
@@ -1033,9 +1028,9 @@ $BoutonEdition.add_Click({
         $closingHandler = {
             $MenuGauche.SelectedIndex = -1
             $MenuDroite.SelectedIndex = -1
-            $BoutonEdition.IsEnabled=$False
-            $BoutonTransmut.IsEnabled=$False
-            $BoutonUnTransmut.IsEnabled=$False
+            $BoutonEdition.IsEnabled = $False
+            $BoutonTransmut.IsEnabled = $False
+            $BoutonUnTransmut.IsEnabled = $False
         }
         $Window_edit.Add_Closing($closingHandler)
         $Window_edit.ShowDialog() | out-null
@@ -1044,159 +1039,159 @@ $BoutonEdition.add_Click({
 
 ### ADD BUTTON (MAIN FORM)
 $BoutonAjouter.add_Click({
-    [xml]$InputXML =@"
+    [xml]$InputXML = @"
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         Height="710" Width="558" MinHeight="710" MinWidth="558" VerticalAlignment="Bottom" ResizeMode="CanResizeWithGrip" Icon="$PSScriptRoot\NewAlchemy.ico">
-		<Viewbox Stretch="Uniform" StretchDirection="UpOnly">
-			<Grid>
-			<TextBox Name="T_titrejeu" HorizontalAlignment="Left" Height="22" Margin="28,44,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="485"/>
-			<RadioButton Name="C_registre" HorizontalAlignment="Left" Margin="67,85,0,0" VerticalAlignment="Top" Width="252"/>
-			<RadioButton Name="C_Gamepath" HorizontalAlignment="Left" Margin="67,136,0,0" VerticalAlignment="Top" Width="252"/>
-			<TextBox Name="T_registre" HorizontalAlignment="Left" Height="22" Margin="67,105,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="410"/>
-			<TextBox Name="T_Gamepath" HorizontalAlignment="Left" Height="22" Margin="67,156,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="410" />
-			<TextBox Name="T_buffers" HorizontalAlignment="Left" Height="22" Margin="188,331,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="293"/>
-			<TextBox Name="T_Duration" HorizontalAlignment="Left" Height="22" Margin="188,359,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="293"/>
-			<TextBox Name="T_voice" HorizontalAlignment="Left" Height="22" Margin="188,387,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="293"/>
-			<CheckBox Name="C_SubDir" HorizontalAlignment="Left" Height="18" Margin="67,188,0,0" VerticalAlignment="Top" Width="192"/>
-			<TextBox Name="T_Subdir" HorizontalAlignment="Left" Height="22" Margin="67,211,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="410"/>
-			<CheckBox Name="C_DisableDirectMusic" HorizontalAlignment="Left" Margin="188,424,0,0" VerticalAlignment="Top"/>
-			<CheckBox Name="C_Rootdir" HorizontalAlignment="Left" Margin="67,243,0,0" VerticalAlignment="Top"/>
-			<Label Name ="L_GameTitle" HorizontalAlignment="Left" Margin="67,13,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.526,0"/>
-			<Label Name ="L_Buffers" HorizontalAlignment="Left" Margin="45,327,0,0" VerticalAlignment="Top" Width="79" Height="26"/>
-			<Label Name="L_Duration" HorizontalAlignment="Left" Margin="45,358,0,0" VerticalAlignment="Top" Height="23" Width="79"/>
-			<Label Name="L_Voice" HorizontalAlignment="Left" Height="25" Margin="45,384,0,0" VerticalAlignment="Top" Width="143"/>
-			<Label Name="L_Settings" HorizontalAlignment="Left" Margin="28,297,0,0" VerticalAlignment="Top" Width="143"/>
-			<Button Name="B_Cancel" HorizontalAlignment="Left" Height="25" Margin="439,634,0,13" VerticalAlignment="Top" Width="90"/>
-			<Button Name="B_ok" HorizontalAlignment="Left" Height="25" Margin="331,634,0,13" VerticalAlignment="Top" Width="90"/>
-			<Button Name="B_GamePath" Content="..." HorizontalAlignment="Left" Height="22" Margin="491,156,0,0" VerticalAlignment="Top" Width="22"/>
-			<Button Name="B_SubDir" Content="..." HorizontalAlignment="Left" Height="22" Margin="491,211,0,0" VerticalAlignment="Top" Width="22"/>
-			<Label Name="L_Debug1" HorizontalAlignment="Left" Margin="0,464,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.484,0"/>
-			<Label Name="L_Debug2" HorizontalAlignment="Left" Margin="20,484,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.526,0"/>
-			<CheckBox Name="C_LogDirectSound" HorizontalAlignment="Left" Margin="67,524,0,0" VerticalAlignment="Top"/>
-			<CheckBox Name="C_LogDirectSound2D" HorizontalAlignment="Left" Margin="300,524,0,0" VerticalAlignment="Top"/>
-			<CheckBox Name="C_LogDirectSound2DStreaming" HorizontalAlignment="Left" Margin="67,544,0,0" VerticalAlignment="Top"/>
-			<CheckBox Name="C_LogDirectSound3D" HorizontalAlignment="Left" Margin="300,544,0,0" VerticalAlignment="Top"/>
-			<CheckBox Name="C_LogDirectSoundListener" HorizontalAlignment="Left" Margin="67,564,0,0" VerticalAlignment="Top"/>
-			<CheckBox Name="C_LogDirectSoundEAX" HorizontalAlignment="Left" Margin="300,564,0,0" VerticalAlignment="Top"/>
-			<CheckBox Name="C_LogDirectSoundTimingInfo" HorizontalAlignment="Left" Margin="67,584,0,0" VerticalAlignment="Top"/>
-			<CheckBox Name="C_LogStarvation" HorizontalAlignment="Left" Margin="300,584,0,0" VerticalAlignment="Top"/>
-			<CheckBox Name="C_DisableNativeAl" HorizontalAlignment="Left" Margin="67,604,0,0" VerticalAlignment="Top"/>
-		</Grid>
-	</Viewbox>
+        <Viewbox Stretch="Uniform" StretchDirection="UpOnly">
+            <Grid>
+            <TextBox Name="T_titrejeu" HorizontalAlignment="Left" Height="22" Margin="28,44,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="485"/>
+            <RadioButton Name="C_registre" HorizontalAlignment="Left" Margin="67,85,0,0" VerticalAlignment="Top" Width="252"/>
+            <RadioButton Name="C_Gamepath" HorizontalAlignment="Left" Margin="67,136,0,0" VerticalAlignment="Top" Width="252"/>
+            <TextBox Name="T_registre" HorizontalAlignment="Left" Height="22" Margin="67,105,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="410"/>
+            <TextBox Name="T_Gamepath" HorizontalAlignment="Left" Height="22" Margin="67,156,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="410" />
+            <TextBox Name="T_buffers" HorizontalAlignment="Left" Height="22" Margin="188,331,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="293"/>
+            <TextBox Name="T_Duration" HorizontalAlignment="Left" Height="22" Margin="188,359,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="293"/>
+            <TextBox Name="T_voice" HorizontalAlignment="Left" Height="22" Margin="188,387,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="293"/>
+            <CheckBox Name="C_SubDir" HorizontalAlignment="Left" Height="18" Margin="67,188,0,0" VerticalAlignment="Top" Width="192"/>
+            <TextBox Name="T_Subdir" HorizontalAlignment="Left" Height="22" Margin="67,211,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="410"/>
+            <CheckBox Name="C_DisableDirectMusic" HorizontalAlignment="Left" Margin="188,424,0,0" VerticalAlignment="Top"/>
+            <CheckBox Name="C_Rootdir" HorizontalAlignment="Left" Margin="67,243,0,0" VerticalAlignment="Top"/>
+            <Label Name ="L_GameTitle" HorizontalAlignment="Left" Margin="67,13,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.526,0"/>
+            <Label Name ="L_Buffers" HorizontalAlignment="Left" Margin="45,327,0,0" VerticalAlignment="Top" Width="79" Height="26"/>
+            <Label Name="L_Duration" HorizontalAlignment="Left" Margin="45,358,0,0" VerticalAlignment="Top" Height="23" Width="79"/>
+            <Label Name="L_Voice" HorizontalAlignment="Left" Height="25" Margin="45,384,0,0" VerticalAlignment="Top" Width="143"/>
+            <Label Name="L_Settings" HorizontalAlignment="Left" Margin="28,297,0,0" VerticalAlignment="Top" Width="143"/>
+            <Button Name="B_Cancel" HorizontalAlignment="Left" Height="25" Margin="439,634,0,13" VerticalAlignment="Top" Width="90"/>
+            <Button Name="B_ok" HorizontalAlignment="Left" Height="25" Margin="331,634,0,13" VerticalAlignment="Top" Width="90"/>
+            <Button Name="B_GamePath" Content="..." HorizontalAlignment="Left" Height="22" Margin="491,156,0,0" VerticalAlignment="Top" Width="22"/>
+            <Button Name="B_SubDir" Content="..." HorizontalAlignment="Left" Height="22" Margin="491,211,0,0" VerticalAlignment="Top" Width="22"/>
+            <Label Name="L_Debug1" HorizontalAlignment="Left" Margin="0,464,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.484,0"/>
+            <Label Name="L_Debug2" HorizontalAlignment="Left" Margin="20,484,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.526,0"/>
+            <CheckBox Name="C_LogDirectSound" HorizontalAlignment="Left" Margin="67,524,0,0" VerticalAlignment="Top"/>
+            <CheckBox Name="C_LogDirectSound2D" HorizontalAlignment="Left" Margin="300,524,0,0" VerticalAlignment="Top"/>
+            <CheckBox Name="C_LogDirectSound2DStreaming" HorizontalAlignment="Left" Margin="67,544,0,0" VerticalAlignment="Top"/>
+            <CheckBox Name="C_LogDirectSound3D" HorizontalAlignment="Left" Margin="300,544,0,0" VerticalAlignment="Top"/>
+            <CheckBox Name="C_LogDirectSoundListener" HorizontalAlignment="Left" Margin="67,564,0,0" VerticalAlignment="Top"/>
+            <CheckBox Name="C_LogDirectSoundEAX" HorizontalAlignment="Left" Margin="300,564,0,0" VerticalAlignment="Top"/>
+            <CheckBox Name="C_LogDirectSoundTimingInfo" HorizontalAlignment="Left" Margin="67,584,0,0" VerticalAlignment="Top"/>
+            <CheckBox Name="C_LogStarvation" HorizontalAlignment="Left" Margin="300,584,0,0" VerticalAlignment="Top"/>
+            <CheckBox Name="C_DisableNativeAl" HorizontalAlignment="Left" Margin="67,604,0,0" VerticalAlignment="Top"/>
+        </Grid>
+    </Viewbox>
 </Window>
 "@
-    $reader=(New-Object System.Xml.XmlNodeReader $inputXML)
-    $Window_add =[Windows.Markup.XamlReader]::Load( $reader )
+    $reader = (New-Object System.Xml.XmlNodeReader $inputXML)
+    $Window_add = [Windows.Markup.XamlReader]::Load( $reader )
     $inputXML.SelectNodes("//*[@Name]") | Foreach-Object { Set-Variable -Name ($_.Name) -Value $Window_add.FindName($_.Name)}
-    $Window_add.WindowStartupLocation = "CenterScreen"
     
+    $Window_add.WindowStartupLocation = "CenterScreen"
     # WPF Content, tooltip values
-    $Window_add.Title=$txt.MainTitle2    
+    $Window_add.Title = $txt.MainTitle2    
     $C_Gamepath.Content = $txt.C_GamepathContent
-    $C_registre.Content=$txt.C_registreContent
+    $C_registre.Content = $txt.C_registreContent
     $T_registre.ToolTip = $txt.T_registreToolTip
-    $T_Gamepath.ToolTip= $txt.T_GamepathToolTip
+    $T_Gamepath.ToolTip = $txt.T_GamepathToolTip
     $T_voice.ToolTip = $txt.T_voiceToolTip
     $C_SubDir.Content = $txt.C_SubDirContent
     $T_Subdir.ToolTip = $txt.T_SubdirToolTip
-    $C_DisableDirectMusic.Content=$txt.C_DisableDirectMusicContent
-    $C_DisableDirectMusic.ToolTip=$txt.C_DisableDirectMusicToolTip
-    $C_Rootdir.Content=$txt.C_RootdirContent
-    $L_GameTitle.Content=$txt.L_GameTitleContent
+    $C_DisableDirectMusic.Content = $txt.C_DisableDirectMusicContent
+    $C_DisableDirectMusic.ToolTip = $txt.C_DisableDirectMusicToolTip
+    $C_Rootdir.Content = $txt.C_RootdirContent
+    $L_GameTitle.Content = $txt.L_GameTitleContent
     $T_buffers.ToolTip = $txt.T_buffersToolTip
-    $L_Buffers.Content=$txt.T_BuffersContent
-    $L_Buffers.toolTip=$txt.T_BuffersToolTip
+    $L_Buffers.Content = $txt.T_BuffersContent
+    $L_Buffers.toolTip = $txt.T_BuffersToolTip
     $T_duration.toolTip = $txt.T_DurationToolTip
-    $L_Duration.Content=$txt.T_DurationContent
-    $L_Duration.ToolTip=$txt.T_DurationToolTip
-    $L_Voice.Content=$txt.T_VoiceContent
-    $L_Settings.Content=$txt.L_Settings
-    $B_Cancel.Content=$txt.B_CancelContent
-    $B_ok.Content=$txt.B_OkContent
-    $L_Debug1.Content=$txt.L_Debug1Content
-    $L_Debug2.Content=$txt.L_Debug2Content
-    $C_LogDirectSound.Content=$txt.C_LogDirectSoundContent
-    $C_LogDirectSound2D.Content=$txt.C_LogDirectSound2DContent
-    $C_LogDirectSound2DStreaming.Content=$txt.C_LogDirectSound2DStreamingContent
-    $C_LogDirectSound3D.Content=$txt.C_LogDirectSound3DContent
-    $C_LogDirectSoundListener.Content=$txt.C_LogDirectSoundListenerContent
-    $C_LogDirectSoundEAX.Content=$txt.C_LogDirectSoundEAXContent
-    $C_LogDirectSoundTimingInfo.Content=$txt.C_LogDirectSoundTimingInfoContent
-    $C_LogStarvation.Content=$txt.C_LogStarvationContent
-    $C_LogDirectSound.ToolTip=$txt.C_logtextTooltip
-    $C_LogDirectSound2D.ToolTip=$txt.C_logtextTooltip
-    $C_LogDirectSound2DStreaming.ToolTip=$txt.C_logtextTooltip
-    $C_LogDirectSound3D.ToolTip=$txt.C_logtextTooltip
-    $C_LogDirectSoundListener.ToolTip=$txt.C_logtextTooltip
-    $C_LogDirectSoundEAX.ToolTip=$txt.C_logtextTooltip
-    $C_LogDirectSoundTimingInfo.ToolTip=$txt.C_logtextTooltip
-    $C_LogStarvation.ToolTip=$txt.C_logtextTooltip
-    $C_DisableNativeAl.Content=$txt.C_DisableNativeAlContent
-    $C_DisableNativeAl.ToolTip=$txt.C_DisableNativeAlToolTip
+    $L_Duration.Content = $txt.T_DurationContent
+    $L_Duration.ToolTip = $txt.T_DurationToolTip
+    $L_Voice.Content = $txt.T_VoiceContent
+    $L_Settings.Content = $txt.L_Settings
+    $B_Cancel.Content = $txt.B_CancelContent
+    $B_ok.Content = $txt.B_OkContent
+    $L_Debug1.Content = $txt.L_Debug1Content
+    $L_Debug2.Content = $txt.L_Debug2Content
+    $C_LogDirectSound.Content = $txt.C_LogDirectSoundContent
+    $C_LogDirectSound2D.Content = $txt.C_LogDirectSound2DContent
+    $C_LogDirectSound2DStreaming.Content = $txt.C_LogDirectSound2DStreamingContent
+    $C_LogDirectSound3D.Content = $txt.C_LogDirectSound3DContent
+    $C_LogDirectSoundListener.Content = $txt.C_LogDirectSoundListenerContent
+    $C_LogDirectSoundEAX.Content = $txt.C_LogDirectSoundEAXContent
+    $C_LogDirectSoundTimingInfo.Content = $txt.C_LogDirectSoundTimingInfoContent
+    $C_LogStarvation.Content = $txt.C_LogStarvationContent
+    $C_LogDirectSound.ToolTip = $txt.C_logtextTooltip
+    $C_LogDirectSound2D.ToolTip = $txt.C_logtextTooltip
+    $C_LogDirectSound2DStreaming.ToolTip = $txt.C_logtextTooltip
+    $C_LogDirectSound3D.ToolTip = $txt.C_logtextTooltip
+    $C_LogDirectSoundListener.ToolTip = $txt.C_logtextTooltip
+    $C_LogDirectSoundEAX.ToolTip = $txt.C_logtextTooltip
+    $C_LogDirectSoundTimingInfo.ToolTip = $txt.C_logtextTooltip
+    $C_LogStarvation.ToolTip = $txt.C_logtextTooltip
+    $C_DisableNativeAl.Content = $txt.C_DisableNativeAlContent
+    $C_DisableNativeAl.ToolTip = $txt.C_DisableNativeAlToolTip
 
     # Default value
     $T_buffers.text = 4
     $T_Duration.text = 25
     $T_voice.text = 128
     $C_DisableDirectMusic.IsChecked = $False
-    $T_Gamepath.MaxLines=1
-    $T_registre.MaxLines=1
-    $C_registre.IsChecked=$true
-    $C_SubDir.IsChecked=$False
-    $T_SubDir.IsReadOnly=$True
-    $T_SubDir.Background='#e5e5e5'
-    $C_Rootdir.IsChecked=$false
-    $C_Rootdir.IsEnabled=$False
+    $T_Gamepath.MaxLines = 1
+    $T_registre.MaxLines = 1
+    $C_registre.IsChecked = $true
+    $C_SubDir.IsChecked = $False
+    $T_SubDir.IsReadOnly = $True
+    $T_SubDir.Background = '#e5e5e5'
+    $C_Rootdir.IsChecked = $false
+    $C_Rootdir.IsEnabled = $False
     $C_Rootdir.Background = '#e5e5e5'
-    $B_SubDir.IsEnabled=$False
-    $T_Registre.IsReadOnly=$False
+    $B_SubDir.IsEnabled = $False
+    $T_Registre.IsReadOnly = $False
     $T_Registre.Background = '#ffffff'
-    $B_GamePath.IsEnabled=$False
-    $T_Gamepath.IsReadOnly=$true
+    $B_GamePath.IsEnabled = $False
+    $T_Gamepath.IsReadOnly = $true
     $T_Gamepath.Background = '#e5e5e5'
-    $C_DisableNativeAl.IsChecked=$False
-    $C_LogDirectSound.IsChecked=$False
-    $C_LogDirectSound2D.IsChecked=$False
-    $C_LogDirectSound2DStreaming.IsChecked=$False
-    $C_LogDirectSound3D.IsChecked=$False
-    $C_LogDirectSoundListener.IsChecked=$False
-    $C_LogDirectSoundEAX.IsChecked=$False
-    $C_LogDirectSoundTimingInfo.IsChecked=$False
-    $C_LogStarvation.IsChecked=$False
+    $C_DisableNativeAl.IsChecked = $False
+    $C_LogDirectSound.IsChecked = $False
+    $C_LogDirectSound2D.IsChecked = $False
+    $C_LogDirectSound2DStreaming.IsChecked = $False
+    $C_LogDirectSound3D.IsChecked = $False
+    $C_LogDirectSoundListener.IsChecked = $False
+    $C_LogDirectSoundEAX.IsChecked = $False
+    $C_LogDirectSoundTimingInfo.IsChecked = $False
+    $C_LogStarvation.IsChecked = $False
  
     $C_Registre.Add_Checked({
-        $T_Registre.IsReadOnly=$False
+        $T_Registre.IsReadOnly = $False
         $T_Registre.Background = '#ffffff'
-        $B_GamePath.IsEnabled=$False
-        $T_Gamepath.IsReadOnly=$true
+        $B_GamePath.IsEnabled = $False
+        $T_Gamepath.IsReadOnly = $true
         $T_Gamepath.Background = '#e5e5e5'
     })
 
     $C_Gamepath.Add_Checked({
-        $T_Registre.IsReadOnly=$true
+        $T_Registre.IsReadOnly = $true
         $T_Registre.Background = '#e5e5e5'
-        $T_Gamepath.IsReadOnly=$False
+        $T_Gamepath.IsReadOnly = $False
         $T_Gamepath.Background = '#ffffff'
-        $B_GamePath.IsEnabled=$True
+        $B_GamePath.IsEnabled = $True
     })
 
     $C_SubDir.Add_Checked({
-        $T_SubDir.IsReadOnly=$False
+        $T_SubDir.IsReadOnly = $False
         $T_SubDir.Background = '#ffffff'
-        $C_Rootdir.IsEnabled=$True
+        $C_Rootdir.IsEnabled = $True
         $C_Rootdir.Background = '#ffffff'
-        $B_SubDir.IsEnabled=$True
-        $C_Rootdir.IsEnabled=$true
+        $B_SubDir.IsEnabled = $True
+        $C_Rootdir.IsEnabled = $true
     })
 
     $C_SubDir.Add_UnChecked({
-        $T_SubDir.IsReadOnly=$True
+        $T_SubDir.IsReadOnly = $True
         $T_SubDir.Background = '#e5e5e5'
-        $C_Rootdir.IsEnabled=$False
+        $C_Rootdir.IsEnabled = $False
         $C_Rootdir.Background = '#e5e5e5'
-        $B_SubDir.IsEnabled=$False
-        $C_Rootdir.IsEnabled=$False
-        $C_Rootdir.IsChecked=$False
+        $B_SubDir.IsEnabled = $False
+        $C_Rootdir.IsEnabled = $False
+        $C_Rootdir.IsChecked = $False
     })
 
 ## CLICK ON GAMEPATH BUTTON (ADD FORM)
@@ -1205,25 +1200,20 @@ $BoutonAjouter.add_Click({
         $foldername.Description = $txt.FolderChoice
         $foldername.rootfolder = "MyComputer"
         #$initialDirectory
-        if ($C_Gamepath.IsChecked) {
-            $foldername.SelectedPath = $T_Gamepath.text
-        }
-        if($foldername.ShowDialog() -eq "OK")
-        {
-            $T_Gamepath.text = $foldername.SelectedPath
-        }
+        if ( $C_Gamepath.IsChecked ) { $foldername.SelectedPath = $T_Gamepath.text }
+        if ( $foldername.ShowDialog() -eq "OK" ) { $T_Gamepath.text = $foldername.SelectedPath }
     })
 
 ## CLICK ON SUBDIR BUTTON (ADD FORM), chek registry path first or gamepath is not present, then test subdir+gamepath path
     $B_SubDir.add_Click({
         $fail = $false
-        if ($C_registre.IsChecked) {
+        if ( $C_registre.IsChecked ) {
             $registre = $T_Registre.Text
-            if (![string]::IsNullOrEmpty($registre)){
-                if ($registre -like "HKEY_LOCAL_MACHINE*") {
+            if ( ![string]::IsNullOrEmpty($registre) ) {
+                if ( $registre -like "HKEY_LOCAL_MACHINE*" ) {
                     $registre = $registre.replace("HKEY_LOCAL_MACHINE","HKLM:")
                 } else {
-                        if($registre -like "HKEY_CURRENT_USER*") {
+                        if ( $registre -like "HKEY_CURRENT_USER*" ) {
                             $registre = $registre.replace("HKEY_CURRENT_USER","HKCU:")
                         } else {
                             $fail = $True
@@ -1232,26 +1222,25 @@ $BoutonAjouter.add_Click({
                     }
             } else {
                 $fail = $True
-                [System.Windows.MessageBox]::Show($txt.RegKeyEmpty,"",0,64)        
+                [System.Windows.MessageBox]::Show($txt.RegKeyEmpty,"",0,64)
             }
-            if ($fail -eq $False) {                
+            if ( $fail -eq $False ) {
                 #retreive registry key
                 $regkey = $registre|split-path -leaf
                 #remove registry key from registry path
                 $registre = $registre.replace("\$regkey","")
-                if (!(test-path $registre)){
-                $registre=$registre.replace("HKLM:\SOFTWARE","HKLM:\SOFTWARE\WOW6432Node")
-                $registre=$registre.replace("HKCU:\SOFTWARE","HKCU:\SOFTWARE\WOW6432Node")
+                if ( !(test-path $registre) ) {
+                    $registre = $registre.replace("HKLM:\SOFTWARE","HKLM:\SOFTWARE\WOW6432Node")
+                    $registre = $registre.replace("HKCU:\SOFTWARE","HKCU:\SOFTWARE\WOW6432Node")
                 }
-                if (test-path $registre){
-                    try { $Gamepath = Get-ItemPropertyvalue -Path $registre -name $regkey
-                    }
+                if ( test-path $registre ) {
+                    try { $Gamepath = Get-ItemPropertyvalue -Path $registre -name $regkey }
                     catch {
                         $fail = $true
                         [System.Windows.MessageBox]::Show($txt.RegKeyInc,"",0,48)
                     }
-                    if ($fail -eq $False) {
-                        if (!(test-path $Gamepath)){
+                    if ( $fail -eq $False ) {
+                        if ( !(test-path $Gamepath) ) {
                             [System.Windows.MessageBox]::Show($txt.RegKeyValInc,"",0,48)
                             $fail = $True
                         }
@@ -1263,23 +1252,23 @@ $BoutonAjouter.add_Click({
             }
         } else {
             $Gamepath = $T_Gamepath.text
-            if ([string]::IsNullOrEmpty($Gamepath)){ 
+            if ( [string]::IsNullOrEmpty($Gamepath) ) { 
                 $fail = $true
                 [System.Windows.MessageBox]::Show($txt.PathEmpty,"",0,64)
             }
         }
-        if ($fail -eq $False) {
-            if (!(test-path $Gamepath)){
+        if ( $fail -eq $False ) {
+            if ( !(test-path $Gamepath) ) {
                 [System.Windows.MessageBox]::Show($txt.BadPath,"",0,48)
             } else {        
                 $foldername = New-Object System.Windows.Forms.FolderBrowserDialog
                 $foldername.Description = $txt.SubFolderChoice
                 $foldername.SelectedPath = $Gamepath
-                if($foldername.ShowDialog() -eq "OK"){
+                if ( $foldername.ShowDialog() -eq "OK" ) {
                     $Subdir = $foldername.SelectedPath
                     $Subdir = $Subdir -ireplace[regex]::Escape("$Gamepath"),""
                     $Subdir = $Subdir.Trimstart("\")
-                    if (test-path $Gamepath\$Subdir){
+                    if ( test-path $Gamepath\$Subdir ) {
                         $T_Subdir.text = $Subdir
                     } else { [System.Windows.MessageBox]::Show($txt.BadPathOrSub,"",0,48) }
                 }
@@ -1289,9 +1278,9 @@ $BoutonAjouter.add_Click({
     $B_Cancel.add_Click({
         $MenuGauche.SelectedIndex = -1
         $MenuDroite.SelectedIndex = -1
-        $BoutonEdition.IsEnabled=$False
-        $BoutonTransmut.IsEnabled=$False
-        $BoutonUnTransmut.IsEnabled=$False
+        $BoutonEdition.IsEnabled = $False
+        $BoutonTransmut.IsEnabled = $False
+        $BoutonUnTransmut.IsEnabled = $False
         $Window_add.Close()
     })
    
@@ -1302,40 +1291,40 @@ $BoutonAjouter.add_Click({
         $registre = $T_Registre.Text
         $gamename = $T_titrejeu.Text
 
-        foreach ($game in $script:listejeux){
-            if ($gamename -eq $game.name){
+        foreach ( $game in $script:listejeux ) {
+            if ( $gamename -eq $game.name ) {
                 $fail = $true
                 [System.Windows.MessageBox]::Show($txt.TitleExist,"",0,64)
             }
         }
-        if ([string]::IsNullOrEmpty($gamename)){
+        if ( [string]::IsNullOrEmpty($gamename) ) {
             $fail = $true
             [System.Windows.MessageBox]::Show($txt.TitleMiss,"",0,64)
         }
-        if ($C_registre.IsChecked) {
-            if (![string]::IsNullOrEmpty($registre)) {
-                if ($registre -like "HKEY_LOCAL_MACHINE*") {
+        if ( $C_registre.IsChecked ) {
+            if ( ![string]::IsNullOrEmpty($registre) ) {
+                if ( $registre -like "HKEY_LOCAL_MACHINE*" ) {
                     $registre = $registre.replace("HKEY_LOCAL_MACHINE","HKLM:")
                 } else {
-                        if($registre -like "HKEY_CURRENT_USER*") {
+                        if ( $registre -like "HKEY_CURRENT_USER*" ) {
                             $registre = $registre.replace("HKEY_CURRENT_USER","HKCU:")
                         }
                     } 
                 $regkey = $registre|split-path -leaf
                 $registre = $registre.replace("\$regkey","")
-                if (!(test-path $registre)){
-                    $registre=$registre.replace("HKLM:\SOFTWARE","HKLM:\SOFTWARE\WOW6432Node")
-                    $registre=$registre.replace("HKCU:\SOFTWARE","HKCU:\SOFTWARE\WOW6432Node")
+                if ( !(test-path $registre) ) {
+                    $registre = $registre.replace("HKLM:\SOFTWARE","HKLM:\SOFTWARE\WOW6432Node")
+                    $registre = $registre.replace("HKCU:\SOFTWARE","HKCU:\SOFTWARE\WOW6432Node")
                 }
-                if (test-path $registre){
+                if ( test-path $registre ) {
                     try { $Gamepath = Get-ItemPropertyvalue -Path $registre -name $regkey
                     }
                     catch {
                         $fail = $true
                         [System.Windows.MessageBox]::Show($txt.RegKeyInc,"",0,48)
                     }
-                    if ($fail -eq $false){
-                        if (!(test-path $Gamepath)){
+                    if ( $fail -eq $false ) {
+                        if ( !(test-path $Gamepath) ) {
                             [System.Windows.MessageBox]::Show($txt.RegKeyValInc,"",0,48)
                             $fail = $true
                         }
@@ -1353,66 +1342,66 @@ $BoutonAjouter.add_Click({
         } else {
             $Gamepath = $T_Gamepath.text
         }    
-        if ($fail -eq $False) {
-            if ([string]::IsNullOrEmpty($Gamepath)){
+        if ( $fail -eq $False ) {
+            if ( [string]::IsNullOrEmpty($Gamepath) ) {
                 $fail = $true
                 [System.Windows.MessageBox]::Show($txt.PathEmpty,"",0,64)
             }
             else {
-                if (!(test-path $Gamepath)){
+                if ( !(test-path $Gamepath) ) {
                         $fail = $true
                         [System.Windows.MessageBox]::Show($txt.BadPath,"",0,48)
                 }
             }
         }
-        if ($B_SubDir.IsEnabled -and $fail -eq $false){
+        if ( $B_SubDir.IsEnabled -and $fail -eq $false ) {
             $Subdir = $T_Subdir.text
-            if (!(test-path $Gamepath\$Subdir)){
+            if ( !(test-path $Gamepath\$Subdir) ) {
                 $fail = $true
                 [System.Windows.MessageBox]::Show($txt.SubNotFound,"",0,48)
             } 
         }
-        if (!($T_buffers.text -In 2..10)){
+        if ( !($T_buffers.text -In 2..10) ) {
             $fail = $true
             [System.Windows.MessageBox]::Show($txt.BuffersErr,"",0,48)
         }
-        if (!($T_Duration.Text -In 2..50)){
+        if ( !($T_Duration.Text -In 2..50) ) {
                 $fail = $true
                 [System.Windows.MessageBox]::Show($txt.DurationErr,"",0,48)
         }
-        if (!($T_voice.text -In 32..128)){
+        if ( !($T_voice.text -In 32..128) ) {
                 $fail = $true
                 [System.Windows.MessageBox]::Show($txt.VoiceErr,"",0,48)
         }
         # test if no error
-        if ($fail -eq $False){
+        if ( $fail -eq $False ) {
             # Value to write
             $Name = $T_titrejeu.text
             $Buffers = $T_buffers.text
             $Voice = $T_voice.text
             $Duration = $T_Duration.text
-            if ($C_DisableDirectMusic.IsChecked) { $DisableDirectMusic=1 } else { $DisableDirectMusic=0 }
-            if ($C_Rootdir.IsChecked){ $RootDirInstallOption="True" } else { $RootDirInstallOption="False" }
-            if ($C_DisableNativeAl.IsChecked){ $DisableNativeAL="True" } else { $DisableNativeAL ="False" }
-            if ($C_SubDir.IsUnchecked){
-                $SubDir=""
-                $RootDirInstallOption="False"
+            if ( $C_DisableDirectMusic.IsChecked ) { $DisableDirectMusic = 1 } else { $DisableDirectMusic = 0 }
+            if ( $C_Rootdir.IsChecked ) { $RootDirInstallOption = "True" } else { $RootDirInstallOption = "False" }
+            if ( $C_DisableNativeAl.IsChecked ) { $DisableNativeAL = "True" } else { $DisableNativeAL = "False" }
+            if ( $C_SubDir.IsUnchecked ) {
+                $SubDir = ""
+                $RootDirInstallOption = "False"
             }
-            if ($C_LogDirectSound.IsChecked){ $LogDirectSound="True" } else { $LogDirectSound ="False" }
-            if ($C_LogDirectSound2D.IsChecked){ $LogDirectSound2D="True" } else { $LogDirectSound2D ="False" }
-            if ($C_LogDirectSound2DStreaming.IsChecked){ $LogDirectSound2DStreaming="True" } else { $LogDirectSound2DStreaming ="False" }
-            if ($C_LogDirectSound3D.IsChecked){ $LogDirectSound3D="True" } else { $LogDirectSound3D ="False" }
-            if ($C_LogDirectSoundListener.IsChecked){ $LogDirectSoundListener="True" } else { $LogDirectSoundListener ="False" }
-            if ($C_LogDirectSoundEAX.IsChecked){ $LogDirectSoundEAX="True" } else { $LogDirectSoundEAX ="False" }
-            if ($C_LogDirectSoundTimingInfo.IsChecked){ $LogDirectSoundTimingInfo="True" } else { $LogDirectSoundTimingInfo ="False" }
-            if ($C_LogStarvation.IsChecked){ $LogStarvation="True" } else { $LogStarvation ="False" }
+            if ( $C_LogDirectSound.IsChecked ) { $LogDirectSound = "True" } else { $LogDirectSound = "False" }
+            if ( $C_LogDirectSound2D.IsChecked ) { $LogDirectSound2D = "True" } else { $LogDirectSound2D = "False" }
+            if ( $C_LogDirectSound2DStreaming.IsChecked ) { $LogDirectSound2DStreaming = "True" } else { $LogDirectSound2DStreaming = "False" }
+            if ( $C_LogDirectSound3D.IsChecked ) { $LogDirectSound3D = "True" } else { $LogDirectSound3D = "False" }
+            if ( $C_LogDirectSoundListener.IsChecked ) { $LogDirectSoundListener = "True" } else { $LogDirectSoundListener = "False" }
+            if ( $C_LogDirectSoundEAX.IsChecked ) { $LogDirectSoundEAX = "True" } else { $LogDirectSoundEAX = "False" }
+            if ( $C_LogDirectSoundTimingInfo.IsChecked ) { $LogDirectSoundTimingInfo = "True" } else { $LogDirectSoundTimingInfo = "False" }
+            if ( $C_LogStarvation.IsChecked ) { $LogStarvation = "True" } else { $LogStarvation = "False" }
             # Write change in file, Registry first, Gamepath second choice
-            if ($regprio -eq $true) {
+            if ( $regprio -eq $true ) {
                 $RegPath = $T_Registre.Text
-                $Gamepath=""
+                $Gamepath = ""
             }else{
-                $RegPath=""
-                $Gamepath=$T_Gamepath.text
+                $RegPath = ""
+                $Gamepath = $T_Gamepath.text
             }
             "[$Name]`r`nRegPath=$RegPath`r`nGamePath=$Gamepath`r`nBuffers=$Buffers`r`nDuration=$Duration`r`nDisableDirectMusic=$DisableDirectMusic`r`nMaxVoiceCount=$Voice`r`nSubDir=$SubDir`r`nRootDirInstallOption=$RootDirInstallOption`r`nDisableNativeAL=$DisableNativeAL`r`nLogDirectSound=$LogDirectSound`r`nLogDirectSound2D=$LogDirectSound2D`r`nLogDirectSound2DStreaming=$LogDirectSound2DStreaming`r`nLogDirectSound3D=$LogDirectSound3D`r`nLogDirectSoundListener=$LogDirectSoundListener`r`nLogDirectSoundEAX=$LogDirectSoundEAX`r`nLogDirectSoundTimingInfo=$LogDirectSoundTimingInfo`r`nLogStarvation=$LogStarvation`r`n"| Out-File -Append $PSScriptRoot\NewAlchemy.ini -encoding ascii
 
@@ -1423,11 +1412,11 @@ $BoutonAjouter.add_Click({
             $jeutransmut = $script:jeutrouve | where-object Transmut -eq $true
             $jeunontransmut = $script:jeutrouve | where-object {$_.Found -eq $true -and $_.Transmut -eq $False}
             $MenuGauche.Items.Clear()
-            foreach ($jeu in $jeunontransmut){
+            foreach ( $jeu in $jeunontransmut ) {
                 $MenuGauche.Items.Add($jeu.name) | Out-Null
             }
             $MenuDroite.Items.Clear()
-            foreach ($jeu in $jeutransmut){
+            foreach ( $jeu in $jeutransmut ) {
                 $MenuDroite.Items.Add($jeu.name) | Out-Null
             }
             Sortlistview $MenuGauche
@@ -1438,9 +1427,9 @@ $BoutonAjouter.add_Click({
     $closingHandler = {
         $MenuGauche.SelectedIndex = -1
         $MenuDroite.SelectedIndex = -1
-        $BoutonEdition.IsEnabled=$False
-        $BoutonTransmut.IsEnabled=$False
-        $BoutonUnTransmut.IsEnabled=$False
+        $BoutonEdition.IsEnabled = $False
+        $BoutonTransmut.IsEnabled = $False
+        $BoutonUnTransmut.IsEnabled = $False
     }
     $Window_add.Add_Closing($closingHandler)
     $Window_add.ShowDialog() | out-null
@@ -1449,7 +1438,7 @@ $BoutonAjouter.add_Click({
 ### Default Button (MAIN FORM)
 $BoutonParDefaut.add_Click({
     $choice = [System.Windows.MessageBox]::Show("$($txt.Defaultmsgbox)`r`n$($txt.Defaultmsgbox2)`r`n$($PSScriptRoot)\NewAlchemy.bak`r`n`r`n$($txt.Defaultmsgbox3)" , "NewAlchemy" , 4,64)
-    if ($choice -eq 'Yes') {
+    if ( $choice -eq 'Yes' ) {
         move-Item "$PSScriptRoot\NewAlchemy.ini" "$PSScriptRoot\NewAlchemy.Bak" -force
         GenerateNewAlchemy "$PathAlchemy\Alchemy.ini"
         $script:listejeux = read-file "$PSScriptRoot\NewAlchemy.ini"
@@ -1459,12 +1448,12 @@ $BoutonParDefaut.add_Click({
         $jeutransmut = $script:jeutrouve | where-object Transmut -eq $true
         $jeunontransmut = $script:jeutrouve | where-object {$_.Found -eq $true -and $_.Transmut -eq $False}
         $MenuGauche.Items.Clear()
-        foreach ($jeu in $jeunontransmut){
+        foreach ( $jeu in $jeunontransmut ) {
             $MenuGauche.Items.Add($jeu.name) | Out-Null
         }
         Sortlistview $MenuGauche
         $MenuDroite.Items.Clear()
-        foreach ($jeu in $jeutransmut){
+        foreach ( $jeu in $jeutransmut ) {
             $MenuDroite.Items.Add($jeu.name) | Out-Null
         }
         Sortlistview $MenuDroite
