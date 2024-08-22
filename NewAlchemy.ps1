@@ -518,8 +518,8 @@ $inputXML.SelectNodes("//*[@Name]") | Foreach-Object { Set-Variable -Name ($_.Na
 $Window.Background = "DarkGray"
 $MenuGauche.Background = "DimGray"
 $Menudroite.Background = "DimGray"
-$Menudroite.Foreground = "Ivory"
-$MenuGauche.Foreground = "Ivory"
+$Menudroite.Foreground = "White"
+$MenuGauche.Foreground = "White"
 $Window.WindowStartupLocation = "CenterScreen"
 $BoutonEdition.Content = $txt.BoutonEditionContent
 $BoutonAjouter.Content = $txt.BoutonAjouterContent
