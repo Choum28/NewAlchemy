@@ -1,6 +1,6 @@
 <# 
 .SYNOPSIS
-    This script is a test to recreate the Creative Alchemy application in powershell with new options and possibilities.
+    This script is a test to recreate the Creative Alchemy application in powershell with some new options and possibilities.
 
 .DESCRIPTION
     What different from creative alchemy :
@@ -15,7 +15,7 @@
     .\NewALchemy.ps1
         Launch the script
 
- -------------------------- EXAMPLE 2 --------------------------
+ -------------------------- EXEMPLE 2 --------------------------
  .\powershell.exe -WindowStyle Hidden -ep bypass -file "C:\apps\NewAlchemy-main\Alchemy.ps1"
         Launch the script and hide console
 
@@ -23,10 +23,11 @@
     This script will generate an ini file NewAlchemy.ini to store gamelist audio options and change.
     
 .NOTES
-    NAME:       NewALchemy.ps1
-    AUTHOR:    Choum
+    NOM:       NewALchemy.ps1
+    AUTEUR:    Choum
 
-    VERSION HISTORY:
+    HISTORIQUE VERSION:
+    1.10    22.08.2024    Add WPF Background colors, remove useless GridViewColumn
     1.09    17.08.2024    Hash check for transmuted game to exclude game with dsoal dsound.dll to appears as transmuted per newalchemy, fix bug related to missing dsound.ini log info when you transmut a newly created game.
     1.08    15.08.2024    Add doubleclick support to transmut/Untransmut, possibility to edit from both Listview.
     1.07    04.08.2024    Test subdir path (if filled) before adding game to the detected list on startup.
@@ -38,7 +39,6 @@
     1.01    06.10.2021    Fix edit new add game bug, add Nativeal value question on first launch
     1.0     15.11.2020    First version
 .LINK
-    https://github.com/Choum28/NewAlchemy
  #>
 
 # Locate Alchemy installation and check for necessary files, return Creative alchemy path.
@@ -494,8 +494,8 @@ $jeunontransmut = $script:jeutrouve | where-object {$_.Found -eq $true -and $_.T
     Title="New Alchemy" Height="417" Width="818" MinHeight="417" MinWidth="818" ResizeMode="CanResizeWithGrip" Icon="$PSScriptRoot\NewAlchemy.ico">
     <Viewbox Stretch="Uniform" StretchDirection="UpOnly">
         <Grid>
-            <ListView Name="MenuGauche" HorizontalAlignment="Left" Height="280" Margin="20,75,0,0" VerticalAlignment="Top" Width="310"></ListView>
-            <ListView Name="MenuDroite" HorizontalAlignment="Left" Height="280" Margin="472,75,20,0" VerticalAlignment="Top" Width="310"></ListView>
+            <ListView Name="MenuGauche" HorizontalAlignment="Left" Height="280" Margin="20,75,0,0" VerticalAlignment="Top" Width="310"> </ListView>
+            <ListView Name="MenuDroite" HorizontalAlignment="Left" Height="280" Margin="472,75,20,0" VerticalAlignment="Top" Width="310"> </ListView>
             <Button Name="BoutonTransmut" Content="&gt;&gt;" HorizontalAlignment="Left" Height="45" Margin="350,100,0,0" VerticalAlignment="Top" Width="100"/>
             <Button Name="BoutonUnTransmut" Content="&lt;&lt;" HorizontalAlignment="Left" Height="45  " Margin="350,163,0,0" VerticalAlignment="Top" Width="100"/>
             <Button Name="BoutonEdition" HorizontalAlignment="Left" Height="25" Margin="350,256,0,0" VerticalAlignment="Top" Width="100"/>
@@ -505,7 +505,7 @@ $jeunontransmut = $script:jeutrouve | where-object {$_.Found -eq $true -and $_.T
             <TextBlock Name="Text_jeuInstall" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="20,54,0,0" Width="238"/>
             <TextBlock Name="Text_JeuTransmut" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="472,54,0,0" Width="173"/>
             <TextBlock Name="T_URL" HorizontalAlignment="Left" TextWrapping="Wrap" Text="https://github.com/Choum28/NewAlchemy" VerticalAlignment="Top" Margin="20,361,0,0" FontSize="8"/>
-            <TextBlock Name="T_version" HorizontalAlignment="Right" TextWrapping="Wrap" Text="Version 1.09" VerticalAlignment="Top" Margin="0,359,20,0" FontSize="8"/>
+            <TextBlock Name="T_version" HorizontalAlignment="Right" TextWrapping="Wrap" Text="Version 1.10" VerticalAlignment="Top" Margin="0,359,20,0" FontSize="8"/>
         </Grid>
     </Viewbox>
 </Window>
@@ -514,6 +514,11 @@ $reader = (New-Object System.Xml.XmlNodeReader $inputXML)
 $Window = [Windows.Markup.XamlReader]::Load( $reader )
 $inputXML.SelectNodes("//*[@Name]") | Foreach-Object { Set-Variable -Name ($_.Name) -Value $Window.FindName($_.Name)}
 
+$Window.Background = "DarkGray"
+$MenuGauche.Background = "DimGray"
+$Menudroite.Background = "DimGray"
+$Menudroite.Foreground = "Ivory"
+$MenuGauche.Foreground = "Ivory"
 $Window.WindowStartupLocation = "CenterScreen"
 $BoutonEdition.Content = $txt.BoutonEditionContent
 $BoutonAjouter.Content = $txt.BoutonAjouterContent
@@ -627,6 +632,7 @@ $BoutonEdition.add_Click({
         $Window_edit = [Windows.Markup.XamlReader]::Load( $reader )
         $inputXML.SelectNodes("//*[@Name]") | Foreach-Object { Set-Variable -Name ($_.Name) -Value $Window_edit.FindName($_.Name)}
 
+        $Window_edit.Background = "LightGray"
         $Window_edit.WindowStartupLocation = "CenterScreen"
         $T_Titrejeu.IsReadOnly = $true
         $T_Titrejeu.Background = '#e5e5e5'
@@ -1073,6 +1079,7 @@ $BoutonAjouter.add_Click({
     $Window_add = [Windows.Markup.XamlReader]::Load( $reader )
     $inputXML.SelectNodes("//*[@Name]") | Foreach-Object { Set-Variable -Name ($_.Name) -Value $Window_add.FindName($_.Name)}
     
+    $Window_add.Background = "LightGray"
     $Window_add.WindowStartupLocation = "CenterScreen"
     # WPF Content, tooltip values
     $Window_add.Title = $txt.MainTitle2    
