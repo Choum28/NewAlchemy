@@ -15,7 +15,7 @@
     .\NewALchemy.ps1
         Launch the script
 
- -------------------------- EXEMPLE 2 --------------------------
+ -------------------------- EXAMPLE 2 --------------------------
  .\powershell.exe -WindowStyle Hidden -ep bypass -file "C:\apps\NewAlchemy-main\Alchemy.ps1"
         Launch the script and hide console
 
@@ -23,8 +23,8 @@
     This script will generate an ini file NewAlchemy.ini to store gamelist audio options and change.
     
 .NOTES
-    NOM:       NewALchemy.ps1
-    AUTEUR:    Choum
+    NAME:       NewALchemy.ps1
+    AUTHOR:    Choum
 
     HISTORIQUE VERSION:
     1.10    22.08.2024    Add WPF Background colors, remove useless GridViewColumn
@@ -39,6 +39,7 @@
     1.01    06.10.2021    Fix edit new add game bug, add Nativeal value question on first launch
     1.0     15.11.2020    First version
 .LINK
+    https://github.com/Choum28/NewAlchemy
  #>
 
 # Locate Alchemy installation and check for necessary files, return Creative alchemy path.
