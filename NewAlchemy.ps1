@@ -494,20 +494,8 @@ $jeunontransmut = $script:jeutrouve | where-object {$_.Found -eq $true -and $_.T
     Title="New Alchemy" Height="417" Width="818" MinHeight="417" MinWidth="818" ResizeMode="CanResizeWithGrip" Icon="$PSScriptRoot\NewAlchemy.ico">
     <Viewbox Stretch="Uniform" StretchDirection="UpOnly">
         <Grid>
-            <ListView Name="MenuGauche" HorizontalAlignment="Left" Height="280" Margin="20,75,0,0" VerticalAlignment="Top" Width="310">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Width="300"/>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-            <ListView Name="MenuDroite" HorizontalAlignment="Left" Height="280" Margin="472,75,20,0" VerticalAlignment="Top" Width="310">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Width="300"/>
-                    </GridView>
-                </ListView.View>
-            </ListView>
+            <ListView Name="MenuGauche" HorizontalAlignment="Left" Height="280" Margin="20,75,0,0" VerticalAlignment="Top" Width="310"></ListView>
+            <ListView Name="MenuDroite" HorizontalAlignment="Left" Height="280" Margin="472,75,20,0" VerticalAlignment="Top" Width="310"></ListView>
             <Button Name="BoutonTransmut" Content="&gt;&gt;" HorizontalAlignment="Left" Height="45" Margin="350,100,0,0" VerticalAlignment="Top" Width="100"/>
             <Button Name="BoutonUnTransmut" Content="&lt;&lt;" HorizontalAlignment="Left" Height="45  " Margin="350,163,0,0" VerticalAlignment="Top" Width="100"/>
             <Button Name="BoutonEdition" HorizontalAlignment="Left" Height="25" Margin="350,256,0,0" VerticalAlignment="Top" Width="100"/>
