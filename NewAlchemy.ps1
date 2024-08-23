@@ -644,7 +644,6 @@ $BoutonEdition.add_Click({
         $Window_edit = [Windows.Markup.XamlReader]::Load( $reader )
         $inputXML.SelectNodes("//*[@Name]") | Foreach-Object { Set-Variable -Name ($_.Name) -Value $Window_edit.FindName($_.Name)}
 
-        $Window_edit.Background = "LightGray"
         $Window_edit.WindowStartupLocation = "CenterScreen"
         $T_Titrejeu.IsReadOnly = $true
         $T_Titrejeu.Background = '#e5e5e5'
@@ -1097,7 +1096,6 @@ $BoutonAjouter.add_Click({
     $Window_add = [Windows.Markup.XamlReader]::Load( $reader )
     $inputXML.SelectNodes("//*[@Name]") | Foreach-Object { Set-Variable -Name ($_.Name) -Value $Window_add.FindName($_.Name)}
     
-    $Window_add.Background = "LightGray"
     $Window_add.WindowStartupLocation = "CenterScreen"
     # WPF Content, tooltip values
     $Window_add.Title = $txt.MainTitle2    
