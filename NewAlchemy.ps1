@@ -26,7 +26,7 @@
     NAME:       NewALchemy.ps1
     AUTHOR:    Choum
 
-    HISTORIQUE VERSION:
+    VERSION HISTORY:
     1.10    22.08.2024    Add WPF Background colors, remove useless GridViewColumn
     1.09    17.08.2024    Hash check for transmuted game to exclude game with dsoal dsound.dll to appears as transmuted per newalchemy, fix bug related to missing dsound.ini log info when you transmut a newly created game.
     1.08    15.08.2024    Add doubleclick support to transmut/Untransmut, possibility to edit from both Listview.
